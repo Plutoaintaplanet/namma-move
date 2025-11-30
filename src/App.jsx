@@ -116,7 +116,7 @@ export default function App() {
     if (best) {
       const minutes = Math.max(
         1,
-        Math.round(best.distance / (1.3 * 60))
+        Math.round(best.distance / (1.3 * 60)) // 1.3 m/s
       );
       setOriginWalk({
         distanceMeters: best.distance,
@@ -336,8 +336,16 @@ export default function App() {
     setJourney(null);
   };
 
-  const openWalkNav = (lat, lon) => {
-    const url = `https://www.google.com/maps/dir/?api=1&destination=${lat},${lon}&travelmode=walking`;
+  // NEW: destLat/destLon = destination, origin (optional) = { lat, lon }
+  const openWalkNav = (destLat, destLon, origin) => {
+    let url;
+    if (origin && origin.lat != null && origin.lon != null) {
+      // explicit origin (e.g. stop → destination)
+      url = `https://www.google.com/maps/dir/?api=1&origin=${origin.lat},${origin.lon}&destination=${destLat},${destLon}&travelmode=walking`;
+    } else {
+      // default: origin = device location
+      url = `https://www.google.com/maps/dir/?api=1&destination=${destLat},${destLon}&travelmode=walking`;
+    }
     window.open(url, "_blank");
   };
 
@@ -359,14 +367,14 @@ export default function App() {
 
       {/* Main content */}
       <main className="main-layout">
-        {/* Hero section */}
+        {/* Hero */}
         <section className="hero">
           <h1 className="hero-title">Namma Move</h1>
 
-          {/* moved buttons here */}
           <div className="hero-actions">
             <button className="pill-action primary">Favorites</button>
             <button className="pill-action">Nearby Stops</button>
+            <button className="pill-action">Schedule Alerts</button>
           </div>
 
           <div className="hero-sub">
@@ -383,7 +391,7 @@ export default function App() {
           </div>
         </section>
 
-        {/* Map full-width now */}
+        {/* Map card */}
         <section className="grid-section">
           <div className="map-card">
             <div className="map-card-header">
@@ -405,10 +413,11 @@ export default function App() {
           </div>
         </section>
 
-        {/* Journey details (unchanged) */}
+        {/* Journey details */}
         <section className="journey-section">
           <h2 className="section-title">Your journey</h2>
 
+          {/* Step 1 – walk to boarding stop */}
           {nearestOrigin && originWalk && (
             <div className="journey-card">
               <div className="step-number">1</div>
@@ -437,6 +446,7 @@ export default function App() {
             </div>
           )}
 
+          {/* Bus/Metro legs */}
           {journey &&
             journey.legs.length > 0 &&
             journey.legs.map((leg, index) => {
@@ -462,8 +472,8 @@ export default function App() {
                     <p>{leg.route.long_name}</p>
                     {startStop && endStop && (
                       <p className="step-meta">
-                        Board at <strong>{startStop.name}</strong> ·
-                        exit at <strong>{endStop.name}</strong> ·{" "}
+                        Board at <strong>{startStop.name}</strong> · exit
+                        at <strong>{endStop.name}</strong> ·{" "}
                         {stopsInLeg.length > 1
                           ? `${stopsInLeg.length - 1} stops`
                           : "1 stop"}
@@ -484,11 +494,12 @@ export default function App() {
 
           {journey && (
             <p className="journey-summary">
-              Total ~{journey.totalHops} stops ·{" "}
-              {journey.totalMinutes} min in vehicle
+              Total ~{journey.totalHops} stops · {journey.totalMinutes} min
+              in vehicle
             </p>
           )}
 
+          {/* Final walking step */}
           {destLoc && nearestDest && destWalk && (
             <div className="journey-card">
               <div className="step-number">
@@ -507,7 +518,14 @@ export default function App() {
                 <button
                   className="small-btn"
                   onClick={() =>
-                    openWalkNav(destLoc.lat, destLoc.lon)
+                    openWalkNav(
+                      destLoc.lat,
+                      destLoc.lon,
+                      {
+                        lat: nearestDest.latitude,
+                        lon: nearestDest.longitude,
+                      }
+                    )
                   }
                 >
                   Open walking directions
