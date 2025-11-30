@@ -3,7 +3,7 @@ import { supabase } from "./supabaseClient";
 import MapPicker from "./MapPicker";
 
 // Haversine distance (meters)
-function haversine(lat1, lon1, lat2, lon2) {
+function distanceMeters(lat1, lon1, lat2, lon2) {
   const R = 6371e3;
   const toRad = (d) => (d * Math.PI) / 180;
   const φ1 = toRad(lat1);
@@ -21,8 +21,8 @@ function haversine(lat1, lon1, lat2, lon2) {
 
 export default function App() {
   const [stops, setStops] = useState([]);
-  const [routeStops, setRouteStops] = useState([]);
   const [routesData, setRoutesData] = useState([]);
+  const [routeStops, setRouteStops] = useState([]);
 
   const [userLoc, setUserLoc] = useState(null);
   const [nearestOrigin, setNearestOrigin] = useState(null);
@@ -30,42 +30,47 @@ export default function App() {
   const [destLoc, setDestLoc] = useState(null);
   const [nearestDest, setNearestDest] = useState(null);
 
-  // Walking legs
   const [originWalk, setOriginWalk] = useState(null);
   const [destWalk, setDestWalk] = useState(null);
 
-  // Bus journey: one or more legs
-  // journey = { legs: [ { route, stops: [stop objects] } ], totalHops, totalMinutes }
   const [journey, setJourney] = useState(null);
-
   const [error, setError] = useState("");
+  const [gtfsStats, setGtfsStats] = useState(null);
 
-  // Load stops, routes, route_stops
+  // 1) Load GTFS-based stops, routes, and route_stops
   useEffect(() => {
     const loadAll = async () => {
-      const [{ data: stopsData, error: sErr },
-             { data: routes, error: rErr },
-             { data: rs, error: rsErr }] = await Promise.all([
-        supabase.from("stops").select("*"),
-        supabase.from("routes").select("*"),
-        supabase.from("route_stops").select("*"),
+      const [
+        { data: stopsData, error: sErr },
+        { data: routes, error: rErr },
+        { data: rs, error: rsErr },
+      ] = await Promise.all([
+        supabase.from("gtfs_stops").select("*"),
+        supabase.from("gtfs_routes").select("*"),
+        supabase.from("gtfs_route_stops").select("*"),
       ]);
 
       if (sErr || rErr || rsErr) {
-        console.error(sErr || rErr || rsErr);
-        setError("Failed to load data from Supabase");
+        console.error("Supabase load error:", sErr || rErr || rsErr);
+        setError("Failed to load data from server");
         return;
       }
 
       setStops(stopsData || []);
       setRoutesData(routes || []);
       setRouteStops(rs || []);
+
+      setGtfsStats({
+        stops: stopsData?.length || 0,
+        routes: routes?.length || 0,
+        routeStops: rs?.length || 0,
+      });
     };
 
     loadAll();
   }, []);
 
-  // Get user GPS
+  // 2) Get user GPS
   useEffect(() => {
     if (!("geolocation" in navigator)) {
       setError("Geolocation not supported");
@@ -86,7 +91,7 @@ export default function App() {
     );
   }, []);
 
-  // Find nearest stop to user & walking leg
+  // 3) Find nearest stop to user + walking estimate
   useEffect(() => {
     if (!userLoc || stops.length === 0) return;
 
@@ -94,7 +99,12 @@ export default function App() {
     let min = Infinity;
 
     stops.forEach((s) => {
-      const d = haversine(userLoc.lat, userLoc.lon, s.latitude, s.longitude);
+      const d = distanceMeters(
+        userLoc.lat,
+        userLoc.lon,
+        s.latitude,
+        s.longitude
+      );
       if (d < min) {
         min = d;
         best = { ...s, distance: d };
@@ -104,7 +114,10 @@ export default function App() {
     setNearestOrigin(best);
 
     if (best) {
-      const minutes = Math.max(1, Math.round(best.distance / (1.3 * 60)));
+      const minutes = Math.max(
+        1,
+        Math.round(best.distance / (1.3 * 60))
+      );
       setOriginWalk({
         distanceMeters: best.distance,
         minutes,
@@ -112,18 +125,38 @@ export default function App() {
     }
   }, [userLoc, stops]);
 
-  // When destination is picked on map
+  const getStopById = (id) => stops.find((s) => s.id === id);
+
+  const getOrderedRouteStops = (routeId) =>
+    routeStops
+      .filter((rs) => rs.route_id === routeId)
+      .sort((a, b) => a.stop_sequence - b.stop_sequence);
+
+  const buildRoutesByStop = () => {
+    const map = {};
+    routeStops.forEach((rs) => {
+      if (!map[rs.stop_id]) map[rs.stop_id] = new Set();
+      map[rs.stop_id].add(rs.route_id);
+    });
+    return map;
+  };
+
+  // When user picks destination on map
   const handleDestinationSelected = (loc) => {
     setDestLoc(loc);
-    setJourney(null); // reset journey
+    setJourney(null);
 
     if (stops.length === 0) return;
 
-    // nearest stop to destination
     let best = null;
     let min = Infinity;
     stops.forEach((s) => {
-      const d = haversine(loc.lat, loc.lon, s.latitude, s.longitude);
+      const d = distanceMeters(
+        loc.lat,
+        loc.lon,
+        s.latitude,
+        s.longitude
+      );
       if (d < min) {
         min = d;
         best = { ...s, distance: d };
@@ -132,7 +165,10 @@ export default function App() {
     setNearestDest(best);
 
     if (best) {
-      const minutes = Math.max(1, Math.round(best.distance / (1.3 * 60)));
+      const minutes = Math.max(
+        1,
+        Math.round(best.distance / (1.3 * 60))
+      );
       setDestWalk({
         distanceMeters: best.distance,
         minutes,
@@ -144,37 +180,19 @@ export default function App() {
     }
   };
 
-  // Helper: get ordered routeStops for a route
-  const getOrderedRouteStops = (routeId) => {
-    return routeStops
-      .filter((rs) => rs.route_id === routeId)
-      .sort((a, b) => a.stop_sequence - b.stop_sequence);
-  };
-
-  // Helper: map stopId -> stop object
-  const getStopById = (id) => stops.find((s) => s.id === id);
-
-  // Build map: stopId -> Set(routeId)
-  const buildRoutesByStop = () => {
-    const map = {};
-    routeStops.forEach((rs) => {
-      if (!map[rs.stop_id]) map[rs.stop_id] = new Set();
-      map[rs.stop_id].add(rs.route_id);
-    });
-    return map;
-  };
-
-  // Main journey computation: 0 or 1 interchange
+  // Journey logic: direct or one interchange
   const computeJourney = (originId, destId) => {
-    if (routesData.length === 0 || routeStops.length === 0) return;
+    if (!routesData.length || !routeStops.length) return;
 
     const routesByStop = buildRoutesByStop();
 
-    // 1) Try direct route
+    // 1) Direct route
     let bestDirect = null;
 
     routesData.forEach((route) => {
       const ordered = getOrderedRouteStops(route.id);
+      if (!ordered.length) return;
+
       const oIdx = ordered.findIndex((rs) => rs.stop_id === originId);
       const dIdx = ordered.findIndex((rs) => rs.stop_id === destId);
 
@@ -193,7 +211,11 @@ export default function App() {
         .filter(Boolean);
 
       const totalHops = bestDirect.hops;
-      const totalMinutes = totalHops * 4;
+      const isMetro =
+        bestDirect.route.route_type === 1 ||
+        bestDirect.route.route_type === 2;
+      const minutesPerHop = isMetro ? 3 : 4;
+      const totalMinutes = totalHops * minutesPerHop;
 
       setJourney({
         legs: [
@@ -208,38 +230,45 @@ export default function App() {
       return;
     }
 
-    // 2) Try ONE interchange: origin -> X (route A), X -> dest (route B)
+    // 2) One interchange
     let bestMulti = null;
 
-    const originRoutes = Array.from(routesByStop[originId] || []);
-    const destRoutes = Array.from(routesByStop[destId] || []);
+    const routesByStopMap = routesByStop;
+    const originRoutes = Array.from(routesByStopMap[originId] || []);
 
-    // For speed: pre-cache ordered route stops
     const orderedCache = {};
     routesData.forEach((r) => {
       orderedCache[r.id] = getOrderedRouteStops(r.id);
     });
 
     originRoutes.forEach((routeAId) => {
-      const orderedA = orderedCache[routeAId];
+      const orderedA = orderedCache[routeAId] || [];
       const oIdxA = orderedA.findIndex((rs) => rs.stop_id === originId);
       if (oIdxA === -1) return;
 
-      // All possible interchange stops after origin on route A
       for (let i = oIdxA + 1; i < orderedA.length; i++) {
         const interStopId = orderedA[i].stop_id;
-        const routesThroughInter = Array.from(routesByStop[interStopId] || []);
+        const routesThroughInter = Array.from(
+          routesByStopMap[interStopId] || []
+        );
 
         routesThroughInter.forEach((routeBId) => {
-          if (routeBId === routeAId) return; // same route already checked above
+          if (routeBId === routeAId) return;
 
-          const orderedB = orderedCache[routeBId];
+          const orderedB = orderedCache[routeBId] || [];
           const interIdxB = orderedB.findIndex(
             (rs) => rs.stop_id === interStopId
           );
-          const dIdxB = orderedB.findIndex((rs) => rs.stop_id === destId);
+          const dIdxB = orderedB.findIndex(
+            (rs) => rs.stop_id === destId
+          );
 
-          if (interIdxB === -1 || dIdxB === -1 || interIdxB >= dIdxB) return;
+          if (
+            interIdxB === -1 ||
+            dIdxB === -1 ||
+            interIdxB >= dIdxB
+          )
+            return;
 
           const hopsA = i - oIdxA;
           const hopsB = dIdxB - interIdxB;
@@ -251,12 +280,14 @@ export default function App() {
           if (!bestMulti || totalHops < bestMulti.totalHops) {
             bestMulti = {
               totalHops,
+              hopsA,
+              hopsB,
               routeA,
               routeB,
               orderedA,
               orderedB,
               oIdxA,
-              i, // inter idx on A
+              interIdxA: i,
               interStopId,
               interIdxB,
               dIdxB,
@@ -268,7 +299,7 @@ export default function App() {
 
     if (bestMulti) {
       const leg1Stops = bestMulti.orderedA
-        .slice(bestMulti.oIdxA, bestMulti.i + 1)
+        .slice(bestMulti.oIdxA, bestMulti.interIdxA + 1)
         .map((rs) => getStopById(rs.stop_id))
         .filter(Boolean);
 
@@ -277,7 +308,19 @@ export default function App() {
         .map((rs) => getStopById(rs.stop_id))
         .filter(Boolean);
 
-      const totalMinutes = bestMulti.totalHops * 4;
+      const isMetroA =
+        bestMulti.routeA.route_type === 1 ||
+        bestMulti.routeA.route_type === 2;
+      const isMetroB =
+        bestMulti.routeB.route_type === 1 ||
+        bestMulti.routeB.route_type === 2;
+
+      const minutesPerHopA = isMetroA ? 3 : 4;
+      const minutesPerHopB = isMetroB ? 3 : 4;
+
+      const totalMinutes =
+        bestMulti.hopsA * minutesPerHopA +
+        bestMulti.hopsB * minutesPerHopB;
 
       setJourney({
         legs: [
@@ -290,7 +333,6 @@ export default function App() {
       return;
     }
 
-    // No journey found at all
     setJourney(null);
   };
 
@@ -300,239 +342,202 @@ export default function App() {
   };
 
   return (
-    <div
-      style={{
-        minHeight: "100vh",
-        padding: 16,
-        background: "#020617",
-        color: "#e5e7eb",
-        fontFamily: "system-ui, sans-serif",
-      }}
-    >
-      <h1 style={{ fontSize: "1.8rem", marginBottom: 4 }}>Namma Move</h1>
-      <p style={{ color: "#9ca3af", marginBottom: 12 }}>
-        Choose your destination on the map. We’ll find BMTC routes with up to
-        one interchange.
-      </p>
-
-      {error && (
-        <div
-          style={{
-            background: "#b91c1c",
-            padding: "8px 12px",
-            borderRadius: 8,
-            marginBottom: 12,
-          }}
-        >
-          {error}
+    <div className="app-root">
+      {/* Top nav */}
+      <header className="top-nav">
+        <div className="nav-left">
+          <div className="logo-circle" />
+          <span className="logo-text">Namma</span>
         </div>
-      )}
+        <nav className="nav-links">
+          <button className="nav-link active">Home</button>
+          <button className="nav-link">Routes</button>
+          <button className="nav-link">Tickets</button>
+          <button className="nav-link">Profile</button>
+        </nav>
+      </header>
 
-      <MapPicker onLocationSelected={handleDestinationSelected} />
+      {/* Main content */}
+      <main className="main-layout">
+        {/* Hero section */}
+        <section className="hero">
+          <h1 className="hero-title">Namma Move</h1>
 
-      {/* Step-by-step journey card */}
-      <div
-        style={{
-          marginTop: 20,
-          background: "#0f172a",
-          borderRadius: 16,
-          padding: 16,
-          boxShadow: "0 10px 30px rgba(0,0,0,0.4)",
-        }}
-      >
-        <h2 style={{ fontSize: "1.1rem", marginBottom: 8 }}>
-          Step-by-step instructions
-        </h2>
-
-        {/* Step 1 – Walk to first bus stop */}
-        {nearestOrigin && originWalk && (
-          <div style={{ marginBottom: 12 }}>
-            <h3 style={{ marginBottom: 4 }}>Step 1 – Walk to bus stop</h3>
-            <p style={{ margin: 0 }}>
-              From your current location, walk to{" "}
-              <strong>{nearestOrigin.name}</strong>
-              {nearestOrigin.area && ` (${nearestOrigin.area})`}.
-            </p>
-            <p
-              style={{
-                margin: "4px 0 0",
-                fontSize: "0.85rem",
-                color: "#9ca3af",
-              }}
-            >
-              ≈ {(originWalk.distanceMeters / 1000).toFixed(2)} km •{" "}
-              {originWalk.minutes} min walk
-            </p>
-            <button
-              onClick={() =>
-                openWalkNav(nearestOrigin.latitude, nearestOrigin.longitude)
-              }
-              style={{
-                marginTop: 6,
-                padding: "6px 12px",
-                borderRadius: 999,
-                border: "none",
-                background:
-                  "linear-gradient(135deg,#f97316 0%,#ea580c 40%,#facc15 100%)",
-                cursor: "pointer",
-                fontWeight: 600,
-              }}
-            >
-              Open walking directions
-            </button>
+          {/* moved buttons here */}
+          <div className="hero-actions">
+            <button className="pill-action primary">Favorites</button>
+            <button className="pill-action">Nearby Stops</button>
           </div>
-        )}
 
-        {/* Bus legs: Step 2 & 3 if needed */}
-        {journey && journey.legs.length > 0 && (
-          <div style={{ marginBottom: 12 }}>
-            {journey.legs.map((leg, index) => {
+          <div className="hero-sub">
+            <span className="hero-pill">
+              {nearestOrigin
+                ? `Nearest stop: ${nearestOrigin.name}`
+                : "Fetching your nearest stop…"}
+            </span>
+            {gtfsStats && (
+              <span className="hero-pill hero-pill-muted">
+                GTFS: {gtfsStats.routes} routes · {gtfsStats.stops} stops
+              </span>
+            )}
+          </div>
+        </section>
+
+        {/* Map full-width now */}
+        <section className="grid-section">
+          <div className="map-card">
+            <div className="map-card-header">
+              <span className="map-card-title">
+                {journey
+                  ? `Best route: ~${journey.totalMinutes} mins`
+                  : "Pick a destination on the map"}
+              </span>
+              {journey && (
+                <span className="map-card-badge">
+                  Next bus in ~5 mins*
+                </span>
+              )}
+            </div>
+            <MapPicker onLocationSelected={handleDestinationSelected} />
+            <p className="map-card-footnote">
+              *ETA estimates are rough and based on stop counts.
+            </p>
+          </div>
+        </section>
+
+        {/* Journey details (unchanged) */}
+        <section className="journey-section">
+          <h2 className="section-title">Your journey</h2>
+
+          {nearestOrigin && originWalk && (
+            <div className="journey-card">
+              <div className="step-number">1</div>
+              <div className="step-body">
+                <h3>Walk to boarding stop</h3>
+                <p>
+                  From your current location, walk to{" "}
+                  <strong>{nearestOrigin.name}</strong>.
+                </p>
+                <p className="step-meta">
+                  ≈ {(originWalk.distanceMeters / 1000).toFixed(2)} km ·{" "}
+                  {originWalk.minutes} min walk
+                </p>
+                <button
+                  className="small-btn"
+                  onClick={() =>
+                    openWalkNav(
+                      nearestOrigin.latitude,
+                      nearestOrigin.longitude
+                    )
+                  }
+                >
+                  Open walking directions
+                </button>
+              </div>
+            </div>
+          )}
+
+          {journey &&
+            journey.legs.length > 0 &&
+            journey.legs.map((leg, index) => {
               const stepNumber = 2 + index;
-              const stops = leg.stops || [];
-              const startStop = stops[0];
-              const endStop = stops[stops.length - 1];
+              const stopsInLeg = leg.stops || [];
+              const startStop = stopsInLeg[0];
+              const endStop = stopsInLeg[stopsInLeg.length - 1];
+              const isMetro =
+                leg.route.route_type === 1 ||
+                leg.route.route_type === 2;
+              const modeLabel = isMetro ? "Metro" : "Bus";
 
               return (
-                <div
-                  key={index}
-                  style={{
-                    marginBottom: 10,
-                    padding: 10,
-                    borderRadius: 10,
-                    background: "#020617",
-                  }}
-                >
-                  <h3 style={{ marginBottom: 4 }}>
-                    Step {stepNumber} – Take bus {journey.legs.length > 1 ? `(${index + 1})` : ""}
-                  </h3>
-                  <p style={{ margin: 0 }}>
-                    Route <strong>{leg.route.short_name}</strong> –{" "}
-                    {leg.route.long_name}
-                  </p>
-                  {startStop && endStop && (
-                    <p
-                      style={{
-                        margin: "4px 0 0",
-                        fontSize: "0.85rem",
-                        color: "#9ca3af",
-                      }}
-                    >
-                      Board at <strong>{startStop.name}</strong> and get down at{" "}
-                      <strong>{endStop.name}</strong>. <br />
-                      (
-                      {stops.length > 1
-                        ? `${stops.length - 1} stops on this leg`
-                        : "1 stop"}
-                      )
-                    </p>
-                  )}
-
-                  <details
-                    style={{
-                      marginTop: 6,
-                      padding: 6,
-                      borderRadius: 8,
-                      background: "#020617",
-                      fontSize: "0.85rem",
-                    }}
-                  >
-                    <summary style={{ cursor: "pointer" }}>
-                      Show all stops on this leg
-                    </summary>
-                    <ol style={{ marginTop: 6, paddingLeft: 18 }}>
-                      {stops.map((s, i) => (
-                        <li key={i} style={{ marginBottom: 2 }}>
-                          {s.name}
-                          {s.area && (
-                            <span style={{ color: "#6b7280" }}>
-                              {" "}
-                              – {s.area}
-                            </span>
-                          )}
-                        </li>
-                      ))}
-                    </ol>
-                  </details>
+                <div className="journey-card" key={index}>
+                  <div className="step-number">{stepNumber}</div>
+                  <div className="step-body">
+                    <h3>
+                      Take {modeLabel} ·{" "}
+                      <span className="route-pill">
+                        {leg.route.short_name}
+                      </span>
+                    </h3>
+                    <p>{leg.route.long_name}</p>
+                    {startStop && endStop && (
+                      <p className="step-meta">
+                        Board at <strong>{startStop.name}</strong> ·
+                        exit at <strong>{endStop.name}</strong> ·{" "}
+                        {stopsInLeg.length > 1
+                          ? `${stopsInLeg.length - 1} stops`
+                          : "1 stop"}
+                      </p>
+                    )}
+                    <details className="step-details">
+                      <summary>Show all stops</summary>
+                      <ol>
+                        {stopsInLeg.map((s, i) => (
+                          <li key={i}>{s.name}</li>
+                        ))}
+                      </ol>
+                    </details>
+                  </div>
                 </div>
               );
             })}
 
-            <p
-              style={{
-                marginTop: 4,
-                fontSize: "0.85rem",
-                color: "#9ca3af",
-              }}
-            >
-              Total ≈ {journey.totalHops} stops • {journey.totalMinutes} min
-              (rough bus time)
+          {journey && (
+            <p className="journey-summary">
+              Total ~{journey.totalHops} stops ·{" "}
+              {journey.totalMinutes} min in vehicle
             </p>
-          </div>
-        )}
+          )}
 
-        {/* Final walking step */}
-        {destLoc && nearestDest && destWalk && (
-          <div>
-            <h3 style={{ marginBottom: 4 }}>
-              Step {journey && journey.legs.length > 0 ? 2 + journey.legs.length : 2} – Walk to destination
-            </h3>
-            <p style={{ margin: 0 }}>
-              From <strong>{nearestDest.name}</strong>, walk to your final
-              destination.
+          {destLoc && nearestDest && destWalk && (
+            <div className="journey-card">
+              <div className="step-number">
+                {journey ? 2 + journey.legs.length : 2}
+              </div>
+              <div className="step-body">
+                <h3>Walk to final destination</h3>
+                <p>
+                  From <strong>{nearestDest.name}</strong>, walk to your
+                  destination.
+                </p>
+                <p className="step-meta">
+                  ≈ {(destWalk.distanceMeters / 1000).toFixed(2)} km ·{" "}
+                  {destWalk.minutes} min walk
+                </p>
+                <button
+                  className="small-btn"
+                  onClick={() =>
+                    openWalkNav(destLoc.lat, destLoc.lon)
+                  }
+                >
+                  Open walking directions
+                </button>
+              </div>
+            </div>
+          )}
+
+          {!destLoc && (
+            <p className="journey-hint">
+              Tap on the map to plan your journey.
             </p>
-            <p
-              style={{
-                margin: "4px 0 0",
-                fontSize: "0.85rem",
-                color: "#9ca3af",
-              }}
-            >
-              ≈ {(destWalk.distanceMeters / 1000).toFixed(2)} km •{" "}
-              {destWalk.minutes} min walk
+          )}
+
+          {destLoc && !journey && (
+            <p className="journey-hint warning">
+              No suitable route found with at most one interchange. Try a
+              nearby stop or check data coverage.
             </p>
-            <button
-              onClick={() => openWalkNav(destLoc.lat, destLoc.lon)}
-              style={{
-                marginTop: 6,
-                padding: "6px 12px",
-                borderRadius: 999,
-                border: "none",
-                background: "#f97316",
-                cursor: "pointer",
-                fontWeight: 600,
-              }}
-            >
-              Open final walking leg
-            </button>
-          </div>
-        )}
+          )}
+        </section>
+      </main>
 
-        {!destLoc && (
-          <p
-            style={{
-              marginTop: 8,
-              fontSize: "0.85rem",
-              color: "#9ca3af",
-            }}
-          >
-            Pick a destination on the map to see full journey with possible
-            interchanges.
-          </p>
-        )}
-
-        {destLoc && !journey && (
-          <p
-            style={{
-              marginTop: 8,
-              fontSize: "0.85rem",
-              color: "#f97316",
-            }}
-          >
-            No suitable BMTC route (with at most one interchange) found in the
-            demo dataset between these stops.
-          </p>
-        )}
-      </div>
+      {/* Bottom nav */}
+      <footer className="bottom-nav">
+        <button className="bottom-item active">Home</button>
+        <button className="bottom-item">Routes</button>
+        <button className="bottom-item">Tickets</button>
+        <button className="bottom-item">Profile</button>
+      </footer>
     </div>
   );
 }

@@ -6,6 +6,8 @@ import {
   useLoadScript,
 } from "@react-google-maps/api";
 
+const MAP_LIBRARIES = ["places"]; // keep static to avoid warnings
+
 const mapContainerStyle = {
   width: "100%",
   height: "320px",
@@ -16,10 +18,9 @@ const mapContainerStyle = {
 const defaultCenter = { lat: 12.9716, lng: 77.5946 }; // Bengaluru
 
 export default function MapPicker({ onLocationSelected }) {
-  // ✅ useLoadScript ONLY ONCE
   const { isLoaded, loadError } = useLoadScript({
     googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY,
-    libraries: ["places"],
+    libraries: MAP_LIBRARIES,
   });
 
   const autocompleteRef = useRef(null);
@@ -38,7 +39,7 @@ export default function MapPicker({ onLocationSelected }) {
   };
 
   const onPlaceChanged = () => {
-    const place = autocompleteRef.current.getPlace();
+    const place = autocompleteRef.current?.getPlace();
     if (!place || !place.geometry) return;
 
     const lat = place.geometry.location.lat();
