@@ -70,10 +70,10 @@ export default function App() {
     loadAll();
   }, []);
 
-  // 2) Get user GPS
+  // 2) Get user GPS immediately on load
   useEffect(() => {
     if (!("geolocation" in navigator)) {
-      setError("Geolocation not supported");
+      setError("Geolocation not supported on this device.");
       return;
     }
 
@@ -85,8 +85,15 @@ export default function App() {
         });
       },
       (err) => {
-        console.error(err);
-        setError("Could not get your location");
+        console.error("GPS error:", err);
+        setError(
+          "Unable to fetch your location. Please allow location access."
+        );
+      },
+      {
+        enableHighAccuracy: true,
+        timeout: 10000,
+        maximumAge: 0,
       }
     );
   }, []);
@@ -336,7 +343,7 @@ export default function App() {
     setJourney(null);
   };
 
-  // NEW: destLat/destLon = destination, origin (optional) = { lat, lon }
+  // destLat/destLon = destination, origin (optional) = { lat, lon }
   const openWalkNav = (destLat, destLon, origin) => {
     let url;
     if (origin && origin.lat != null && origin.lon != null) {
