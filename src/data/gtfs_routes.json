@@ -1,0 +1,50 @@
+[
+  {
+    "id": "R500",
+    "short_name": "500",
+    "long_name": "Majestic – Whitefield",
+    "route_type": 3
+  },
+  {
+    "id": "R335E",
+    "short_name": "335E",
+    "long_name": "Majestic – Electronic City",
+    "route_type": 3
+  },
+  {
+    "id": "R201",
+    "short_name": "201",
+    "long_name": "Majestic – Indiranagar",
+    "route_type": 3
+  },
+  {
+    "id": "R225",
+    "short_name": "225",
+    "long_name": "Majestic – Banashankari",
+    "route_type": 3
+  },
+  {
+    "id": "RG10",
+    "short_name": "G10",
+    "long_name": "Yeshwantpur – Silk Board",
+    "route_type": 3
+  },
+  {
+    "id": "R401",
+    "short_name": "401",
+    "long_name": "Shivajinagar – Whitefield",
+    "route_type": 3
+  },
+  {
+    "id": "R250",
+    "short_name": "250",
+    "long_name": "Majestic – Yelahanka",
+    "route_type": 3
+  },
+  {
+    "id": "R600",
+    "short_name": "600",
+    "long_name": "Indiranagar – Electronic City",
+    "route_type": 3
+  }
+]

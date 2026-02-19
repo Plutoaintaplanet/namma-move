@@ -360,3 +360,256 @@ body {
     width: 100%;
   }
 }
+
+/* ── DualMapPicker ─────────────────────────────────────────────────────────── */
+
+.dual-map-picker {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.dual-input-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.pin-dot {
+  font-size: 1.1rem;
+  flex-shrink: 0;
+}
+
+.map-search-input {
+  flex: 1;
+  padding: 10px 12px;
+  border-radius: 999px;
+  border: none;
+  background: rgba(255, 255, 255, 0.12);
+  color: #e5f4ff;
+  font-size: 0.87rem;
+  outline: none;
+  min-width: 0;
+}
+
+.map-search-input::placeholder {
+  color: rgba(229, 244, 255, 0.5);
+}
+
+.map-search-input:focus {
+  background: rgba(255, 255, 255, 0.18);
+}
+
+.pin-toggle-btn {
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  border-radius: 8px;
+  padding: 8px 10px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background 0.2s;
+  flex-shrink: 0;
+}
+
+.pin-toggle-btn.active {
+  background: rgba(0, 166, 166, 0.5);
+}
+
+.pin-mode-hint {
+  font-size: 0.78rem;
+  color: rgba(229, 244, 255, 0.6);
+  text-align: center;
+  margin-bottom: 4px;
+}
+
+/* ── Options row (Bus + Meter side by side) ───────────────────────────────── */
+
+.options-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-top: 12px;
+}
+
+@media (max-width: 700px) {
+  .options-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+.option-card {
+  border-radius: 18px;
+  padding: 16px;
+  background: var(--white);
+  box-shadow: 0 10px 28px rgba(15, 23, 42, 0.09);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.bus-card {
+  border-top: 3px solid var(--teal);
+}
+
+.meter-card {
+  border-top: 3px solid var(--accent);
+}
+
+.option-card-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.option-icon {
+  font-size: 1.7rem;
+}
+
+.option-title {
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.option-subtitle {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+.steps-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* h4 inside new cards */
+.step-body h4 {
+  font-size: 0.92rem;
+  margin-bottom: 2px;
+}
+
+.no-route-msg {
+  font-size: 0.84rem;
+  color: var(--text-muted);
+  background: rgba(15, 23, 42, 0.04);
+  border-radius: 10px;
+  padding: 12px;
+}
+
+/* ── Meter rows ───────────────────────────────────────────────────────────── */
+
+.meter-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.meter-mode-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  flex: 1;
+  min-width: 120px;
+}
+
+.meter-icon {
+  font-size: 1.2rem;
+}
+
+.meter-details {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.meter-fare {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--teal-dark);
+}
+
+.meter-time {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  background: rgba(15, 23, 42, 0.05);
+  padding: 3px 8px;
+  border-radius: 999px;
+}
+
+.meter-divider {
+  height: 1px;
+  background: rgba(15, 23, 42, 0.07);
+}
+
+.meter-btn {
+  background: var(--teal);
+  font-size: 0.78rem;
+  padding: 5px 10px;
+}
+
+.meter-btn-group {
+  display: flex;
+  gap: 6px;
+}
+
+.fare-disclaimer {
+  font-size: 0.73rem;
+  color: var(--text-muted);
+  margin-top: 4px;
+}
+
+/* ── Nominatim autocomplete dropdown ─────────────────────────────────────── */
+
+.nominatim-results {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 8px 28px rgba(15, 23, 42, 0.18);
+  list-style: none;
+  z-index: 9999;
+  overflow: hidden;
+  max-height: 220px;
+  overflow-y: auto;
+}
+
+.nominatim-results li {
+  padding: 10px 14px;
+  font-size: 0.83rem;
+  color: var(--text-main);
+  cursor: pointer;
+  border-bottom: 1px solid rgba(15, 23, 42, 0.06);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: background 0.15s;
+}
+
+.nominatim-results li:last-child {
+  border-bottom: none;
+}
+
+.nominatim-results li:hover {
+  background: rgba(0, 166, 166, 0.1);
+  color: var(--teal-dark);
+}
+
+.nominatim-loading {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.75rem;
+  color: rgba(229, 244, 255, 0.5);
+  pointer-events: none;
+}
+
+/* Fix Leaflet map z-index so it doesn't overlap sticky nav */
+.leaflet-container {
+  z-index: 1;
+}

@@ -1,0 +1,232 @@
+[
+  {
+    "route_id": "R500",
+    "stop_id": "S001",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "R500",
+    "stop_id": "S002",
+    "stop_sequence": 2
+  },
+  {
+    "route_id": "R500",
+    "stop_id": "S023",
+    "stop_sequence": 3
+  },
+  {
+    "route_id": "R500",
+    "stop_id": "S004",
+    "stop_sequence": 4
+  },
+  {
+    "route_id": "R500",
+    "stop_id": "S022",
+    "stop_sequence": 5
+  },
+  {
+    "route_id": "R500",
+    "stop_id": "S021",
+    "stop_sequence": 6
+  },
+  {
+    "route_id": "R500",
+    "stop_id": "S026",
+    "stop_sequence": 7
+  },
+  {
+    "route_id": "R500",
+    "stop_id": "S027",
+    "stop_sequence": 8
+  },
+  {
+    "route_id": "R500",
+    "stop_id": "S005",
+    "stop_sequence": 9
+  },
+  {
+    "route_id": "R335E",
+    "stop_id": "S001",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "R335E",
+    "stop_id": "S007",
+    "stop_sequence": 2
+  },
+  {
+    "route_id": "R335E",
+    "stop_id": "S003",
+    "stop_sequence": 3
+  },
+  {
+    "route_id": "R335E",
+    "stop_id": "S012",
+    "stop_sequence": 4
+  },
+  {
+    "route_id": "R335E",
+    "stop_id": "S006",
+    "stop_sequence": 5
+  },
+  {
+    "route_id": "R201",
+    "stop_id": "S001",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "R201",
+    "stop_id": "S023",
+    "stop_sequence": 2
+  },
+  {
+    "route_id": "R201",
+    "stop_id": "S002",
+    "stop_sequence": 3
+  },
+  {
+    "route_id": "R201",
+    "stop_id": "S004",
+    "stop_sequence": 4
+  },
+  {
+    "route_id": "R225",
+    "stop_id": "S001",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "R225",
+    "stop_id": "S007",
+    "stop_sequence": 2
+  },
+  {
+    "route_id": "R225",
+    "stop_id": "S024",
+    "stop_sequence": 3
+  },
+  {
+    "route_id": "R225",
+    "stop_id": "S008",
+    "stop_sequence": 4
+  },
+  {
+    "route_id": "R225",
+    "stop_id": "S014",
+    "stop_sequence": 5
+  },
+  {
+    "route_id": "R225",
+    "stop_id": "S025",
+    "stop_sequence": 6
+  },
+  {
+    "route_id": "RG10",
+    "stop_id": "S009",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "RG10",
+    "stop_id": "S016",
+    "stop_sequence": 2
+  },
+  {
+    "route_id": "RG10",
+    "stop_id": "S017",
+    "stop_sequence": 3
+  },
+  {
+    "route_id": "RG10",
+    "stop_id": "S001",
+    "stop_sequence": 4
+  },
+  {
+    "route_id": "RG10",
+    "stop_id": "S007",
+    "stop_sequence": 5
+  },
+  {
+    "route_id": "RG10",
+    "stop_id": "S003",
+    "stop_sequence": 6
+  },
+  {
+    "route_id": "RG10",
+    "stop_id": "S012",
+    "stop_sequence": 7
+  },
+  {
+    "route_id": "R401",
+    "stop_id": "S002",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "R401",
+    "stop_id": "S022",
+    "stop_sequence": 2
+  },
+  {
+    "route_id": "R401",
+    "stop_id": "S021",
+    "stop_sequence": 3
+  },
+  {
+    "route_id": "R401",
+    "stop_id": "S027",
+    "stop_sequence": 4
+  },
+  {
+    "route_id": "R401",
+    "stop_id": "S005",
+    "stop_sequence": 5
+  },
+  {
+    "route_id": "R250",
+    "stop_id": "S001",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "R250",
+    "stop_id": "S017",
+    "stop_sequence": 2
+  },
+  {
+    "route_id": "R250",
+    "stop_id": "S010",
+    "stop_sequence": 3
+  },
+  {
+    "route_id": "R250",
+    "stop_id": "S020",
+    "stop_sequence": 4
+  },
+  {
+    "route_id": "R250",
+    "stop_id": "S011",
+    "stop_sequence": 5
+  },
+  {
+    "route_id": "R600",
+    "stop_id": "S004",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "R600",
+    "stop_id": "S022",
+    "stop_sequence": 2
+  },
+  {
+    "route_id": "R600",
+    "stop_id": "S003",
+    "stop_sequence": 3
+  },
+  {
+    "route_id": "R600",
+    "stop_id": "S012",
+    "stop_sequence": 4
+  },
+  {
+    "route_id": "R600",
+    "stop_id": "S006",
+    "stop_sequence": 5
+  }
+]
