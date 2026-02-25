@@ -1,182 +1,722 @@
 [
-  {
-    "id": "S001",
-    "name": "Majestic Bus Stand",
-    "latitude": 12.9774,
-    "longitude": 77.5714
-  },
-  {
-    "id": "S002",
-    "name": "Shivajinagar",
-    "latitude": 12.985,
-    "longitude": 77.6006
-  },
-  {
-    "id": "S003",
-    "name": "Koramangala",
-    "latitude": 12.9352,
-    "longitude": 77.6245
-  },
-  {
-    "id": "S004",
-    "name": "Indiranagar",
-    "latitude": 12.9784,
-    "longitude": 77.6408
-  },
-  {
-    "id": "S005",
-    "name": "Whitefield",
-    "latitude": 12.9698,
-    "longitude": 77.7499
-  },
-  {
-    "id": "S006",
-    "name": "Electronic City",
-    "latitude": 12.8441,
-    "longitude": 77.6602
-  },
-  {
-    "id": "S007",
-    "name": "Jayanagar",
-    "latitude": 12.9308,
-    "longitude": 77.5838
-  },
-  {
-    "id": "S008",
-    "name": "Banashankari",
-    "latitude": 12.9257,
-    "longitude": 77.5499
-  },
-  {
-    "id": "S009",
-    "name": "Yeshwantpur",
-    "latitude": 13.0278,
-    "longitude": 77.539
-  },
-  {
-    "id": "S010",
-    "name": "Hebbal",
-    "latitude": 13.0354,
-    "longitude": 77.5955
-  },
-  {
-    "id": "S011",
-    "name": "Yelahanka",
-    "latitude": 13.1007,
-    "longitude": 77.5963
-  },
-  {
-    "id": "S012",
-    "name": "Silk Board",
-    "latitude": 12.9177,
-    "longitude": 77.6228
-  },
-  {
-    "id": "S013",
-    "name": "HSR Layout",
-    "latitude": 12.9116,
-    "longitude": 77.6389
-  },
-  {
-    "id": "S014",
-    "name": "JP Nagar",
-    "latitude": 12.9063,
-    "longitude": 77.5857
-  },
-  {
-    "id": "S015",
-    "name": "Kengeri",
-    "latitude": 12.9082,
-    "longitude": 77.4834
-  },
-  {
-    "id": "S016",
-    "name": "Rajajinagar",
-    "latitude": 12.9955,
-    "longitude": 77.5546
-  },
-  {
-    "id": "S017",
-    "name": "Malleswaram",
-    "latitude": 13.0036,
-    "longitude": 77.5685
-  },
-  {
-    "id": "S018",
-    "name": "Vijayanagar",
-    "latitude": 12.9717,
-    "longitude": 77.531
-  },
-  {
-    "id": "S019",
-    "name": "BTM Layout",
-    "latitude": 12.9165,
-    "longitude": 77.6101
-  },
-  {
-    "id": "S020",
-    "name": "Nagawara",
-    "latitude": 13.0429,
-    "longitude": 77.6184
-  },
-  {
-    "id": "S021",
-    "name": "Marathahalli",
-    "latitude": 12.9591,
-    "longitude": 77.6974
-  },
-  {
-    "id": "S022",
-    "name": "Domlur",
-    "latitude": 12.9607,
-    "longitude": 77.6389
-  },
-  {
-    "id": "S023",
-    "name": "MG Road",
-    "latitude": 12.9751,
-    "longitude": 77.6063
-  },
-  {
-    "id": "S024",
-    "name": "Basavanagudi",
-    "latitude": 12.942,
-    "longitude": 77.5742
-  },
-  {
-    "id": "S025",
-    "name": "Bannerghatta Road",
-    "latitude": 12.8952,
-    "longitude": 77.597
-  },
-  {
-    "id": "S026",
-    "name": "KR Puram",
-    "latitude": 13.0068,
-    "longitude": 77.6974
-  },
-  {
-    "id": "S027",
-    "name": "Brookefield",
-    "latitude": 12.9631,
-    "longitude": 77.7149
-  },
-  {
-    "id": "S028",
-    "name": "Bellandur",
-    "latitude": 12.9373,
-    "longitude": 77.6768
-  },
-  {
-    "id": "S029",
-    "name": "Sarjapur Road",
-    "latitude": 12.9107,
-    "longitude": 77.6754
-  },
-  {
-    "id": "S030",
-    "name": "Yelahanka New Town",
-    "latitude": 13.0985,
-    "longitude": 77.5966
-  }
+    {
+        "id": "S001",
+        "name": "Majestic Bus Stand",
+        "latitude": 12.9774,
+        "longitude": 77.5714
+    },
+    {
+        "id": "S002",
+        "name": "Shivajinagar",
+        "latitude": 12.9850,
+        "longitude": 77.6006
+    },
+    {
+        "id": "S003",
+        "name": "Koramangala",
+        "latitude": 12.9352,
+        "longitude": 77.6245
+    },
+    {
+        "id": "S004",
+        "name": "Indiranagar",
+        "latitude": 12.9784,
+        "longitude": 77.6408
+    },
+    {
+        "id": "S005",
+        "name": "Whitefield",
+        "latitude": 12.9698,
+        "longitude": 77.7499
+    },
+    {
+        "id": "S006",
+        "name": "Electronic City",
+        "latitude": 12.8441,
+        "longitude": 77.6602
+    },
+    {
+        "id": "S007",
+        "name": "Jayanagar",
+        "latitude": 12.9308,
+        "longitude": 77.5838
+    },
+    {
+        "id": "S008",
+        "name": "Banashankari",
+        "latitude": 12.9257,
+        "longitude": 77.5499
+    },
+    {
+        "id": "S009",
+        "name": "Yeshwantpur",
+        "latitude": 13.0278,
+        "longitude": 77.5390
+    },
+    {
+        "id": "S010",
+        "name": "Hebbal",
+        "latitude": 13.0354,
+        "longitude": 77.5955
+    },
+    {
+        "id": "S011",
+        "name": "Yelahanka",
+        "latitude": 13.1007,
+        "longitude": 77.5963
+    },
+    {
+        "id": "S012",
+        "name": "Silk Board",
+        "latitude": 12.9177,
+        "longitude": 77.6228
+    },
+    {
+        "id": "S013",
+        "name": "HSR Layout",
+        "latitude": 12.9116,
+        "longitude": 77.6389
+    },
+    {
+        "id": "S014",
+        "name": "JP Nagar",
+        "latitude": 12.9063,
+        "longitude": 77.5857
+    },
+    {
+        "id": "S015",
+        "name": "Kengeri",
+        "latitude": 12.9082,
+        "longitude": 77.4834
+    },
+    {
+        "id": "S016",
+        "name": "Rajajinagar",
+        "latitude": 12.9955,
+        "longitude": 77.5546
+    },
+    {
+        "id": "S017",
+        "name": "Malleswaram",
+        "latitude": 13.0036,
+        "longitude": 77.5685
+    },
+    {
+        "id": "S018",
+        "name": "Vijayanagar",
+        "latitude": 12.9717,
+        "longitude": 77.5310
+    },
+    {
+        "id": "S019",
+        "name": "BTM Layout",
+        "latitude": 12.9165,
+        "longitude": 77.6101
+    },
+    {
+        "id": "S020",
+        "name": "Nagawara",
+        "latitude": 13.0429,
+        "longitude": 77.6184
+    },
+    {
+        "id": "S021",
+        "name": "Marathahalli",
+        "latitude": 12.9591,
+        "longitude": 77.6974
+    },
+    {
+        "id": "S022",
+        "name": "Domlur",
+        "latitude": 12.9607,
+        "longitude": 77.6389
+    },
+    {
+        "id": "S023",
+        "name": "MG Road",
+        "latitude": 12.9751,
+        "longitude": 77.6063
+    },
+    {
+        "id": "S024",
+        "name": "Basavanagudi",
+        "latitude": 12.9420,
+        "longitude": 77.5742
+    },
+    {
+        "id": "S025",
+        "name": "Bannerghatta Road",
+        "latitude": 12.8952,
+        "longitude": 77.5970
+    },
+    {
+        "id": "S026",
+        "name": "KR Puram",
+        "latitude": 13.0068,
+        "longitude": 77.6974
+    },
+    {
+        "id": "S027",
+        "name": "Brookefield",
+        "latitude": 12.9631,
+        "longitude": 77.7149
+    },
+    {
+        "id": "S028",
+        "name": "Bellandur",
+        "latitude": 12.9373,
+        "longitude": 77.6768
+    },
+    {
+        "id": "S029",
+        "name": "Sarjapur Road",
+        "latitude": 12.9107,
+        "longitude": 77.6754
+    },
+    {
+        "id": "S030",
+        "name": "Yelahanka New Town",
+        "latitude": 13.0985,
+        "longitude": 77.5966
+    },
+    {
+        "id": "S031",
+        "name": "Peenya",
+        "latitude": 13.0293,
+        "longitude": 77.5206
+    },
+    {
+        "id": "S032",
+        "name": "Mysore Road",
+        "latitude": 12.9538,
+        "longitude": 77.5290
+    },
+    {
+        "id": "S033",
+        "name": "Bommanahalli",
+        "latitude": 12.8975,
+        "longitude": 77.6211
+    },
+    {
+        "id": "S034",
+        "name": "Begur Road",
+        "latitude": 12.8701,
+        "longitude": 77.6249
+    },
+    {
+        "id": "S035",
+        "name": "Hoskote",
+        "latitude": 13.0709,
+        "longitude": 77.7986
+    },
+    {
+        "id": "S036",
+        "name": "Anekal",
+        "latitude": 12.7098,
+        "longitude": 77.6949
+    },
+    {
+        "id": "S037",
+        "name": "Tumkur Road",
+        "latitude": 13.0143,
+        "longitude": 77.5434
+    },
+    {
+        "id": "S038",
+        "name": "Devanahalli",
+        "latitude": 13.2474,
+        "longitude": 77.7144
+    },
+    {
+        "id": "S039",
+        "name": "Kempegowda Airport",
+        "latitude": 13.1979,
+        "longitude": 77.7063
+    },
+    {
+        "id": "S040",
+        "name": "Rajanukunte",
+        "latitude": 13.1398,
+        "longitude": 77.5909
+    },
+    {
+        "id": "S041",
+        "name": "Mekhri Circle",
+        "latitude": 13.0071,
+        "longitude": 77.5802
+    },
+    {
+        "id": "S042",
+        "name": "Sadashivanagar",
+        "latitude": 13.0058,
+        "longitude": 77.5706
+    },
+    {
+        "id": "S043",
+        "name": "Hebbal Flyover",
+        "latitude": 13.0495,
+        "longitude": 77.5896
+    },
+    {
+        "id": "S044",
+        "name": "Benson Town",
+        "latitude": 13.0033,
+        "longitude": 77.6024
+    },
+    {
+        "id": "S045",
+        "name": "RT Nagar",
+        "latitude": 13.0230,
+        "longitude": 77.5973
+    },
+    {
+        "id": "S046",
+        "name": "Sanjay Nagar",
+        "latitude": 13.0163,
+        "longitude": 77.5897
+    },
+    {
+        "id": "S047",
+        "name": "MS Ramaiah",
+        "latitude": 13.0198,
+        "longitude": 77.5632
+    },
+    {
+        "id": "S048",
+        "name": "Jalahalli",
+        "latitude": 13.0412,
+        "longitude": 77.5283
+    },
+    {
+        "id": "S049",
+        "name": "Dasarahalli",
+        "latitude": 13.0445,
+        "longitude": 77.5104
+    },
+    {
+        "id": "S050",
+        "name": "Chord Road",
+        "latitude": 12.9953,
+        "longitude": 77.5390
+    },
+    {
+        "id": "S051",
+        "name": "Rajgopal Nagar",
+        "latitude": 13.0055,
+        "longitude": 77.5161
+    },
+    {
+        "id": "S052",
+        "name": "Nayandahalli",
+        "latitude": 12.9630,
+        "longitude": 77.5267
+    },
+    {
+        "id": "S053",
+        "name": "Rajarajeshwari Nagar",
+        "latitude": 12.9149,
+        "longitude": 77.5044
+    },
+    {
+        "id": "S054",
+        "name": "Uttarahalli",
+        "latitude": 12.8987,
+        "longitude": 77.5399
+    },
+    {
+        "id": "S055",
+        "name": "Gottigere",
+        "latitude": 12.8637,
+        "longitude": 77.5906
+    },
+    {
+        "id": "S056",
+        "name": "Hulimavu",
+        "latitude": 12.8758,
+        "longitude": 77.5944
+    },
+    {
+        "id": "S057",
+        "name": "Arekere",
+        "latitude": 12.8924,
+        "longitude": 77.5940
+    },
+    {
+        "id": "S058",
+        "name": "Nagarbhavi",
+        "latitude": 12.9599,
+        "longitude": 77.5037
+    },
+    {
+        "id": "S059",
+        "name": "Mathikere",
+        "latitude": 13.0204,
+        "longitude": 77.5523
+    },
+    {
+        "id": "S060",
+        "name": "Sanegurava Halli",
+        "latitude": 13.0304,
+        "longitude": 77.5363
+    },
+    {
+        "id": "S061",
+        "name": "NIMHANS",
+        "latitude": 12.9410,
+        "longitude": 77.5973
+    },
+    {
+        "id": "S062",
+        "name": "Lalbagh",
+        "latitude": 12.9494,
+        "longitude": 77.5843
+    },
+    {
+        "id": "S063",
+        "name": "Jayanagar 4th Block",
+        "latitude": 12.9280,
+        "longitude": 77.5886
+    },
+    {
+        "id": "S064",
+        "name": "Banashankari Temple",
+        "latitude": 12.9257,
+        "longitude": 77.5650
+    },
+    {
+        "id": "S065",
+        "name": "Girinagar",
+        "latitude": 12.9413,
+        "longitude": 77.5589
+    },
+    {
+        "id": "S066",
+        "name": "Hosur Road",
+        "latitude": 12.8874,
+        "longitude": 77.6385
+    },
+    {
+        "id": "S067",
+        "name": "Jigani",
+        "latitude": 12.7968,
+        "longitude": 77.6406
+    },
+    {
+        "id": "S068",
+        "name": "Bommasandra",
+        "latitude": 12.8181,
+        "longitude": 77.6920
+    },
+    {
+        "id": "S069",
+        "name": "Harlur Road",
+        "latitude": 12.9019,
+        "longitude": 77.6697
+    },
+    {
+        "id": "S070",
+        "name": "Carmelaram",
+        "latitude": 12.8993,
+        "longitude": 77.7099
+    },
+    {
+        "id": "M001",
+        "name": "Baiyappanahalli Metro",
+        "latitude": 12.9872,
+        "longitude": 77.6588
+    },
+    {
+        "id": "M002",
+        "name": "Swami Vivekananda Road Metro",
+        "latitude": 12.9853,
+        "longitude": 77.6511
+    },
+    {
+        "id": "M003",
+        "name": "Indiranagar Metro",
+        "latitude": 12.9784,
+        "longitude": 77.6413
+    },
+    {
+        "id": "M004",
+        "name": "Halasuru Metro",
+        "latitude": 12.9818,
+        "longitude": 77.6259
+    },
+    {
+        "id": "M005",
+        "name": "Trinity Metro",
+        "latitude": 12.9779,
+        "longitude": 77.6178
+    },
+    {
+        "id": "M006",
+        "name": "MG Road Metro",
+        "latitude": 12.9761,
+        "longitude": 77.6073
+    },
+    {
+        "id": "M007",
+        "name": "Cubbon Park Metro",
+        "latitude": 12.9762,
+        "longitude": 77.5940
+    },
+    {
+        "id": "M008",
+        "name": "Vidhana Soudha Metro",
+        "latitude": 12.9790,
+        "longitude": 77.5891
+    },
+    {
+        "id": "M009",
+        "name": "Sir M Visvesvaraya Metro",
+        "latitude": 12.9756,
+        "longitude": 77.5789
+    },
+    {
+        "id": "M010",
+        "name": "Majestic Metro (Purple)",
+        "latitude": 12.9769,
+        "longitude": 77.5723
+    },
+    {
+        "id": "M011",
+        "name": "City Railway Station Metro",
+        "latitude": 12.9777,
+        "longitude": 77.5680
+    },
+    {
+        "id": "M012",
+        "name": "Magadi Road Metro",
+        "latitude": 12.9780,
+        "longitude": 77.5606
+    },
+    {
+        "id": "M013",
+        "name": "Hosahalli Metro",
+        "latitude": 12.9752,
+        "longitude": 77.5430
+    },
+    {
+        "id": "M014",
+        "name": "Vijayanagar Metro",
+        "latitude": 12.9717,
+        "longitude": 77.5350
+    },
+    {
+        "id": "M015",
+        "name": "Attiguppe Metro",
+        "latitude": 12.9619,
+        "longitude": 77.5351
+    },
+    {
+        "id": "M016",
+        "name": "Deepanjali Nagar Metro",
+        "latitude": 12.9517,
+        "longitude": 77.5218
+    },
+    {
+        "id": "M017",
+        "name": "Mysuru Road Metro",
+        "latitude": 12.9539,
+        "longitude": 77.5104
+    },
+    {
+        "id": "M018",
+        "name": "Kengeri Metro",
+        "latitude": 12.9139,
+        "longitude": 77.4858
+    },
+    {
+        "id": "M019",
+        "name": "Challaghatta Metro",
+        "latitude": 12.9072,
+        "longitude": 77.4686
+    },
+    {
+        "id": "M020",
+        "name": "Nimhans Metro",
+        "latitude": 12.9410,
+        "longitude": 77.5930
+    },
+    {
+        "id": "M021",
+        "name": "Jayadeva Hospital Metro",
+        "latitude": 12.9257,
+        "longitude": 77.5929
+    },
+    {
+        "id": "M022",
+        "name": "South End Circle Metro",
+        "latitude": 12.9334,
+        "longitude": 77.5851
+    },
+    {
+        "id": "M030",
+        "name": "Nagasandra Metro",
+        "latitude": 13.0680,
+        "longitude": 77.5130
+    },
+    {
+        "id": "M031",
+        "name": "Dasarahalli Metro",
+        "latitude": 13.0447,
+        "longitude": 77.5119
+    },
+    {
+        "id": "M032",
+        "name": "Jalahalli Metro",
+        "latitude": 13.0412,
+        "longitude": 77.5283
+    },
+    {
+        "id": "M033",
+        "name": "Peenya Industry Metro",
+        "latitude": 13.0278,
+        "longitude": 77.5206
+    },
+    {
+        "id": "M034",
+        "name": "Peenya Metro",
+        "latitude": 13.0234,
+        "longitude": 77.5256
+    },
+    {
+        "id": "M035",
+        "name": "Goraguntepalya Metro",
+        "latitude": 13.0153,
+        "longitude": 77.5386
+    },
+    {
+        "id": "M036",
+        "name": "Yeshwantpur Metro",
+        "latitude": 13.0278,
+        "longitude": 77.5438
+    },
+    {
+        "id": "M037",
+        "name": "Sandal Soap Factory Metro",
+        "latitude": 13.0228,
+        "longitude": 77.5563
+    },
+    {
+        "id": "M038",
+        "name": "Mahalakshmi Metro",
+        "latitude": 13.0130,
+        "longitude": 77.5564
+    },
+    {
+        "id": "M039",
+        "name": "Rajajinagar Metro",
+        "latitude": 12.9948,
+        "longitude": 77.5523
+    },
+    {
+        "id": "M040",
+        "name": "Mahakavi Kuvempu Road Metro",
+        "latitude": 12.9890,
+        "longitude": 77.5607
+    },
+    {
+        "id": "M041",
+        "name": "Srirampura Metro",
+        "latitude": 12.9854,
+        "longitude": 77.5654
+    },
+    {
+        "id": "M042",
+        "name": "Kuvempu Road Metro",
+        "latitude": 12.9820,
+        "longitude": 77.5680
+    },
+    {
+        "id": "M043",
+        "name": "Majestic Metro (Green)",
+        "latitude": 12.9770,
+        "longitude": 77.5730
+    },
+    {
+        "id": "M044",
+        "name": "Chickpete Metro",
+        "latitude": 12.9691,
+        "longitude": 77.5762
+    },
+    {
+        "id": "M045",
+        "name": "Krishna Rajendra Market Metro",
+        "latitude": 12.9610,
+        "longitude": 77.5764
+    },
+    {
+        "id": "M046",
+        "name": "National College Metro",
+        "latitude": 12.9475,
+        "longitude": 77.5740
+    },
+    {
+        "id": "M047",
+        "name": "Lalbagh Metro",
+        "latitude": 12.9492,
+        "longitude": 77.5850
+    },
+    {
+        "id": "M048",
+        "name": "Dairy Circle Metro",
+        "latitude": 12.9376,
+        "longitude": 77.5955
+    },
+    {
+        "id": "M049",
+        "name": "Langford Town Metro",
+        "latitude": 12.9322,
+        "longitude": 77.5977
+    },
+    {
+        "id": "M050",
+        "name": "Shivajinagar Metro",
+        "latitude": 12.9838,
+        "longitude": 77.6006
+    },
+    {
+        "id": "M051",
+        "name": "Ulsoor Road Metro",
+        "latitude": 12.9803,
+        "longitude": 77.6141
+    },
+    {
+        "id": "M052",
+        "name": "Jeevanbhimanagar Metro",
+        "latitude": 12.9741,
+        "longitude": 77.6509
+    },
+    {
+        "id": "M053",
+        "name": "Doddakallasandra Metro",
+        "latitude": 12.9044,
+        "longitude": 77.5847
+    },
+    {
+        "id": "M054",
+        "name": "Silk Institute Metro",
+        "latitude": 12.8893,
+        "longitude": 77.5939
+    },
+    {
+        "id": "M055",
+        "name": "BEML Layout Metro",
+        "latitude": 12.9270,
+        "longitude": 77.5940
+    },
+    {
+        "id": "M056",
+        "name": "JP Nagar Metro",
+        "latitude": 12.9100,
+        "longitude": 77.5869
+    },
+    {
+        "id": "M057",
+        "name": "Konanakunte Cross Metro",
+        "latitude": 12.8974,
+        "longitude": 77.5888
+    }
 ]

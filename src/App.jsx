@@ -1,561 +1,529 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback, useRef } from "react";
 import DualMapPicker from "./DualMapPicker";
-import stopsJson      from "./data/gtfs_stops.json";
-import routesJson     from "./data/gtfs_routes.json";
+import NewsPage from "./NewsPage";
+import stopsJson from "./data/gtfs_stops.json";
+import routesJson from "./data/gtfs_routes.json";
 import routeStopsJson from "./data/gtfs_route_stops.json";
 
-// ─── Haversine distance (meters) ───────────────────────────────────────────
-function distanceMeters(lat1, lon1, lat2, lon2) {
-  const R = 6371e3;
-  const toRad = (d) => (d * Math.PI) / 180;
-  const φ1 = toRad(lat1), φ2 = toRad(lat2);
-  const Δφ = toRad(lat2 - lat1), Δλ = toRad(lon2 - lon1);
-  const a =
-    Math.sin(Δφ / 2) ** 2 +
-    Math.cos(φ1) * Math.cos(φ2) * Math.sin(Δλ / 2) ** 2;
+// ─── Haversine ───────────────────────────────────────────────────────────────
+function distM(lat1, lon1, lat2, lon2) {
+  const R = 6371e3, r = d => d * Math.PI / 180;
+  const φ1 = r(lat1), φ2 = r(lat2), Δφ = r(lat2 - lat1), Δλ = r(lon2 - lon1);
+  const a = Math.sin(Δφ / 2) ** 2 + Math.cos(φ1) * Math.cos(φ2) * Math.sin(Δλ / 2) ** 2;
   return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 }
 
-// ─── Bangalore meter fare estimator ───────────────────────────────────────
-// Auto: ₹30 base for 1.9 km, then ₹15/km
-// Cab:  min ₹60, ~₹14/km
-function estimateMeter(distanceM) {
-  const distKm = distanceM / 1000;
-
-  const autoFare =
-    distKm <= 1.9
-      ? 30
-      : Math.round(30 + (distKm - 1.9) * 15);
-  // ~24 km/h avg for auto in Bengaluru traffic
-  const autoTimeMin = Math.max(5, Math.round((distKm / 24) * 60));
-
-  const cabFare = Math.max(60, Math.round(distKm * 14));
-  // ~21 km/h avg for cab
-  const cabTimeMin = Math.max(5, Math.round((distKm / 21) * 60));
-
-  return { distKm, autoFare, autoTimeMin, cabFare, cabTimeMin };
+// ─── Find nearby stops — always returns at least minCount ────────────────────
+function findNearbyStops(stops, lat, lon, radiusM = 3000, minCount = 8) {
+  const sorted = stops
+    .map(s => ({ ...s, distance: distM(lat, lon, s.latitude, s.longitude) }))
+    .sort((a, b) => a.distance - b.distance);
+  const inR = sorted.filter(s => s.distance <= radiusM);
+  return inR.length >= minCount ? inR : sorted.slice(0, minCount);
 }
 
-// ─── Find nearest stop ──────────────────────────────────────────────────────
-function findNearestStop(stops, lat, lon) {
-  let best = null, min = Infinity;
-  stops.forEach((s) => {
-    const d = distanceMeters(lat, lon, s.latitude, s.longitude);
-    if (d < min) { min = d; best = { ...s, distance: d }; }
-  });
-  return best;
-}
-
-// ─── Walking estimate ───────────────────────────────────────────────────────
-function walkEstimate(distanceM) {
+// ─── Fare helpers ─────────────────────────────────────────────────────────────
+function estimateCab(distM_) {
+  const km = distM_ / 1000;
   return {
-    distanceM,
-    minutes: Math.max(1, Math.round(distanceM / (1.3 * 60))),
+    km: km.toFixed(1),
+    autoFare: km <= 1.9 ? 30 : Math.round(30 + (km - 1.9) * 15),
+    autoMin: Math.max(5, Math.round((km / 24) * 60)),
+    cabFare: Math.max(60, Math.round(km * 14)),
+    cabMin: Math.max(5, Math.round((km / 21) * 60)),
+    bikeMin: Math.max(4, Math.round((km / 30) * 60)),
+    bikeFare: Math.max(30, Math.round(km * 8)),
   };
 }
 
+function walkMin(m) { return Math.max(1, Math.round(m / 78)); }
+function walkKm(m) { return (m / 1000).toFixed(2); }
+
+// ─── Pre-build stop/route indexes ────────────────────────────────────────────
+const stopsById = Object.fromEntries(stopsJson.map(s => [s.id, s]));
+
+const orderedCache = {};
+routesJson.forEach(r => {
+  orderedCache[r.id] = routeStopsJson
+    .filter(rs => rs.route_id === r.id)
+    .sort((a, b) => a.stop_sequence - b.stop_sequence);
+});
+
+const routesByStop = {};
+routeStopsJson.forEach(rs => {
+  if (!routesByStop[rs.stop_id]) routesByStop[rs.stop_id] = new Set();
+  routesByStop[rs.stop_id].add(rs.route_id);
+});
+
+// ─── The router ──────────────────────────────────────────────────────────────
+function findRoute(originId, destId) {
+  // Direct
+  let best = null;
+  routesJson.forEach(route => {
+    const ord = orderedCache[route.id];
+    const oI = ord.findIndex(rs => rs.stop_id === originId);
+    const dI = ord.findIndex(rs => rs.stop_id === destId);
+    if (oI !== -1 && dI !== -1 && oI < dI) {
+      const hops = dI - oI, isM = [1, 2].includes(route.route_type);
+      const mins = hops * (isM ? 2.5 : 4);
+      if (!best || mins < best.mins)
+        best = { type: "direct", legs: [{ route, stops: ord.slice(oI, dI + 1).map(rs => stopsById[rs.stop_id]).filter(Boolean) }], hops, mins };
+    }
+  });
+  if (best) return best;
+
+  // 1-interchange
+  let bestM = null;
+  for (const rAId of Array.from(routesByStop[originId] || [])) {
+    const ordA = orderedCache[rAId] || [];
+    const oIA = ordA.findIndex(rs => rs.stop_id === originId);
+    if (oIA === -1) continue;
+    for (let i = oIA + 1; i < ordA.length; i++) {
+      const mid = ordA[i].stop_id;
+      for (const rBId of Array.from(routesByStop[mid] || [])) {
+        if (rBId === rAId) continue;
+        const ordB = orderedCache[rBId] || [];
+        const mIB = ordB.findIndex(rs => rs.stop_id === mid);
+        const dIB = ordB.findIndex(rs => rs.stop_id === destId);
+        if (mIB === -1 || dIB === -1 || mIB >= dIB) continue;
+        const rA = routesJson.find(r => r.id === rAId), rB = routesJson.find(r => r.id === rBId);
+        const hA = i - oIA, hB = dIB - mIB;
+        const mins = hA * ([1, 2].includes(rA?.route_type) ? 2.5 : 4) + hB * ([1, 2].includes(rB?.route_type) ? 2.5 : 4) + 5;
+        if (!bestM || mins < bestM.mins)
+          bestM = {
+            type: "interchange", legs: [
+              { route: rA, stops: ordA.slice(oIA, i + 1).map(rs => stopsById[rs.stop_id]).filter(Boolean) },
+              { route: rB, stops: ordB.slice(mIB, dIB + 1).map(rs => stopsById[rs.stop_id]).filter(Boolean) }
+            ], hops: hA + hB, mins
+          };
+      }
+    }
+  }
+  return bestM;
+}
+
+// ─── Classify: bus / metro / combo ───────────────────────────────────────────
+function classify(r) {
+  if (!r) return null;
+  const types = r.legs.map(l => [1, 2].includes(l.route.route_type) ? "metro" : "bus");
+  if (types.includes("metro") && types.includes("bus")) return "combo";
+  if (types.includes("metro")) return "metro";
+  return "bus";
+}
+
+// ─── BMTC fare table ─────────────────────────────────────────────────────────
+function bmtcFare(hops) {
+  if (hops <= 3) return 7;
+  if (hops <= 8) return 10;
+  if (hops <= 14) return 15;
+  return 20;
+}
+
+// ─── Time helpers ─────────────────────────────────────────────────────────────
+function fmtTime(date) {
+  return date.toLocaleTimeString("en-IN", { hour: "2-digit", minute: "2-digit", hour12: true });
+}
+function addMin(date, min) { return new Date(date.getTime() + min * 60000); }
+function parseTimeInput(str) {
+  // "HH:MM" input → today's Date
+  const [h, m] = str.split(":").map(Number);
+  const d = new Date();
+  d.setHours(h, m, 0, 0);
+  return d;
+}
+
+// ─── Next metro departure (schedule-based) ────────────────────────────────────
+function nextMetroDeparture(baseTime) {
+  const h = baseTime.getHours(), m = baseTime.getMinutes();
+  const inService = h >= 5 && (h < 22 || (h === 22 && m < 30));
+  if (!inService) return null;
+  const peak = (h >= 7 && h < 10) || (h >= 17 && h < 20);
+  const freq = peak ? 6 : 10;
+  const waitMin = freq - (m % freq);
+  return addMin(baseTime, waitMin > freq ? 0 : waitMin);
+}
+
+function nextBmtcDeparture(baseTime) {
+  const h = baseTime.getHours();
+  const inService = h >= 5 && h < 23;
+  if (!inService) return null;
+  const peak = (h >= 7 && h < 10) || (h >= 17 && h < 20);
+  const freq = peak ? 8 : 15;
+  const waitMin = freq - (baseTime.getMinutes() % freq);
+  return addMin(baseTime, waitMin > freq ? 0 : waitMin);
+}
+
+const NAV = ["Home", "News"];
+
 export default function App() {
-  // ── GTFS data (bundled locally – no network required) ──────────────────
-  const [stops]      = useState(stopsJson);
-  const [routesData] = useState(routesJson);
-  const [routeStops] = useState(routeStopsJson);
-  const gtfsStats    = { stops: stopsJson.length, routes: routesJson.length };
-
-  // ── Location pins ──────────────────────────────────────────────────────
-  const [userGps, setUserGps] = useState(null);        // raw GPS
-  const [originLoc, setOriginLoc] = useState(null);    // { lat, lon, label }
-  const [destLoc, setDestLoc] = useState(null);        // { lat, lon, label }
-
-  // ── Nearest stops + walks ──────────────────────────────────────────────
-  const [nearestOriginStop, setNearestOriginStop] = useState(null);
-  const [nearestDestStop, setNearestDestStop] = useState(null);
-  const [originWalk, setOriginWalk] = useState(null);
-  const [destWalk, setDestWalk] = useState(null);
-
-  // ── Results ────────────────────────────────────────────────────────────
-  const [busJourney, setBusJourney] = useState(null);
-  const [meterInfo, setMeterInfo] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
-
-  // Data is bundled locally – no async load needed.
-
-  // ── Get user GPS → pre-fill origin ─────────────────────────────────────
+  const [darkMode, setDarkMode] = useState(() => {
+    try { return localStorage.getItem("nm-dark") === "1"; } catch { return false; }
+  });
   useEffect(() => {
-    if (!("geolocation" in navigator)) return;
+    document.documentElement.setAttribute("data-theme", darkMode ? "dark" : "light");
+    try { localStorage.setItem("nm-dark", darkMode ? "1" : "0"); } catch { }
+  }, [darkMode]);
+
+  const [activePage, setActivePage] = useState("Home");
+  const [originLoc, setOriginLoc] = useState(null);
+  const [destLoc, setDestLoc] = useState(null);
+  const [gpsLoading, setGpsLoading] = useState(true);
+  const [gpsError, setGpsError] = useState("");
+
+  // ── Departure time controls ──────────────────────────────────────────────
+  const [timeMode, setTimeMode] = useState("now");      // "now" | "leave" | "arrive"
+  const [timeInput, setTimeInput] = useState(() => {
+    const now = new Date();
+    return `${String(now.getHours()).padStart(2, "0")}:${String(now.getMinutes()).padStart(2, "0")}`;
+  });
+
+  // ── Results ──────────────────────────────────────────────────────────────
+  const [busHit, setBusHit] = useState(null);
+  const [metroHit, setMetroHit] = useState(null);
+  const [comboHit, setComboHit] = useState(null);
+  const [cabInfo, setCabInfo] = useState(null);
+  const [noRoute, setNoRoute] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [searched, setSearched] = useState(false);
+
+  // ── GPS auto-fetch ────────────────────────────────────────────────────────
+  useEffect(() => {
+    if (!("geolocation" in navigator)) { setGpsLoading(false); return; }
     navigator.geolocation.getCurrentPosition(
-      (pos) => {
-        const loc = {
-          lat: pos.coords.latitude,
-          lon: pos.coords.longitude,
-          label: "Your location",
-        };
-        setUserGps(loc);
-        setOriginLoc(loc); // auto pre-fill as origin
+      pos => {
+        const loc = { lat: pos.coords.latitude, lon: pos.coords.longitude, label: "📍 Your location" };
+        setOriginLoc(loc);
+        setGpsLoading(false);
       },
-      (err) => console.warn("GPS unavailable:", err),
+      err => {
+        setGpsError("Location unavailable — set start manually");
+        setGpsLoading(false);
+      },
       { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
     );
   }, []);
 
-  // ── Re-compute when both pins + data are ready ──────────────────────────
-  useEffect(() => {
-    if (!originLoc || !destLoc || stops.length === 0) return;
-    computeAll(originLoc, destLoc);
-  }, [originLoc, destLoc, stops, routesData, routeStops]);
+  // ── Compute ───────────────────────────────────────────────────────────────
+  const compute = useCallback((origin, dest) => {
+    if (!origin || !dest) return;
+    setLoading(true); setSearched(true);
+    setBusHit(null); setMetroHit(null); setComboHit(null); setNoRoute("");
 
-  // ── Master compute function ─────────────────────────────────────────────
-  const computeAll = (origin, dest) => {
-    setLoading(true);
-    setBusJourney(null);
-    setMeterInfo(null);
-
-    // 1) Straight-line distance for meter estimate
-    const straightDist = distanceMeters(
-      origin.lat, origin.lon, dest.lat, dest.lon
-    );
-    setMeterInfo(estimateMeter(straightDist));
-
-    // 2) Nearest stops
-    const oStop = findNearestStop(stops, origin.lat, origin.lon);
-    const dStop = findNearestStop(stops, dest.lat, dest.lon);
-    setNearestOriginStop(oStop);
-    setNearestDestStop(dStop);
-    if (oStop) setOriginWalk(walkEstimate(oStop.distance));
-    if (dStop) setDestWalk(walkEstimate(dStop.distance));
-
-    // 3) Bus route
-    if (oStop && dStop) {
-      const result = computeBusJourney(oStop.id, dStop.id);
-      setBusJourney(result);
+    // Base time for departure
+    let baseTime = new Date();
+    if (timeMode !== "now") {
+      baseTime = parseTimeInput(timeInput);
+      if (isNaN(baseTime)) baseTime = new Date();
     }
+
+    const straight = distM(origin.lat, origin.lon, dest.lat, dest.lon);
+    setCabInfo(estimateCab(straight));
+
+    const oStops = findNearbyStops(stopsJson, origin.lat, origin.lon);
+    const dStops = findNearbyStops(stopsJson, dest.lat, dest.lon);
+
+    let bBus = null, bMetro = null, bCombo = null;
+    for (const oS of oStops.slice(0, 8)) {
+      for (const dS of dStops.slice(0, 8)) {
+        if (oS.id === dS.id) continue;
+        const r = findRoute(oS.id, dS.id);
+        if (!r) continue;
+        const cls = classify(r);
+        const oWalkM = distM(origin.lat, origin.lon, oS.latitude, oS.longitude);
+        const dWalkM = distM(dest.lat, dest.lon, dS.latitude, dS.longitude);
+        const totalMins = walkMin(oWalkM) + r.mins + walkMin(dWalkM);
+        const entry = { result: r, oStop: oS, dStop: dS, oWalkM, dWalkM, totalMins, baseTime };
+        if (cls === "bus" && (!bBus || totalMins < bBus.totalMins)) bBus = entry;
+        if (cls === "metro" && (!bMetro || totalMins < bMetro.totalMins)) bMetro = entry;
+        if (cls === "combo" && (!bCombo || totalMins < bCombo.totalMins)) bCombo = entry;
+      }
+    }
+
+    setBusHit(bBus); setMetroHit(bMetro); setComboHit(bCombo);
+    if (!bBus && !bMetro && !bCombo) setNoRoute("No transit route found within 1 interchange.");
     setLoading(false);
+  }, [timeMode, timeInput]);
+
+  const handleSearch = () => {
+    if (originLoc && destLoc) compute(originLoc, destLoc);
   };
 
-  // ── Helpers ─────────────────────────────────────────────────────────────
-  const getStopById = (id) => stops.find((s) => s.id === id);
-
-  const getOrderedRouteStops = (routeId) =>
-    routeStops
-      .filter((rs) => rs.route_id === routeId)
-      .sort((a, b) => a.stop_sequence - b.stop_sequence);
-
-  const buildRoutesByStop = () => {
-    const map = {};
-    routeStops.forEach((rs) => {
-      if (!map[rs.stop_id]) map[rs.stop_id] = new Set();
-      map[rs.stop_id].add(rs.route_id);
-    });
-    return map;
+  // open Google Maps walk
+  const walkLink = (toStop, from) => {
+    if (!from) return "#";
+    return `https://www.google.com/maps/dir/?api=1&origin=${from.lat},${from.lon}&destination=${toStop.latitude},${toStop.longitude}&travelmode=walking`;
+  };
+  const rideLink = app => {
+    if (!destLoc) return "#";
+    const m = {
+      ola: `https://book.olacabs.com/?serviceType=p2p&drop_lat=${destLoc.lat}&drop_lng=${destLoc.lon}`,
+      uber: `https://m.uber.com/ul/?action=setPickup&dropoff[latitude]=${destLoc.lat}&dropoff[longitude]=${destLoc.lon}`,
+      rapido: "https://www.rapido.bike/",
+    };
+    return m[app];
   };
 
-  // ── Bus journey: direct → one interchange ──────────────────────────────
-  const computeBusJourney = (originId, destId) => {
-    if (!routesData.length || !routeStops.length) return null;
+  const bothSet = originLoc && destLoc;
+  const stats = { stops: stopsJson.length, routes: routesJson.length };
 
-    const orderedCache = {};
-    routesData.forEach((r) => {
-      orderedCache[r.id] = getOrderedRouteStops(r.id);
-    });
+  // ─── Journey card ─────────────────────────────────────────────────────────
+  function JCard({ hit, accent, badge, icon, label }) {
+    if (!hit) return null;
+    const { result, oStop, dStop, oWalkM, dWalkM, totalMins, baseTime } = hit;
 
-    // Direct
-    let bestDirect = null;
-    routesData.forEach((route) => {
-      const ordered = orderedCache[route.id];
-      if (!ordered.length) return;
-      const oIdx = ordered.findIndex((rs) => rs.stop_id === originId);
-      const dIdx = ordered.findIndex((rs) => rs.stop_id === destId);
-      if (oIdx !== -1 && dIdx !== -1 && oIdx < dIdx) {
-        const hops = dIdx - oIdx;
-        if (!bestDirect || hops < bestDirect.hops) {
-          bestDirect = { route, ordered, oIdx, dIdx, hops };
-        }
-      }
-    });
-
-    if (bestDirect) {
-      const legStops = bestDirect.ordered
-        .slice(bestDirect.oIdx, bestDirect.dIdx + 1)
-        .map((rs) => getStopById(rs.stop_id))
-        .filter(Boolean);
-      const isMetro = [1, 2].includes(bestDirect.route.route_type);
-      const totalMinutes = bestDirect.hops * (isMetro ? 3 : 4);
-      return {
-        type: "direct",
-        legs: [{ route: bestDirect.route, stops: legStops }],
-        totalHops: bestDirect.hops,
-        totalMinutes,
-      };
+    // departure depends on mode
+    let depart = baseTime;
+    if (timeMode === "arrive") {
+      const targetArr = parseTimeInput(timeInput);
+      depart = new Date(targetArr.getTime() - totalMins * 60000);
     }
+    const arrivalTime = addMin(depart, totalMins);
+    const isDark = true; // always show colored border
+    const fare = result.legs.reduce((sum, l) => {
+      const isM = [1, 2].includes(l.route.route_type);
+      return sum + (isM ? 45 : bmtcFare(l.stops.length - 1));
+    }, 0);
 
-    // One interchange
-    const routesByStop = buildRoutesByStop();
-    const originRoutes = Array.from(routesByStop[originId] || []);
-    let bestMulti = null;
+    return (
+      <div className="jcard" style={{ borderTopColor: accent }}>
+        {/* Summary bar */}
+        <div className="jcard-summary">
+          <div className="jcard-summary-left">
+            <span className="jcard-mode-icon">{icon}</span>
+            <div>
+              <div className="jcard-label">{label}</div>
+              <div className="jcard-sub">{result.type === "interchange" ? "1 change" : "Direct"} · {result.hops} stops</div>
+            </div>
+          </div>
+          <div className="jcard-summary-right">
+            <div className="jcard-time">{Math.round(totalMins)} <span>min</span></div>
+            <div className="jcard-window">
+              {fmtTime(depart)} → {fmtTime(arrivalTime)}
+            </div>
+            <div className="jcard-fare">₹{fare}</div>
+          </div>
+        </div>
 
-    originRoutes.forEach((routeAId) => {
-      const orderedA = orderedCache[routeAId] || [];
-      const oIdxA = orderedA.findIndex((rs) => rs.stop_id === originId);
-      if (oIdxA === -1) return;
+        {/* Timeline */}
+        <div className="timeline">
+          {/* Walk to first stop */}
+          <div className="tl-row">
+            <div className="tl-dot tl-walk" />
+            <div className="tl-body">
+              <span className="tl-label">Walk {walkMin(oWalkM)} min</span>
+              <span className="tl-stop">{walkKm(oWalkM)} km to {oStop.name}</span>
+              <a href={walkLink(oStop, originLoc)} target="_blank" rel="noreferrer" className="tl-link">Directions ↗</a>
+            </div>
+          </div>
 
-      for (let i = oIdxA + 1; i < orderedA.length; i++) {
-        const interStopId = orderedA[i].stop_id;
-        const routesThroughInter = Array.from(routesByStop[interStopId] || []);
+          {result.legs.map((leg, i) => {
+            const isMetro = [1, 2].includes(leg.route.route_type);
+            const nextDep = isMetro ? nextMetroDeparture(depart) : nextBmtcDeparture(depart);
+            const board = leg.stops[0], alight = leg.stops[leg.stops.length - 1];
+            const dot = isMetro ? "tl-dot-metro" : "tl-dot-bus";
+            return (
+              <div className="tl-row" key={i}>
+                <div className={`tl-dot ${dot}`} />
+                <div className="tl-body">
+                  <div className="tl-route-row">
+                    <span className={`tl-badge ${isMetro ? "tl-badge-metro" : "tl-badge-bus"}`}>
+                      {leg.route.short_name}
+                    </span>
+                    <span className="tl-label">{leg.route.long_name}</span>
+                  </div>
+                  <span className="tl-stop">
+                    Board <strong>{board?.name}</strong> → Alight <strong>{alight?.name}</strong>
+                    &nbsp;&middot;&nbsp;{leg.stops.length - 1} stop{leg.stops.length !== 2 ? "s" : ""}
+                  </span>
+                  {nextDep && (
+                    <span className="tl-dep">
+                      <span className="tl-dep-dot" />
+                      Next: {fmtTime(nextDep)} ({isMetro ? "📋 Schedule" : "📋 Schedule"})
+                    </span>
+                  )}
+                  <details className="tl-stops-detail">
+                    <summary>All stops ({leg.stops.length})</summary>
+                    <ol className="tl-stop-list">{leg.stops.map((s, j) => <li key={j}>{s.name}</li>)}</ol>
+                  </details>
+                </div>
+              </div>
+            );
+          })}
 
-        routesThroughInter.forEach((routeBId) => {
-          if (routeBId === routeAId) return;
-          const orderedB = orderedCache[routeBId] || [];
-          const interIdxB = orderedB.findIndex((rs) => rs.stop_id === interStopId);
-          const dIdxB = orderedB.findIndex((rs) => rs.stop_id === destId);
-          if (interIdxB === -1 || dIdxB === -1 || interIdxB >= dIdxB) return;
-
-          const hopsA = i - oIdxA;
-          const hopsB = dIdxB - interIdxB;
-          const totalHops = hopsA + hopsB;
-
-          const routeA = routesData.find((r) => r.id === routeAId);
-          const routeB = routesData.find((r) => r.id === routeBId);
-          const isMetroA = [1, 2].includes(routeA?.route_type);
-          const isMetroB = [1, 2].includes(routeB?.route_type);
-          const totalMinutes =
-            hopsA * (isMetroA ? 3 : 4) + hopsB * (isMetroB ? 3 : 4);
-
-          if (!bestMulti || totalHops < bestMulti.totalHops) {
-            bestMulti = {
-              totalHops, hopsA, hopsB,
-              routeA, routeB, orderedA, orderedB,
-              oIdxA, interIdxA: i, interStopId, interIdxB, dIdxB,
-              totalMinutes,
-            };
-          }
-        });
-      }
-    });
-
-    if (bestMulti) {
-      const leg1Stops = bestMulti.orderedA
-        .slice(bestMulti.oIdxA, bestMulti.interIdxA + 1)
-        .map((rs) => getStopById(rs.stop_id))
-        .filter(Boolean);
-      const leg2Stops = bestMulti.orderedB
-        .slice(bestMulti.interIdxB, bestMulti.dIdxB + 1)
-        .map((rs) => getStopById(rs.stop_id))
-        .filter(Boolean);
-      return {
-        type: "interchange",
-        legs: [
-          { route: bestMulti.routeA, stops: leg1Stops },
-          { route: bestMulti.routeB, stops: leg2Stops },
-        ],
-        totalHops: bestMulti.totalHops,
-        totalMinutes: bestMulti.totalMinutes,
-      };
-    }
-
-    return null; // no route found
-  };
-
-  // ── Google Maps walk link ─────────────────────────────────────────────
-  const openWalkNav = (destLat, destLon, origin) => {
-    const url = origin
-      ? `https://www.google.com/maps/dir/?api=1&origin=${origin.lat},${origin.lon}&destination=${destLat},${destLon}&travelmode=walking`
-      : `https://www.google.com/maps/dir/?api=1&destination=${destLat},${destLon}&travelmode=walking`;
-    window.open(url, "_blank");
-  };
-
-  const openRideApp = (app) => {
-    if (!destLoc) return;
-    if (app === "ola")
-      window.open(
-        `https://book.olacabs.com/?serviceType=p2p&drop_lat=${destLoc.lat}&drop_lng=${destLoc.lon}`,
-        "_blank"
-      );
-    if (app === "uber")
-      window.open(
-        `https://m.uber.com/ul/?action=setPickup&dropoff[latitude]=${destLoc.lat}&dropoff[longitude]=${destLoc.lon}`,
-        "_blank"
-      );
-    if (app === "rapido")
-      window.open("https://www.rapido.bike/", "_blank");
-  };
-
-  const bothPinsSet = originLoc && destLoc;
+          {/* Walk to dest */}
+          <div className="tl-row">
+            <div className="tl-dot tl-dest" />
+            <div className="tl-body">
+              <span className="tl-label">Walk {walkMin(dWalkM)} min</span>
+              <span className="tl-stop">{walkKm(dWalkM)} km from {dStop.name} to destination</span>
+              <a href={walkLink({ latitude: destLoc.lat, longitude: destLoc.lon }, { lat: dStop.latitude, lon: dStop.longitude })} target="_blank" rel="noreferrer" className="tl-link">Directions ↗</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="app-root">
-      {/* ── Top nav ─────────────────────────────────────────────────────── */}
+      {/* ── Top nav ────────────────────────────────────────────────────────── */}
       <header className="top-nav">
         <div className="nav-left">
           <div className="logo-circle" />
-          <span className="logo-text">Namma</span>
+          <span className="logo-text">Namma Move</span>
         </div>
         <nav className="nav-links">
-          <button className="nav-link active">Home</button>
-          <button className="nav-link">Routes</button>
-          <button className="nav-link">Tickets</button>
-          <button className="nav-link">Profile</button>
+          {NAV.map(n => (
+            <button key={n} className={`nav-link ${activePage === n ? "active" : ""}`} onClick={() => setActivePage(n)}>
+              {n === "Home" ? "🏠" : "📰"} {n}
+            </button>
+          ))}
         </nav>
+        <button className="dark-toggle" onClick={() => setDarkMode(d => !d)}>{darkMode ? "☀️" : "🌙"}</button>
       </header>
 
-      {/* ── Main ────────────────────────────────────────────────────────── */}
-      <main className="main-layout">
-        {/* Hero */}
-        <section className="hero">
-          <h1 className="hero-title">Namma Move</h1>
-          <div className="hero-sub">
-            {gtfsStats && (
-              <span className="hero-pill hero-pill-muted">
-                GTFS: {gtfsStats.routes} routes · {gtfsStats.stops} stops
-              </span>
-            )}
-            {originLoc && (
-              <span className="hero-pill">
-                📍 From: {originLoc.label}
-              </span>
-            )}
-          </div>
-        </section>
+      {activePage === "News" && (
+        <main className="main-layout"><NewsPage darkMode={darkMode} /></main>
+      )}
 
-        {/* ── Map card ─────────────────────────────────────────────────── */}
-        <section className="grid-section">
-          <div className="map-card">
-            <div className="map-card-header">
-              <span className="map-card-title">
-                {bothPinsSet
-                  ? "Calculating routes…"
-                  : "Set your start & destination"}
-              </span>
-              {busJourney && (
-                <span className="map-card-badge">
-                  🚌 ~{busJourney.totalMinutes} min by bus
-                </span>
+      {activePage === "Home" && (
+        <main className="main-layout">
+          <div className="hero">
+            <h1 className="hero-title">Namma Move</h1>
+            <div className="hero-pills">
+              <span className="hero-pill">{stats.routes} routes · {stats.stops} stops</span>
+              {gpsLoading && <span className="hero-pill gps-loading">📍 Getting location…</span>}
+              {gpsError && <span className="hero-pill gps-err">⚠ {gpsError}</span>}
+              {!gpsLoading && !gpsError && originLoc && (
+                <span className="hero-pill gps-ok">📍 Location set</span>
               )}
             </div>
-            <DualMapPicker
-              onOriginSelected={(loc) => setOriginLoc(loc)}
-              onDestinationSelected={(loc) => setDestLoc(loc)}
-              initialOrigin={userGps}
-            />
-            <p className="map-card-footnote">
-              🟢 Pin start · 🔴 Pin destination · or use search boxes above
-            </p>
           </div>
-        </section>
 
-        {/* ── Results ──────────────────────────────────────────────────── */}
-        {error && <p className="journey-hint warning">{error}</p>}
+          {/* ── Search panel ────────────────────────────────────────────── */}
+          <div className="search-panel">
+            <DualMapPicker
+              onOriginSelected={loc => { setOriginLoc(loc); setSearched(false); }}
+              onDestinationSelected={loc => { setDestLoc(loc); setSearched(false); }}
+              initialOrigin={originLoc}
+            />
 
-        {!bothPinsSet && (
-          <p className="journey-hint">
-            Pin both a start point and a destination to see your travel options.
-          </p>
-        )}
+            {/* Departure time picker */}
+            <div className="time-picker">
+              <div className="time-mode-tabs">
+                {[["now", "Leave now"], ["leave", "Leave at"], ["arrive", "Arrive by"]].map(([m, l]) => (
+                  <button key={m} className={`time-tab ${timeMode === m ? "active" : ""}`} onClick={() => setTimeMode(m)}>{l}</button>
+                ))}
+              </div>
+              {timeMode !== "now" && (
+                <input
+                  type="time"
+                  className="time-input"
+                  value={timeInput}
+                  onChange={e => setTimeInput(e.target.value)}
+                />
+              )}
+            </div>
 
-        {loading && (
-          <p className="journey-hint">Searching routes…</p>
-        )}
+            <button
+              className={`search-btn ${!bothSet ? "disabled" : ""}`}
+              onClick={handleSearch}
+              disabled={!bothSet || loading}
+            >
+              {loading ? "⏳ Searching…" : "🔍 Search Routes"}
+            </button>
+          </div>
 
-        {bothPinsSet && !loading && (
-          <section className="journey-section">
-            <h2 className="section-title">How to get there</h2>
+          {/* ── No route hint ────────────────────────────────────────────── */}
+          {!bothSet && !searched && (
+            <p className="hint-msg">📌 Set start and destination above, then tap Search Routes.</p>
+          )}
 
-            {/* ─────────────── Option cards row ─────────────────────── */}
-            <div className="options-row">
+          {/* ── Results ─────────────────────────────────────────────────── */}
+          {searched && !loading && (
+            <section className="results">
+              <h2 className="results-title">
+                Travel options
+                {timeMode !== "now" && (
+                  <span className="results-time-badge">
+                    {timeMode === "leave" ? `Leaving ${timeInput}` : `Arriving by ${timeInput}`}
+                  </span>
+                )}
+              </h2>
 
-              {/* ── BMTC Bus card ───────────────────────────────────── */}
-              <div className="option-card bus-card">
-                <div className="option-card-header">
-                  <span className="option-icon">🚌</span>
+              {noRoute && !busHit && !metroHit && !comboHit && (
+                <div className="no-route">
+                  <span>🚫</span>
                   <div>
-                    <h3 className="option-title">BMTC Bus</h3>
-                    {busJourney && (
-                      <p className="option-subtitle">
-                        ~{busJourney.totalMinutes} min · {busJourney.totalHops} stops
-                        {busJourney.type === "interchange" ? " · 1 change" : " · Direct"}
-                      </p>
-                    )}
+                    <strong>No transit route found</strong>
+                    <p>Try adjusting your locations or use a cab below.</p>
                   </div>
                 </div>
+              )}
 
-                {busJourney ? (
-                  <div className="steps-list">
-                    {/* Step 1 – walk to boarding stop */}
-                    {nearestOriginStop && originWalk && (
-                      <div className="journey-card">
-                        <div className="step-number">1</div>
-                        <div className="step-body">
-                          <h4>Walk to boarding stop</h4>
-                          <p>Head to <strong>{nearestOriginStop.name}</strong></p>
-                          <p className="step-meta">
-                            ≈ {(originWalk.distanceM / 1000).toFixed(2)} km ·{" "}
-                            {originWalk.minutes} min walk
-                          </p>
-                          <button
-                            className="small-btn"
-                            onClick={() =>
-                              openWalkNav(
-                                nearestOriginStop.latitude,
-                                nearestOriginStop.longitude
-                              )
-                            }
-                          >
-                            Walking directions
-                          </button>
-                        </div>
-                      </div>
-                    )}
-
-                    {/* Bus legs */}
-                    {busJourney.legs.map((leg, idx) => {
-                      const stepNum = 2 + idx;
-                      const stopsInLeg = leg.stops || [];
-                      const start = stopsInLeg[0];
-                      const end = stopsInLeg[stopsInLeg.length - 1];
-                      const isMetro = [1, 2].includes(leg.route.route_type);
-                      return (
-                        <div className="journey-card" key={idx}>
-                          <div className="step-number">{stepNum}</div>
-                          <div className="step-body">
-                            <h4>
-                              {isMetro ? "🚇 Metro" : "🚌 Bus"} ·{" "}
-                              <span className="route-pill">{leg.route.short_name}</span>
-                            </h4>
-                            <p>{leg.route.long_name}</p>
-                            {start && end && (
-                              <p className="step-meta">
-                                Board <strong>{start.name}</strong> → Exit{" "}
-                                <strong>{end.name}</strong> ·{" "}
-                                {stopsInLeg.length - 1} stop{stopsInLeg.length !== 2 ? "s" : ""}
-                              </p>
-                            )}
-                            <details className="step-details">
-                              <summary>Show all stops</summary>
-                              <ol>
-                                {stopsInLeg.map((s, i) => (
-                                  <li key={i}>{s.name}</li>
-                                ))}
-                              </ol>
-                            </details>
-                          </div>
-                        </div>
-                      );
-                    })}
-
-                    {/* Walk to destination */}
-                    {nearestDestStop && destWalk && (
-                      <div className="journey-card">
-                        <div className="step-number">
-                          {2 + busJourney.legs.length}
-                        </div>
-                        <div className="step-body">
-                          <h4>Walk to destination</h4>
-                          <p>
-                            From <strong>{nearestDestStop.name}</strong> walk to your
-                            destination.
-                          </p>
-                          <p className="step-meta">
-                            ≈ {(destWalk.distanceM / 1000).toFixed(2)} km ·{" "}
-                            {destWalk.minutes} min walk
-                          </p>
-                          <button
-                            className="small-btn"
-                            onClick={() =>
-                              openWalkNav(destLoc.lat, destLoc.lon, {
-                                lat: nearestDestStop.latitude,
-                                lon: nearestDestStop.longitude,
-                              })
-                            }
-                          >
-                            Walking directions
-                          </button>
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                ) : (
-                  <p className="no-route-msg">
-                    No BMTC route found with ≤ 1 interchange for this trip. Try
-                    the auto or cab instead.
-                  </p>
-                )}
+              <div className="jcards-col">
+                <JCard hit={busHit} accent="var(--teal)" icon="🚌" label="BMTC Bus" />
+                <JCard hit={metroHit} accent="var(--purple)" icon="🚇" label="Namma Metro" />
+                <JCard hit={comboHit} accent="#f59e0b" icon="🔀" label="Bus + Metro" />
               </div>
 
-              {/* ── Meter Auto / Cab card ────────────────────────────── */}
-              {meterInfo && (
-                <div className="option-card meter-card">
-                  <div className="option-card-header">
-                    <span className="option-icon">🛺</span>
-                    <div>
-                      <h3 className="option-title">Auto / Cab</h3>
-                      <p className="option-subtitle">
-                        {meterInfo.distKm.toFixed(1)} km straight-line
-                      </p>
+              {/* Cab / Auto card */}
+              {cabInfo && (
+                <div className="jcard cab-jcard">
+                  <div className="jcard-summary">
+                    <div className="jcard-summary-left">
+                      <span className="jcard-mode-icon">🛺</span>
+                      <div>
+                        <div className="jcard-label">Auto / Cab</div>
+                        <div className="jcard-sub">{cabInfo.km} km straight-line</div>
+                      </div>
                     </div>
                   </div>
-
-                  {/* Auto row */}
-                  <div className="meter-row">
-                    <div className="meter-mode-label">
-                      <span className="meter-icon">🛺</span>
-                      <span>Auto (Meter)</span>
+                  <div className="cab-rows">
+                    <div className="cab-row">
+                      <div className="cab-mode"><span>🛺</span> Auto (Meter)</div>
+                      <div className="cab-info">
+                        <span className="cab-fare">₹{cabInfo.autoFare}</span>
+                        <span className="cab-time">~{cabInfo.autoMin} min</span>
+                        <a href={rideLink("rapido")} target="_blank" rel="noreferrer" className="ride-btn rapido-btn">Rapido</a>
+                      </div>
                     </div>
-                    <div className="meter-details">
-                      <span className="meter-fare">₹{meterInfo.autoFare}</span>
-                      <span className="meter-time">~{meterInfo.autoTimeMin} min</span>
+                    <div className="cab-divider" />
+                    <div className="cab-row">
+                      <div className="cab-mode"><span>🚕</span> Cab</div>
+                      <div className="cab-info">
+                        <span className="cab-fare">₹{cabInfo.cabFare}</span>
+                        <span className="cab-time">~{cabInfo.cabMin} min</span>
+                        <div className="ride-btn-group">
+                          <a href={rideLink("ola")} target="_blank" rel="noreferrer" className="ride-btn ola-btn">Ola</a>
+                          <a href={rideLink("uber")} target="_blank" rel="noreferrer" className="ride-btn uber-btn">Uber</a>
+                        </div>
+                      </div>
                     </div>
-                    <button
-                      className="small-btn meter-btn"
-                      onClick={() => openRideApp("rapido")}
-                    >
-                      Book Rapido
-                    </button>
+                    <div className="cab-divider" />
+                    <div className="cab-row">
+                      <div className="cab-mode"><span>🏍</span> Bike</div>
+                      <div className="cab-info">
+                        <span className="cab-fare">₹{cabInfo.bikeFare}</span>
+                        <span className="cab-time">~{cabInfo.bikeMin} min</span>
+                        <a href={rideLink("rapido")} target="_blank" rel="noreferrer" className="ride-btn rapido-btn">Rapido</a>
+                      </div>
+                    </div>
+                    <p className="cab-disclaimer">* Auto: ₹30 base + ₹15/km · Cab surge may vary</p>
                   </div>
-
-                  <div className="meter-divider" />
-
-                  {/* Ola row */}
-                  <div className="meter-row">
-                    <div className="meter-mode-label">
-                      <span className="meter-icon">🚕</span>
-                      <span>Cab (Ola/Uber)</span>
-                    </div>
-                    <div className="meter-details">
-                      <span className="meter-fare">₹{meterInfo.cabFare}</span>
-                      <span className="meter-time">~{meterInfo.cabTimeMin} min</span>
-                    </div>
-                    <div className="meter-btn-group">
-                      <button
-                        className="small-btn meter-btn"
-                        onClick={() => openRideApp("ola")}
-                      >
-                        Ola
-                      </button>
-                      <button
-                        className="small-btn meter-btn"
-                        onClick={() => openRideApp("uber")}
-                      >
-                        Uber
-                      </button>
-                    </div>
-                  </div>
-
-                  <p className="fare-disclaimer">
-                    * Fares use Bengaluru official meter rates (auto: ₹30 base + ₹15/km).
-                    Surge pricing may vary.
-                  </p>
                 </div>
               )}
-            </div>
-          </section>
-        )}
-      </main>
+            </section>
+          )}
+        </main>
+      )}
 
-      {/* ── Bottom nav ──────────────────────────────────────────────────── */}
       <footer className="bottom-nav">
-        <button className="bottom-item active">Home</button>
-        <button className="bottom-item">Routes</button>
-        <button className="bottom-item">Tickets</button>
-        <button className="bottom-item">Profile</button>
+        {NAV.map(n => (
+          <button key={n} className={`bottom-item ${activePage === n ? "active" : ""}`} onClick={() => setActivePage(n)}>
+            {n === "Home" ? "🏠 Home" : "📰 News"}
+          </button>
+        ))}
       </footer>
     </div>
   );

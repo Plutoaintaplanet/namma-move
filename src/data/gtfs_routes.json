@@ -1,50 +1,254 @@
 [
-  {
-    "id": "R500",
-    "short_name": "500",
-    "long_name": "Majestic – Whitefield",
-    "route_type": 3
-  },
-  {
-    "id": "R335E",
-    "short_name": "335E",
-    "long_name": "Majestic – Electronic City",
-    "route_type": 3
-  },
-  {
-    "id": "R201",
-    "short_name": "201",
-    "long_name": "Majestic – Indiranagar",
-    "route_type": 3
-  },
-  {
-    "id": "R225",
-    "short_name": "225",
-    "long_name": "Majestic – Banashankari",
-    "route_type": 3
-  },
-  {
-    "id": "RG10",
-    "short_name": "G10",
-    "long_name": "Yeshwantpur – Silk Board",
-    "route_type": 3
-  },
-  {
-    "id": "R401",
-    "short_name": "401",
-    "long_name": "Shivajinagar – Whitefield",
-    "route_type": 3
-  },
-  {
-    "id": "R250",
-    "short_name": "250",
-    "long_name": "Majestic – Yelahanka",
-    "route_type": 3
-  },
-  {
-    "id": "R600",
-    "short_name": "600",
-    "long_name": "Indiranagar – Electronic City",
-    "route_type": 3
-  }
+    {
+        "id": "R500",
+        "short_name": "500",
+        "long_name": "Majestic – Whitefield",
+        "route_type": 3
+    },
+    {
+        "id": "R335E",
+        "short_name": "335E",
+        "long_name": "Majestic – Electronic City",
+        "route_type": 3
+    },
+    {
+        "id": "R201",
+        "short_name": "201",
+        "long_name": "Majestic – Indiranagar",
+        "route_type": 3
+    },
+    {
+        "id": "R225",
+        "short_name": "225",
+        "long_name": "Majestic – Banashankari",
+        "route_type": 3
+    },
+    {
+        "id": "RG10",
+        "short_name": "G10",
+        "long_name": "Yeshwantpur – Silk Board",
+        "route_type": 3
+    },
+    {
+        "id": "R401",
+        "short_name": "401",
+        "long_name": "Shivajinagar – Whitefield",
+        "route_type": 3
+    },
+    {
+        "id": "R250",
+        "short_name": "250",
+        "long_name": "Majestic – Yelahanka",
+        "route_type": 3
+    },
+    {
+        "id": "R600",
+        "short_name": "600",
+        "long_name": "Indiranagar – Electronic City",
+        "route_type": 3
+    },
+    {
+        "id": "R150",
+        "short_name": "150",
+        "long_name": "Majestic – Jayanagar – BTM",
+        "route_type": 3
+    },
+    {
+        "id": "R151",
+        "short_name": "151",
+        "long_name": "Majestic – Silk Board – E-City",
+        "route_type": 3
+    },
+    {
+        "id": "R240",
+        "short_name": "240",
+        "long_name": "Majestic – Peenya – Yelahanka",
+        "route_type": 3
+    },
+    {
+        "id": "R8C",
+        "short_name": "8C",
+        "long_name": "Shivajinagar – Koramangala – Silk Board",
+        "route_type": 3
+    },
+    {
+        "id": "R9A",
+        "short_name": "9A",
+        "long_name": "Majestic – Vijayanagar",
+        "route_type": 3
+    },
+    {
+        "id": "R10E",
+        "short_name": "10E",
+        "long_name": "Majestic – Rajajinagar – Peenya",
+        "route_type": 3
+    },
+    {
+        "id": "RV1",
+        "short_name": "V1",
+        "long_name": "Majestic – Airport (Kempegowda)",
+        "route_type": 3
+    },
+    {
+        "id": "RV2",
+        "short_name": "V2",
+        "long_name": "Hebbal – Airport (Vayu Vajra)",
+        "route_type": 3
+    },
+    {
+        "id": "R201A",
+        "short_name": "201A",
+        "long_name": "Majestic – MG Road – Indiranagar",
+        "route_type": 3
+    },
+    {
+        "id": "R401A",
+        "short_name": "401A",
+        "long_name": "Shivajinagar – Marathahalli – Whitefield",
+        "route_type": 3
+    },
+    {
+        "id": "R500C",
+        "short_name": "500C",
+        "long_name": "Majestic – Bellandur – Whitefield",
+        "route_type": 3
+    },
+    {
+        "id": "R300G",
+        "short_name": "300G",
+        "long_name": "Majestic – Hebbal – Yelahanka",
+        "route_type": 3
+    },
+    {
+        "id": "R356",
+        "short_name": "356",
+        "long_name": "KR Market – Jayanagar – HSR Layout",
+        "route_type": 3
+    },
+    {
+        "id": "R356G",
+        "short_name": "356G",
+        "long_name": "KR Market – Koramangala – HSR",
+        "route_type": 3
+    },
+    {
+        "id": "R340",
+        "short_name": "340",
+        "long_name": "Majestic – BTM – Sarjapur",
+        "route_type": 3
+    },
+    {
+        "id": "R210",
+        "short_name": "210",
+        "long_name": "Shivajinagar – Bellandur – Sarjapur",
+        "route_type": 3
+    },
+    {
+        "id": "R220",
+        "short_name": "220",
+        "long_name": "Indiranagar – HSR – Bellandur",
+        "route_type": 3
+    },
+    {
+        "id": "R410",
+        "short_name": "410",
+        "long_name": "Majestic – Marathahalli – KR Puram",
+        "route_type": 3
+    },
+    {
+        "id": "R410A",
+        "short_name": "410A",
+        "long_name": "Shivajinagar – KR Puram – Hoskote",
+        "route_type": 3
+    },
+    {
+        "id": "R252",
+        "short_name": "252",
+        "long_name": "Majestic – Hebbal – Nagawara",
+        "route_type": 3
+    },
+    {
+        "id": "R270",
+        "short_name": "270",
+        "long_name": "Yelahanka – Hebbal – City Market",
+        "route_type": 3
+    },
+    {
+        "id": "R360",
+        "short_name": "360",
+        "long_name": "Banashankari – Majestic – Malleswaram",
+        "route_type": 3
+    },
+    {
+        "id": "R380",
+        "short_name": "380",
+        "long_name": "Electronic City – Silk Board – Koramangala",
+        "route_type": 3
+    },
+    {
+        "id": "R382",
+        "short_name": "382",
+        "long_name": "Electronic City – BTM – Majestic",
+        "route_type": 3
+    },
+    {
+        "id": "R398",
+        "short_name": "398",
+        "long_name": "Bannerghatta – Jayanagar – Majestic",
+        "route_type": 3
+    },
+    {
+        "id": "R322",
+        "short_name": "322",
+        "long_name": "Vijayanagar – Rajajinagar – Yeshwantpur",
+        "route_type": 3
+    },
+    {
+        "id": "R325",
+        "short_name": "325",
+        "long_name": "Kengeri – Vijayanagar – Majestic",
+        "route_type": 3
+    },
+    {
+        "id": "R213",
+        "short_name": "213",
+        "long_name": "RT Nagar – Shivajinagar – Indiranagar",
+        "route_type": 3
+    },
+    {
+        "id": "R216",
+        "short_name": "216",
+        "long_name": "Jalahalli – Yeshwantpur – Majestic",
+        "route_type": 3
+    },
+    {
+        "id": "R245",
+        "short_name": "245",
+        "long_name": "Mysore Road – Majestic – Yeshwantpur",
+        "route_type": 3
+    },
+    {
+        "id": "R416",
+        "short_name": "416",
+        "long_name": "Domlur – Marathahalli – Whitefield",
+        "route_type": 3
+    },
+    {
+        "id": "R319",
+        "short_name": "319",
+        "long_name": "Kengeri – Banashankari – JP Nagar",
+        "route_type": 3
+    },
+    {
+        "id": "MPUR",
+        "short_name": "Purple",
+        "long_name": "Baiyappanahalli – Challaghatta (Purple Line)",
+        "route_type": 1
+    },
+    {
+        "id": "MGRN",
+        "short_name": "Green",
+        "long_name": "Nagasandra – Silk Institute (Green Line)",
+        "route_type": 1
+    }
 ]
