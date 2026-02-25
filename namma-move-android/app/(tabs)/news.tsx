@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, Text, FlatList, ActivityIndicator, TouchableOpacity, Linking } from 'react-native';
+import React, { useState, useEffect, useCallback } from 'react';
+import { StyleSheet, ActivityIndicator, FlatList, RefreshControl, Linking, TouchableOpacity } from 'react-native';
 import Colors from '@/constants/Colors';
+import { Text, View } from '@/components/Themed';
 import { useColorScheme } from '@/components/useColorScheme';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
-const API_URL = 'http://10.0.2.2:4000/api'; // Android Emulator localhost to host machine
+const API_URL = 'https://www.nammamove.in.net/api'; // Live Vercel Production API
 
 export default function NewsScreen() {
     const colorScheme = useColorScheme();
@@ -12,18 +13,33 @@ export default function NewsScreen() {
 
     const [news, setNews] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
+    const [refreshing, setRefreshing] = useState(false);
+
+    const fetchNews = async () => {
+        try {
+            const res = await fetch(`${API_URL}/news`);
+            if (!res.ok) throw new Error('API Error');
+            const data = await res.json();
+            setNews(data.items || []);
+        } catch (error) {
+            console.warn('News Fetch Error:', error);
+            // Fallback empty state
+            setNews([
+                { id: 1, title: 'Offline Mode Active', summary: 'Cannot connect to backend server. Showing cached information.', date: new Date().toLocaleDateString(), type: 'alert' }
+            ]);
+        } finally {
+            setLoading(false);
+            setRefreshing(false);
+        }
+    };
 
     useEffect(() => {
-        fetch(`${API_URL}/news`)
-            .then(res => res.json())
-            .then(data => {
-                setNews(data.items || []);
-                setLoading(false);
-            })
-            .catch(e => {
-                console.warn('API Error, check if backend is running on port 4000', e);
-                setLoading(false);
-            });
+        fetchNews();
+    }, []);
+
+    const onRefresh = useCallback(() => {
+        setRefreshing(true);
+        fetchNews();
     }, []);
 
     if (loading) {

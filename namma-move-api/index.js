@@ -27,11 +27,16 @@ app.get("/api/health", async (_req, res) => {
 app.use((_req, res) => res.status(404).json({ error: "Not found" }));
 
 // ── Start ─────────────────────────────────────────────────────────────────────
-const PORT = process.env.PORT || 4000;
-app.listen(PORT, () => {
-    console.log(`\n🚀 Namma Move API running on http://localhost:${PORT}`);
-    console.log(`   Neo4j: ${process.env.NEO4J_URI}`);
-    ping()
-        .then(() => console.log("   ✅ Neo4j connection OK"))
-        .catch(e => console.warn("   ⚠  Neo4j connection failed:", e.message));
-});
+if (process.env.NODE_ENV !== 'production') {
+    const PORT = process.env.PORT || 4000;
+    app.listen(PORT, () => {
+        console.log(`\n🚀 Namma Move API running on http://localhost:${PORT}`);
+        console.log(`   Neo4j: ${process.env.NEO4J_URI}`);
+        ping()
+            .then(() => console.log("   ✅ Neo4j connection OK"))
+            .catch(e => console.warn("   ⚠  Neo4j connection failed:", e.message));
+    });
+}
+
+// Export for Vercel serverless
+module.exports = app;
