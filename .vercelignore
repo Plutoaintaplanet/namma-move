@@ -1,0 +1,6 @@
+node_modules/
+namma-move-android/
+namma-move-api/
+dist/
+.env
+.DS_Store
