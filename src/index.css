@@ -84,17 +84,17 @@ a {
   gap: 8px;
 }
 
-.logo-circle {
-  width: 26px;
-  height: 26px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, var(--teal), var(--teal-dark));
-}
-
 .logo-text {
   font-weight: 800;
   font-size: .95rem;
   color: var(--text);
+}
+
+.nav-logo {
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  object-fit: contain;
 }
 
 .nav-links {

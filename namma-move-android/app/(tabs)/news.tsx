@@ -5,7 +5,7 @@ import { Text, View } from '@/components/Themed';
 import { useColorScheme } from '@/components/useColorScheme';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
-const API_URL = 'https://www.nammamove.in.net/api'; // Live Vercel Production API
+const API_URL = 'https://nammamove-backend-api.vercel.app/api'; // Live Public Cloud API
 
 export default function NewsScreen() {
     const colorScheme = useColorScheme();

@@ -1,48 +1,62 @@
 import React from 'react';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Tabs } from 'expo-router';
-import { View, StyleSheet } from 'react-native';
+import { View, Text, Image } from 'react-native';
 
 import Colors from '@/constants/Colors';
 import { useColorScheme } from '@/components/useColorScheme';
 
+function LogoTitle() {
+  const colorScheme = useColorScheme();
+  const theme = Colors[colorScheme ?? 'dark'];
+  return (
+    <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
+      <Image source={require('../../assets/images/icon.png')} style={{ width: 28, height: 28 }} resizeMode="contain" />
+      <Text style={{ fontSize: 18, fontWeight: '900', color: theme.purple, letterSpacing: -0.3 }}>Namma Move</Text>
+    </View>
+  );
+}
+
 export default function TabLayout() {
   const colorScheme = useColorScheme();
   const theme = Colors[colorScheme ?? 'dark'];
+  const isDark = colorScheme === 'dark';
 
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: theme.tint,
+        tabBarActiveTintColor: theme.purple,
         tabBarInactiveTintColor: theme.tabIconDefault,
         tabBarStyle: {
-          backgroundColor: theme.panel,
+          backgroundColor: isDark ? 'rgba(18,26,47,0.97)' : '#fff',
           borderTopColor: theme.border,
           borderTopWidth: 1,
-          elevation: 0,
-          height: 60,
-          paddingBottom: 8,
+          elevation: 20,
+          shadowColor: '#703BDA',
+          shadowOpacity: 0.15,
+          shadowOffset: { width: 0, height: -4 },
+          shadowRadius: 12,
+          height: 64,
+          paddingBottom: 10,
           paddingTop: 8,
         },
         headerStyle: {
-          backgroundColor: theme.panel,
+          backgroundColor: isDark ? theme.surface : '#fff',
           borderBottomColor: theme.border,
           borderBottomWidth: 1,
           elevation: 0,
           shadowOpacity: 0,
         },
         headerTintColor: theme.text,
-        headerTitleStyle: {
-          fontWeight: '800',
-        },
+        headerTitleStyle: { fontWeight: '800' },
       }}>
       <Tabs.Screen
         name="index"
         options={{
+          headerTitle: () => <LogoTitle />,
           title: 'Planner',
-          headerTitle: 'Namma Move',
-          tabBarIcon: ({ color }) => (
-            <MaterialCommunityIcons name="map-search-outline" size={26} color={color} />
+          tabBarIcon: ({ color, size }) => (
+            <MaterialCommunityIcons name="map-search-outline" size={size + 2} color={color} />
           ),
         }}
       />
@@ -51,8 +65,8 @@ export default function TabLayout() {
         options={{
           title: 'News',
           headerTitle: 'Transit News',
-          tabBarIcon: ({ color }) => (
-            <MaterialCommunityIcons name="newspaper-variant-outline" size={26} color={color} />
+          tabBarIcon: ({ color, size }) => (
+            <MaterialCommunityIcons name="newspaper-variant-outline" size={size + 2} color={color} />
           ),
         }}
       />

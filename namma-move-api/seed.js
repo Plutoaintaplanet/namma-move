@@ -30,25 +30,26 @@ async function seed() {
         console.log("Clearing existing Stop nodes and CONNECTS edges...");
         await session.run("MATCH (n:Stop) DETACH DELETE n");
 
-        // ── Create Stop nodes ────────────────────────────────────────────────────
+        // ── Create Stop nodes in batches ───────────────────────────────────────────
         console.log(`Creating ${stops.length} Stop nodes...`);
-        for (const s of stops) {
-            await session.run(
-                `MERGE (s:Stop {id: $id})
-         SET s.name = $name,
-             s.lat  = $lat,
-             s.lon  = $lon,
-             s.type = $type`,
-                {
-                    id: s.id,
-                    name: s.name,
-                    lat: s.latitude,
-                    lon: s.longitude,
-                    type: s.id.startsWith("M") ? "metro" : "bus",
-                }
-            );
+        const stopBatches = [];
+        const BATCH_SIZE = 1000;
+
+        const preparedStops = stops.map(s => ({
+            id: s.id, name: s.name, lat: s.latitude, lon: s.longitude,
+            type: s.id.startsWith("M") ? "metro" : "bus"
+        }));
+
+        for (let i = 0; i < preparedStops.length; i += BATCH_SIZE) {
+            const batch = preparedStops.slice(i, i + BATCH_SIZE);
+            await session.run(`
+                UNWIND $batch AS s
+                MERGE (node:Stop {id: s.id})
+                SET node.name = s.name, node.lat = s.lat, node.lon = s.lon, node.type = s.type
+            `, { batch });
+            process.stdout.write(`  Inserted ${Math.min(i + BATCH_SIZE, stops.length)} / ${stops.length}\r`);
         }
-        console.log("  ✅ Stop nodes created");
+        console.log("\n  ✅ Stop nodes created");
 
         // ── Build ordered route-stop map ──────────────────────────────────────────
         const routeMap = Object.fromEntries(routes.map(r => [r.id, r]));
@@ -58,49 +59,51 @@ async function seed() {
             byRoute[rs.route_id].push(rs);
         });
 
-        // ── Create CONNECTS edges between consecutive stops ───────────────────────
-        let edgeCount = 0;
+        // ── Create CONNECTS edges in batches ───────────────────────────────────────
+        console.log(`Building edge objects...`);
+        const preparedEdges = [];
         for (const [routeId, rsArr] of Object.entries(byRoute)) {
             const ordered = rsArr.sort((a, b) => a.stop_sequence - b.stop_sequence);
             const route = routeMap[routeId];
-            if (!route) { console.warn(`  ⚠ Route ${routeId} not found, skipping`); continue; }
+            if (!route) continue;
 
             const isMetro = route.route_type === 1;
-            const travelMin = isMetro ? 2.5 : 4; // minutes per stop
+            const travelMin = isMetro ? 2.5 : 4;
 
             for (let i = 0; i < ordered.length - 1; i++) {
-                const from = ordered[i].stop_id;
-                const to = ordered[i + 1].stop_id;
-                await session.run(
-                    `MATCH (a:Stop {id: $from}), (b:Stop {id: $to})
-           MERGE (a)-[r:CONNECTS {route_id: $routeId}]->(b)
-           SET r.route_name = $routeName,
-               r.route_type = $routeType,
-               r.travel_min = $travelMin,
-               r.seq        = $seq`,
-                    {
-                        from: from,
-                        to: to,
-                        routeId: routeId,
-                        routeName: route.short_name + " – " + route.long_name,
-                        routeType: route.route_type,
-                        travelMin,
-                        seq: i,
-                    }
-                );
-                edgeCount++;
+                preparedEdges.push({
+                    from: ordered[i].stop_id,
+                    to: ordered[i + 1].stop_id,
+                    routeId: routeId,
+                    routeName: route.short_name + " – " + route.long_name,
+                    routeType: route.route_type,
+                    travelMin: travelMin,
+                    seq: i
+                });
             }
-            process.stdout.write(`  Route ${routeId} (${ordered.length} stops → ${ordered.length - 1} edges)\n`);
         }
 
-        console.log(`\n  ✅ ${edgeCount} CONNECTS edges created`);
+        console.log(`Creating ${preparedEdges.length} CONNECTS edges in batches...`);
+        for (let i = 0; i < preparedEdges.length; i += BATCH_SIZE) {
+            const batch = preparedEdges.slice(i, i + BATCH_SIZE);
+            await session.run(`
+                UNWIND $batch AS e
+                MATCH (a:Stop {id: e.from}), (b:Stop {id: e.to})
+                MERGE (a)-[r:CONNECTS {route_id: e.routeId, seq: e.seq}]->(b)
+                SET r.route_name = e.routeName,
+                    r.route_type = e.routeType,
+                    r.travel_min = e.travelMin
+            `, { batch });
+            process.stdout.write(`  Inserted ${Math.min(i + BATCH_SIZE, preparedEdges.length)} / ${preparedEdges.length}\r`);
+        }
+
+        console.log(`\n  ✅ All CONNECTS edges created`);
 
         // ── Create indexes ─────────────────────────────────────────────────────────
         console.log("\nCreating indexes...");
         try {
             await session.run("CREATE INDEX stop_id IF NOT EXISTS FOR (s:Stop) ON (s.id)");
             await session.run("CREATE INDEX stop_name IF NOT EXISTS FOR (s:Stop) ON (s.name)");
-            await session.run("CREATE POINT INDEX stop_location IF NOT EXISTS FOR (s:Stop) ON (s.location)");
         } catch (e) {
             console.log("  (Some indexes already exist, that's OK)");
         }
@@ -113,7 +116,7 @@ async function seed() {
         console.log(`   Edges: ${ers.records[0].get("edges")}`);
 
     } catch (e) {
-        console.error("❌ Seed failed:", e.message);
+        console.error("\n❌ Seed failed:", e.message);
         throw e;
     } finally {
         await session.close();

@@ -369,7 +369,7 @@ export default function App() {
       {/* ── Top nav ────────────────────────────────────────────────────────── */}
       <header className="top-nav">
         <div className="nav-left">
-          <div className="logo-circle" />
+          <img src="/logo.png" alt="Namma Move" className="nav-logo" />
           <span className="logo-text">Namma Move</span>
         </div>
         <nav className="nav-links">
