@@ -204,44 +204,37 @@ export default function App() {
   }, []);
 
   // ── Compute ───────────────────────────────────────────────────────────────
-  const compute = useCallback((origin, dest) => {
+  const compute = useCallback(async (origin, dest) => {
     if (!origin || !dest) return;
     setLoading(true); setSearched(true);
     setBusHit(null); setMetroHit(null); setComboHit(null); setNoRoute("");
 
-    // Base time for departure
-    let baseTime = new Date();
+    const baseUrl = import.meta.env.VITE_API_URL || "http://localhost:4001/api";
+    let url = `${baseUrl}/route?fromLat=${origin.lat}&fromLon=${origin.lon}&toLat=${dest.lat}&toLon=${dest.lon}`;
+
     if (timeMode !== "now") {
-      baseTime = parseTimeInput(timeInput);
-      if (isNaN(baseTime)) baseTime = new Date();
+      url += `&time=${timeInput}`;
     }
 
-    const straight = distM(origin.lat, origin.lon, dest.lat, dest.lon);
-    setCabInfo(estimateCab(straight));
+    try {
+      const res = await fetch(url);
+      if (!res.ok) throw new Error("Routing failed");
+      const data = await res.json();
 
-    const oStops = findNearbyStops(stopsJson, origin.lat, origin.lon);
-    const dStops = findNearbyStops(stopsJson, dest.lat, dest.lon);
+      setBusHit(data.bus);
+      setMetroHit(data.metro);
+      setComboHit(data.combo);
+      setCabInfo(data.cab);
 
-    let bBus = null, bMetro = null, bCombo = null;
-    for (const oS of oStops.slice(0, 8)) {
-      for (const dS of dStops.slice(0, 8)) {
-        if (oS.id === dS.id) continue;
-        const r = findRoute(oS.id, dS.id);
-        if (!r) continue;
-        const cls = classify(r);
-        const oWalkM = distM(origin.lat, origin.lon, oS.latitude, oS.longitude);
-        const dWalkM = distM(dest.lat, dest.lon, dS.latitude, dS.longitude);
-        const totalMins = walkMin(oWalkM) + r.mins + walkMin(dWalkM);
-        const entry = { result: r, oStop: oS, dStop: dS, oWalkM, dWalkM, totalMins, baseTime };
-        if (cls === "bus" && (!bBus || totalMins < bBus.totalMins)) bBus = entry;
-        if (cls === "metro" && (!bMetro || totalMins < bMetro.totalMins)) bMetro = entry;
-        if (cls === "combo" && (!bCombo || totalMins < bCombo.totalMins)) bCombo = entry;
+      if (!data.bus && !data.metro && !data.combo) {
+        setNoRoute("No transit route found within 1 interchange.");
       }
+    } catch (e) {
+      console.error(e);
+      setNoRoute("Error fetching route. Please try again.");
+    } finally {
+      setLoading(false);
     }
-
-    setBusHit(bBus); setMetroHit(bMetro); setComboHit(bCombo);
-    if (!bBus && !bMetro && !bCombo) setNoRoute("No transit route found within 1 interchange.");
-    setLoading(false);
   }, [timeMode, timeInput]);
 
   const handleSearch = () => {

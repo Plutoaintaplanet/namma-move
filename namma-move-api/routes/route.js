@@ -46,17 +46,19 @@ async function getAllStops() {
 // ── Find nearby stops using JS Haversine (avoids Neo4j float param issue) ────
 async function nearbyStops(lat, lon) {
     const all = await getAllStops();
-    return all
+    const sorted = all
         .map(s => ({ ...s, dist: haversine(lat, lon, s.lat, s.lon) }))
-        .sort((a, b) => a.dist - b.dist)
-        .slice(0, 8);
+        .sort((a, b) => a.dist - b.dist);
+    const buses = sorted.filter(s => s.type !== "metro").slice(0, 5);
+    const metros = sorted.filter(s => s.type === "metro").slice(0, 3);
+    return [...buses, ...metros].sort((a, b) => a.dist - b.dist);
 }
 
 // ── Find shortest path in Neo4j ───────────────────────────────────────────────
 async function findRoute(fromId, toId) {
     const recs = await runRead(
         `MATCH (a:Stop {id: $from}), (b:Stop {id: $to})
-     MATCH path = shortestPath((a)-[:CONNECTS*1..40]->(b))
+     MATCH path = shortestPath((a)-[:CONNECTS*1..60]-(b))
      WITH path,
           reduce(t=0.0, r IN relationships(path) | t + r.travel_min) AS totalMin,
           [r IN relationships(path) | r.route_id]   AS routeIds,
@@ -116,8 +118,8 @@ router.get("/", async (req, res) => {
         const [oStops, dStops] = await Promise.all([nearbyStops(fLat, fLon), nearbyStops(tLat, tLon)]);
         let bestBus = null, bestMetro = null, bestCombo = null;
 
-        for (const oS of oStops.slice(0, 5)) {
-            for (const dS of dStops.slice(0, 5)) {
+        for (const oS of oStops.slice(0, 8)) {
+            for (const dS of dStops.slice(0, 8)) {
                 if (oS.id === dS.id) continue;
                 const r = await findRoute(oS.id, dS.id);
                 if (!r) continue;
