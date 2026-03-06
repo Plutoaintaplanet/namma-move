@@ -38,7 +38,7 @@ async function runRead(cypher, params = {}) {
 let _stopsCache = null;
 async function getAllStops() {
     if (_stopsCache) return _stopsCache;
-    const recs = await runRead("MATCH (s:Stop) RETURN s.id AS id, s.name AS name, s.lat AS lat, s.lon AS lon, s.type AS type");
+    const recs = await runRead("MATCH (s:Stop)-[:CONNECTS]-() RETURN DISTINCT s.id AS id, s.name AS name, s.lat AS lat, s.lon AS lon, s.type AS type");
     _stopsCache = recs.map(r => ({ id: r.get("id"), name: r.get("name"), lat: r.get("lat"), lon: r.get("lon"), type: r.get("type") }));
     return _stopsCache;
 }
