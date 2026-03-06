@@ -44,15 +44,20 @@ async function getAllStops() {
 }
 
 // ── Find nearby stops using JS Haversine (avoids Neo4j float param issue) ────
+const METRO_RADIUS_M = 2000; // walk up to 2km to reach a Metro station
+const BUS_RADIUS_M = 1200; // keep bus stops within 1.2km
 async function nearbyStops(lat, lon) {
     const all = await getAllStops();
     const sorted = all
         .map(s => ({ ...s, dist: haversine(lat, lon, s.lat, s.lon) }))
         .sort((a, b) => a.dist - b.dist);
-    const buses = sorted.filter(s => s.type !== "metro").slice(0, 5);
-    const metros = sorted.filter(s => s.type === "metro").slice(0, 3);
-    return [...buses, ...metros].sort((a, b) => a.dist - b.dist);
+    const buses = sorted.filter(s => s.type !== "metro" && s.dist <= BUS_RADIUS_M).slice(0, 6);
+    const metros = sorted.filter(s => s.type === "metro" && s.dist <= METRO_RADIUS_M).slice(0, 3);
+    // If no buses within radius, take the 5 closest regardless
+    const fallbackBuses = buses.length ? buses : sorted.filter(s => s.type !== "metro").slice(0, 5);
+    return [...fallbackBuses, ...metros].sort((a, b) => a.dist - b.dist);
 }
+
 
 // ── Find shortest path in Neo4j ───────────────────────────────────────────────
 async function findRoute(fromId, toId) {
@@ -142,7 +147,57 @@ router.get("/", async (req, res) => {
             }
         }
 
+        // ── Bus-to-Metro combo fallback ─────────────────────────────────────
+        // If no combo found yet, try: bus from origin → nearest Metro stop → Metro to dest
+        if (!bestCombo) {
+            const all = await getAllStops();
+            const metroStops = all.filter(s => s.type === "metro")
+                .map(s => ({ ...s, distFromO: haversine(fLat, fLon, s.lat, s.lon) }))
+                .sort((a, b) => a.distFromO - b.distFromO)
+                .slice(0, 5);  // top 5 nearest Metro stations to origin
+
+            const dMetros = all.filter(s => s.type === "metro")
+                .map(s => ({ ...s, distFromD: haversine(tLat, tLon, s.lat, s.lon) }))
+                .sort((a, b) => a.distFromD - b.distFromD)
+                .slice(0, 5);  // top 5 nearest Metro stations to destination
+
+            for (const busStop of oStops.filter(s => s.type !== "metro").slice(0, 5)) {
+                for (const boardMetro of metroStops) {
+                    // Try bus from origin stop → Metro boarding stop
+                    const busLeg = await findRoute(busStop.id, boardMetro.id);
+                    if (!busLeg || busLeg.cls !== "bus") continue;
+
+                    for (const alightMetro of dMetros) {
+                        if (boardMetro.id === alightMetro.id) continue;
+                        // Try Metro from boarding → alighting
+                        const metroLeg = await findRoute(boardMetro.id, alightMetro.id);
+                        if (!metroLeg || metroLeg.cls !== "metro") continue;
+
+                        const oWalk = busStop.dist;
+                        const dWalk = alightMetro.distFromD;
+                        const totalMins = walkMin(oWalk) + busLeg.totalMin + metroLeg.totalMin + walkMin(dWalk);
+                        const tf = busLeg.legs.reduce((s, l) => s + fare(l.route.type, l.stops.length - 1), 0)
+                            + metroLeg.legs.reduce((s, l) => s + fare(l.route.type, l.stops.length - 1), 0);
+                        const arr = new Date(baseTime.getTime() + totalMins * 60000);
+                        const comboEntry = {
+                            cls: "combo", type: "interchange",
+                            legs: [...busLeg.legs, ...metroLeg.legs],
+                            hops: busLeg.hops + metroLeg.hops,
+                            totalMins: Math.round(totalMins), fare: tf,
+                            depart: baseTime.toLocaleTimeString("en-IN", { hour: "2-digit", minute: "2-digit", hour12: true }),
+                            arrive: arr.toLocaleTimeString("en-IN", { hour: "2-digit", minute: "2-digit", hour12: true }),
+                            nextDep: nextDep(0, baseTime),
+                            oStop: { id: busStop.id, lat: busStop.lat, lon: busStop.lon, name: busStop.name, walkMin: walkMin(oWalk) },
+                            dStop: { id: alightMetro.id, lat: alightMetro.lat, lon: alightMetro.lon, name: alightMetro.name, walkMin: walkMin(dWalk) },
+                        };
+                        if (!bestCombo || totalMins < bestCombo.totalMins) bestCombo = comboEntry;
+                    }
+                }
+            }
+        }
+
         res.json({ bus: bestBus, metro: bestMetro, combo: bestCombo, cab, from: { lat: fLat, lon: fLon }, to: { lat: tLat, lon: tLon } });
+
     } catch (e) {
         console.error(e);
         res.status(500).json({ error: e.message });

@@ -260,22 +260,10 @@ export default function App() {
   const stats = { stops: stopsJson.length, routes: routesJson.length };
 
   // ─── Journey card ─────────────────────────────────────────────────────────
-  function JCard({ hit, accent, badge, icon, label }) {
+  function JCard({ hit, accent, icon, label }) {
     if (!hit) return null;
-    const { result, oStop, dStop, oWalkM, dWalkM, totalMins, baseTime } = hit;
-
-    // departure depends on mode
-    let depart = baseTime;
-    if (timeMode === "arrive") {
-      const targetArr = parseTimeInput(timeInput);
-      depart = new Date(targetArr.getTime() - totalMins * 60000);
-    }
-    const arrivalTime = addMin(depart, totalMins);
-    const isDark = true; // always show colored border
-    const fare = result.legs.reduce((sum, l) => {
-      const isM = [1, 2].includes(l.route.route_type);
-      return sum + (isM ? 45 : bmtcFare(l.stops.length - 1));
-    }, 0);
+    // API shape: { cls, type, legs, hops, totalMins, fare, depart, arrive, nextDep, oStop, dStop }
+    const { legs, hops, totalMins, fare, depart, arrive, nextDep, oStop, dStop, type } = hit;
 
     return (
       <div className="jcard" style={{ borderTopColor: accent }}>
@@ -285,14 +273,12 @@ export default function App() {
             <span className="jcard-mode-icon">{icon}</span>
             <div>
               <div className="jcard-label">{label}</div>
-              <div className="jcard-sub">{result.type === "interchange" ? "1 change" : "Direct"} · {result.hops} stops</div>
+              <div className="jcard-sub">{type === "interchange" ? "1 change" : "Direct"} · {hops} stops</div>
             </div>
           </div>
           <div className="jcard-summary-right">
             <div className="jcard-time">{Math.round(totalMins)} <span>min</span></div>
-            <div className="jcard-window">
-              {fmtTime(depart)} → {fmtTime(arrivalTime)}
-            </div>
+            <div className="jcard-window">{depart} → {arrive}</div>
             <div className="jcard-fare">₹{fare}</div>
           </div>
         </div>
@@ -303,15 +289,13 @@ export default function App() {
           <div className="tl-row">
             <div className="tl-dot tl-walk" />
             <div className="tl-body">
-              <span className="tl-label">Walk {walkMin(oWalkM)} min</span>
-              <span className="tl-stop">{walkKm(oWalkM)} km to {oStop.name}</span>
-              <a href={walkLink(oStop, originLoc)} target="_blank" rel="noreferrer" className="tl-link">Directions ↗</a>
+              <span className="tl-label">Walk ~{oStop?.walkMin} min</span>
+              <span className="tl-stop">to {oStop?.name}</span>
             </div>
           </div>
 
-          {result.legs.map((leg, i) => {
-            const isMetro = [1, 2].includes(leg.route.route_type);
-            const nextDep = isMetro ? nextMetroDeparture(depart) : nextBmtcDeparture(depart);
+          {legs && legs.map((leg, i) => {
+            const isMetro = leg.route.type === 1;
             const board = leg.stops[0], alight = leg.stops[leg.stops.length - 1];
             const dot = isMetro ? "tl-dot-metro" : "tl-dot-bus";
             return (
@@ -320,18 +304,17 @@ export default function App() {
                 <div className="tl-body">
                   <div className="tl-route-row">
                     <span className={`tl-badge ${isMetro ? "tl-badge-metro" : "tl-badge-bus"}`}>
-                      {leg.route.short_name}
+                      {leg.route.name}
                     </span>
-                    <span className="tl-label">{leg.route.long_name}</span>
                   </div>
                   <span className="tl-stop">
                     Board <strong>{board?.name}</strong> → Alight <strong>{alight?.name}</strong>
-                    &nbsp;&middot;&nbsp;{leg.stops.length - 1} stop{leg.stops.length !== 2 ? "s" : ""}
+                    &nbsp;·&nbsp;{leg.stops.length - 1} stop{leg.stops.length !== 2 ? "s" : ""}
                   </span>
-                  {nextDep && (
+                  {i === 0 && nextDep && (
                     <span className="tl-dep">
                       <span className="tl-dep-dot" />
-                      Next: {fmtTime(nextDep)} ({isMetro ? "📋 Schedule" : "📋 Schedule"})
+                      Next: {nextDep}
                     </span>
                   )}
                   <details className="tl-stops-detail">
@@ -347,9 +330,8 @@ export default function App() {
           <div className="tl-row">
             <div className="tl-dot tl-dest" />
             <div className="tl-body">
-              <span className="tl-label">Walk {walkMin(dWalkM)} min</span>
-              <span className="tl-stop">{walkKm(dWalkM)} km from {dStop.name} to destination</span>
-              <a href={walkLink({ latitude: destLoc.lat, longitude: destLoc.lon }, { lat: dStop.latitude, lon: dStop.longitude })} target="_blank" rel="noreferrer" className="tl-link">Directions ↗</a>
+              <span className="tl-label">Walk ~{dStop?.walkMin} min</span>
+              <span className="tl-stop">from {dStop?.name} to destination</span>
             </div>
           </div>
         </div>
@@ -357,7 +339,9 @@ export default function App() {
     );
   }
 
+
   return (
+
     <div className="app-root">
       {/* ── Top nav ────────────────────────────────────────────────────────── */}
       <header className="top-nav">
