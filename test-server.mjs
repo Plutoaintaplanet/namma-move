@@ -12,15 +12,20 @@ const server = spawn("node", ["api/index.cjs"], { env: process.env, stdio: "inhe
 
 setTimeout(async () => {
     try {
-        const fLat = 13.1009, fLon = 77.5963; // Yelahanka
-        const tLat = 12.8399, tLon = 77.6770; // Electronic City
-        console.log("Fetching route...");
+        const fLat = 12.9716, fLon = 77.5961; // UB City
+        const tLat = 12.9609, tLon = 77.6387; // Domlur
+        console.log("Fetching route via API...");
         const res = await fetch(`http://localhost:4000/api/route?fromLat=${fLat}&fromLon=${fLon}&toLat=${tLat}&toLon=${tLon}`);
         const data = await res.json();
-        console.log("Response:", JSON.stringify(data).substring(0, 150) + "...");
         if (!data.bus && !data.metro && !data.combo) {
-            console.log("No routes found! HOP LIMIT BUG IDENTIFIED.");
+            console.log(JSON.stringify(data, null, 2));
+            console.log("No routes found! API BUG.");
         } else {
+            console.log("Response:", JSON.stringify({
+                bus: data.bus ? data.bus.totalMins : null,
+                metro: data.metro ? data.metro.totalMins : null,
+                combo: data.combo ? data.combo.totalMins : null
+            }));
             console.log("Routes found.");
         }
     } catch (e) {

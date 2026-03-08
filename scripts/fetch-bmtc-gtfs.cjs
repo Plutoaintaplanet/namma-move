@@ -208,6 +208,8 @@ async function main() {
     const tmpZip = path.join(__dirname, "bmtc_gtfs_tmp.zip");
 
     const SOURCES = [
+        "https://github.com/Vonter/bmtc-gtfs/raw/master/bmtc_gtfs.zip",
+        "https://github.com/anikets95/bmtc-data/raw/master/bmtc_gtfs.zip",
         "https://transitfeeds.com/p/bmtc/1066/latest/download",
         "https://github.com/opentransittools/open-bus-data/raw/main/bangalore/bmtc_gtfs.zip",
     ];

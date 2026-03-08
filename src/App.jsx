@@ -1,6 +1,8 @@
 import { useEffect, useState, useCallback, useRef } from "react";
 import DualMapPicker from "./DualMapPicker";
 import NewsPage from "./NewsPage";
+import { FloatingPaths } from "./components/ui/background-paths";
+import { Preloader } from "./components/ui/preloader";
 import stopsJson from "./data/gtfs_stops.json";
 import routesJson from "./data/gtfs_routes.json";
 import routeStopsJson from "./data/gtfs_route_stops.json";
@@ -156,6 +158,7 @@ function nextBmtcDeparture(baseTime) {
 const NAV = ["Home", "News"];
 
 export default function App() {
+  const [preloaderDone, setPreloaderDone] = useState(false);
   const [darkMode, setDarkMode] = useState(() => {
     try { return localStorage.getItem("nm-dark") === "1"; } catch { return false; }
   });
@@ -209,7 +212,7 @@ export default function App() {
     setLoading(true); setSearched(true);
     setBusHit(null); setMetroHit(null); setComboHit(null); setNoRoute("");
 
-    const baseUrl = import.meta.env.VITE_API_URL || "http://localhost:4001/api";
+    const baseUrl = import.meta.env.VITE_API_URL || "http://localhost:4000/api";
     let url = `${baseUrl}/route?fromLat=${origin.lat}&fromLon=${origin.lon}&toLat=${dest.lat}&toLon=${dest.lon}`;
 
     if (timeMode !== "now") {
@@ -341,167 +344,173 @@ export default function App() {
 
 
   return (
-
-    <div className="app-root">
-      {/* ── Top nav ────────────────────────────────────────────────────────── */}
-      <header className="top-nav">
-        <div className="nav-left">
-          <img src="/logo.png" alt="Namma Move" className="nav-logo" />
-          <span className="logo-text">Namma Move</span>
+    <>
+      {!preloaderDone && <Preloader onComplete={() => setPreloaderDone(true)} />}
+      <div className={`app-root relative min-h-screen z-0 ${!preloaderDone ? "h-screen overflow-hidden" : ""}`}>
+        <div className="absolute inset-0 pointer-events-none z-[-1] overflow-hidden">
+          <FloatingPaths position={1} />
+          <FloatingPaths position={-1} />
         </div>
-        <nav className="nav-links">
-          {NAV.map(n => (
-            <button key={n} className={`nav-link ${activePage === n ? "active" : ""}`} onClick={() => setActivePage(n)}>
-              {n === "Home" ? "🏠" : "📰"} {n}
-            </button>
-          ))}
-        </nav>
-        <button className="dark-toggle" onClick={() => setDarkMode(d => !d)}>{darkMode ? "☀️" : "🌙"}</button>
-      </header>
-
-      {activePage === "News" && (
-        <main className="main-layout"><NewsPage darkMode={darkMode} /></main>
-      )}
-
-      {activePage === "Home" && (
-        <main className="main-layout">
-          <div className="hero">
-            <h1 className="hero-title">Namma Move</h1>
-            <div className="hero-pills">
-              <span className="hero-pill">{stats.routes} routes · {stats.stops} stops</span>
-              {gpsLoading && <span className="hero-pill gps-loading">📍 Getting location…</span>}
-              {gpsError && <span className="hero-pill gps-err">⚠ {gpsError}</span>}
-              {!gpsLoading && !gpsError && originLoc && (
-                <span className="hero-pill gps-ok">📍 Location set</span>
-              )}
-            </div>
+        {/* ── Top nav ────────────────────────────────────────────────────────── */}
+        <header className="top-nav relative z-50">
+          <div className="nav-left">
+            <img src="/logo.png" alt="Namma Move" className="nav-logo" />
+            <span className="logo-text">Namma Move</span>
           </div>
+          <nav className="nav-links">
+            {NAV.map(n => (
+              <button key={n} className={`nav-link ${activePage === n ? "active" : ""}`} onClick={() => setActivePage(n)}>
+                {n === "Home" ? "🏠" : "📰"} {n}
+              </button>
+            ))}
+          </nav>
+          <button className="dark-toggle" onClick={() => setDarkMode(d => !d)}>{darkMode ? "☀️" : "🌙"}</button>
+        </header>
 
-          {/* ── Search panel ────────────────────────────────────────────── */}
-          <div className="search-panel">
-            <DualMapPicker
-              onOriginSelected={loc => { setOriginLoc(loc); setSearched(false); }}
-              onDestinationSelected={loc => { setDestLoc(loc); setSearched(false); }}
-              initialOrigin={originLoc}
-            />
+        {activePage === "News" && (
+          <main className="main-layout relative z-10"><NewsPage darkMode={darkMode} /></main>
+        )}
 
-            {/* Departure time picker */}
-            <div className="time-picker">
-              <div className="time-mode-tabs">
-                {[["now", "Leave now"], ["leave", "Leave at"], ["arrive", "Arrive by"]].map(([m, l]) => (
-                  <button key={m} className={`time-tab ${timeMode === m ? "active" : ""}`} onClick={() => setTimeMode(m)}>{l}</button>
-                ))}
-              </div>
-              {timeMode !== "now" && (
-                <input
-                  type="time"
-                  className="time-input"
-                  value={timeInput}
-                  onChange={e => setTimeInput(e.target.value)}
-                />
-              )}
-            </div>
-
-            <button
-              className={`search-btn ${!bothSet ? "disabled" : ""}`}
-              onClick={handleSearch}
-              disabled={!bothSet || loading}
-            >
-              {loading ? "⏳ Searching…" : "🔍 Search Routes"}
-            </button>
-          </div>
-
-          {/* ── No route hint ────────────────────────────────────────────── */}
-          {!bothSet && !searched && (
-            <p className="hint-msg">📌 Set start and destination above, then tap Search Routes.</p>
-          )}
-
-          {/* ── Results ─────────────────────────────────────────────────── */}
-          {searched && !loading && (
-            <section className="results">
-              <h2 className="results-title">
-                Travel options
-                {timeMode !== "now" && (
-                  <span className="results-time-badge">
-                    {timeMode === "leave" ? `Leaving ${timeInput}` : `Arriving by ${timeInput}`}
-                  </span>
+        {activePage === "Home" && (
+          <main className="main-layout relative z-10">
+            <div className="hero">
+              <h1 className="hero-title">Namma Move</h1>
+              <div className="hero-pills">
+                <span className="hero-pill">{stats.routes} routes · {stats.stops} stops</span>
+                {gpsLoading && <span className="hero-pill gps-loading">📍 Getting location…</span>}
+                {gpsError && <span className="hero-pill gps-err">⚠ {gpsError}</span>}
+                {!gpsLoading && !gpsError && originLoc && (
+                  <span className="hero-pill gps-ok">📍 Location set</span>
                 )}
-              </h2>
+              </div>
+            </div>
 
-              {noRoute && !busHit && !metroHit && !comboHit && (
-                <div className="no-route">
-                  <span>🚫</span>
-                  <div>
-                    <strong>No transit route found</strong>
-                    <p>Try adjusting your locations or use a cab below.</p>
-                  </div>
+            {/* ── Search panel ────────────────────────────────────────────── */}
+            <div className="search-panel">
+              <DualMapPicker
+                onOriginSelected={loc => { setOriginLoc(loc); setSearched(false); }}
+                onDestinationSelected={loc => { setDestLoc(loc); setSearched(false); }}
+                initialOrigin={originLoc}
+              />
+
+              {/* Departure time picker */}
+              <div className="time-picker">
+                <div className="time-mode-tabs">
+                  {[["now", "Leave now"], ["leave", "Leave at"], ["arrive", "Arrive by"]].map(([m, l]) => (
+                    <button key={m} className={`time-tab ${timeMode === m ? "active" : ""}`} onClick={() => setTimeMode(m)}>{l}</button>
+                  ))}
                 </div>
-              )}
-
-              <div className="jcards-col">
-                <JCard hit={busHit} accent="var(--teal)" icon="🚌" label="BMTC Bus" />
-                <JCard hit={metroHit} accent="var(--purple)" icon="🚇" label="Namma Metro" />
-                <JCard hit={comboHit} accent="#f59e0b" icon="🔀" label="Bus + Metro" />
+                {timeMode !== "now" && (
+                  <input
+                    type="time"
+                    className="time-input"
+                    value={timeInput}
+                    onChange={e => setTimeInput(e.target.value)}
+                  />
+                )}
               </div>
 
-              {/* Cab / Auto card */}
-              {cabInfo && (
-                <div className="jcard cab-jcard">
-                  <div className="jcard-summary">
-                    <div className="jcard-summary-left">
-                      <span className="jcard-mode-icon">🛺</span>
-                      <div>
-                        <div className="jcard-label">Auto / Cab</div>
-                        <div className="jcard-sub">{cabInfo.km} km straight-line</div>
-                      </div>
+              <button
+                className={`search-btn ${!bothSet ? "disabled" : ""}`}
+                onClick={handleSearch}
+                disabled={!bothSet || loading}
+              >
+                {loading ? "⏳ Searching…" : "🔍 Search Routes"}
+              </button>
+            </div>
+
+            {/* ── No route hint ────────────────────────────────────────────── */}
+            {!bothSet && !searched && (
+              <p className="hint-msg">📌 Set start and destination above, then tap Search Routes.</p>
+            )}
+
+            {/* ── Results ─────────────────────────────────────────────────── */}
+            {searched && !loading && (
+              <section className="results">
+                <h2 className="results-title">
+                  Travel options
+                  {timeMode !== "now" && (
+                    <span className="results-time-badge">
+                      {timeMode === "leave" ? `Leaving ${timeInput}` : `Arriving by ${timeInput}`}
+                    </span>
+                  )}
+                </h2>
+
+                {noRoute && !busHit && !metroHit && !comboHit && (
+                  <div className="no-route">
+                    <span>🚫</span>
+                    <div>
+                      <strong>No transit route found</strong>
+                      <p>Try adjusting your locations or use a cab below.</p>
                     </div>
                   </div>
-                  <div className="cab-rows">
-                    <div className="cab-row">
-                      <div className="cab-mode"><span>🛺</span> Auto (Meter)</div>
-                      <div className="cab-info">
-                        <span className="cab-fare">₹{cabInfo.autoFare}</span>
-                        <span className="cab-time">~{cabInfo.autoMin} min</span>
-                        <a href={rideLink("rapido")} target="_blank" rel="noreferrer" className="ride-btn rapido-btn">Rapido</a>
-                      </div>
-                    </div>
-                    <div className="cab-divider" />
-                    <div className="cab-row">
-                      <div className="cab-mode"><span>🚕</span> Cab</div>
-                      <div className="cab-info">
-                        <span className="cab-fare">₹{cabInfo.cabFare}</span>
-                        <span className="cab-time">~{cabInfo.cabMin} min</span>
-                        <div className="ride-btn-group">
-                          <a href={rideLink("ola")} target="_blank" rel="noreferrer" className="ride-btn ola-btn">Ola</a>
-                          <a href={rideLink("uber")} target="_blank" rel="noreferrer" className="ride-btn uber-btn">Uber</a>
+                )}
+
+                <div className="jcards-col">
+                  <JCard hit={busHit} accent="var(--teal)" icon="🚌" label="BMTC Bus" />
+                  <JCard hit={metroHit} accent="var(--purple)" icon="🚇" label="Namma Metro" />
+                  <JCard hit={comboHit} accent="#f59e0b" icon="🔀" label="Bus + Metro" />
+                </div>
+
+                {/* Cab / Auto card */}
+                {cabInfo && (
+                  <div className="jcard cab-jcard">
+                    <div className="jcard-summary">
+                      <div className="jcard-summary-left">
+                        <span className="jcard-mode-icon">🛺</span>
+                        <div>
+                          <div className="jcard-label">Auto / Cab</div>
+                          <div className="jcard-sub">{cabInfo.km} km straight-line</div>
                         </div>
                       </div>
                     </div>
-                    <div className="cab-divider" />
-                    <div className="cab-row">
-                      <div className="cab-mode"><span>🏍</span> Bike</div>
-                      <div className="cab-info">
-                        <span className="cab-fare">₹{cabInfo.bikeFare}</span>
-                        <span className="cab-time">~{cabInfo.bikeMin} min</span>
-                        <a href={rideLink("rapido")} target="_blank" rel="noreferrer" className="ride-btn rapido-btn">Rapido</a>
+                    <div className="cab-rows">
+                      <div className="cab-row">
+                        <div className="cab-mode"><span>🛺</span> Auto (Meter)</div>
+                        <div className="cab-info">
+                          <span className="cab-fare">₹{cabInfo.autoFare}</span>
+                          <span className="cab-time">~{cabInfo.autoMin} min</span>
+                          <a href={rideLink("rapido")} target="_blank" rel="noreferrer" className="ride-btn rapido-btn">Rapido</a>
+                        </div>
                       </div>
+                      <div className="cab-divider" />
+                      <div className="cab-row">
+                        <div className="cab-mode"><span>🚕</span> Cab</div>
+                        <div className="cab-info">
+                          <span className="cab-fare">₹{cabInfo.cabFare}</span>
+                          <span className="cab-time">~{cabInfo.cabMin} min</span>
+                          <div className="ride-btn-group">
+                            <a href={rideLink("ola")} target="_blank" rel="noreferrer" className="ride-btn ola-btn">Ola</a>
+                            <a href={rideLink("uber")} target="_blank" rel="noreferrer" className="ride-btn uber-btn">Uber</a>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="cab-divider" />
+                      <div className="cab-row">
+                        <div className="cab-mode"><span>🏍</span> Bike</div>
+                        <div className="cab-info">
+                          <span className="cab-fare">₹{cabInfo.bikeFare}</span>
+                          <span className="cab-time">~{cabInfo.bikeMin} min</span>
+                          <a href={rideLink("rapido")} target="_blank" rel="noreferrer" className="ride-btn rapido-btn">Rapido</a>
+                        </div>
+                      </div>
+                      <p className="cab-disclaimer">* Auto: ₹30 base + ₹15/km · Cab surge may vary</p>
                     </div>
-                    <p className="cab-disclaimer">* Auto: ₹30 base + ₹15/km · Cab surge may vary</p>
                   </div>
-                </div>
-              )}
-            </section>
-          )}
-        </main>
-      )}
+                )}
+              </section>
+            )}
+          </main>
+        )}
 
-      <footer className="bottom-nav">
-        {NAV.map(n => (
-          <button key={n} className={`bottom-item ${activePage === n ? "active" : ""}`} onClick={() => setActivePage(n)}>
-            {n === "Home" ? "🏠 Home" : "📰 News"}
-          </button>
-        ))}
-      </footer>
-    </div>
+        <footer className="bottom-nav">
+          {NAV.map(n => (
+            <button key={n} className={`bottom-item ${activePage === n ? "active" : ""}`} onClick={() => setActivePage(n)}>
+              {n === "Home" ? "🏠 Home" : "📰 News"}
+            </button>
+          ))}
+        </footer>
+      </div>
+    </>
   );
 }

@@ -44,8 +44,8 @@ async function getAllStops() {
 }
 
 // ── Find nearby stops using JS Haversine (avoids Neo4j float param issue) ────
-const METRO_RADIUS_M = 2000;
-const BUS_RADIUS_M = 1200;
+const METRO_RADIUS_M = 6000;
+const BUS_RADIUS_M = 1500;
 async function nearbyStops(lat, lon) {
     const all = await getAllStops();
     const sorted = all
