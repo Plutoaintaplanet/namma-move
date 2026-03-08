@@ -209,8 +209,7 @@ export default function App() {
     setLoading(true); setSearched(true);
     setBusHit(null); setMetroHit(null); setComboHit(null); setNoRoute("");
 
-    const isProd = import.meta.env.PROD;
-    const baseUrl = isProd ? "/api" : (import.meta.env.VITE_API_URL || "http://localhost:4000/api");
+    const baseUrl = import.meta.env.VITE_API_URL || "http://localhost:4001/api";
     let url = `${baseUrl}/route?fromLat=${origin.lat}&fromLon=${origin.lon}&toLat=${dest.lat}&toLon=${dest.lon}`;
 
     if (timeMode !== "now") {
