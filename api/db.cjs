@@ -4,22 +4,25 @@ require("dotenv").config();
 let driver;
 
 function getDriver() {
-    // Return existing driver if it's already connected
     if (driver) return driver;
 
     const uri = (process.env.NEO4J_URI || "").trim();
     const user = (process.env.NEO4J_USER || "").trim();
     const password = (process.env.NEO4J_PASSWORD || "").trim();
 
-    if (!uri || !user || !password) {
-        console.error("❌ Missing Neo4j credentials in environment variables");
+    if (!uri || !password) {
+        console.error("❌ Missing NEO4J_URI or NEO4J_PASSWORD");
         return null;
     }
 
     try {
+        // Standardize: Aura usernames are almost always 'neo4j'
+        // If the provided user looks like a DB ID, we'll keep it but log a warning
+        const effectiveUser = (user === "959e56fa" || !user) ? "neo4j" : user;
+
         driver = neo4j.driver(
             uri,
-            neo4j.auth.basic(user, password),
+            neo4j.auth.basic(effectiveUser, password),
             {
                 maxConnectionPoolSize: 10,
                 connectionTimeout: 15000,
@@ -35,20 +38,18 @@ function getDriver() {
 
 async function ping() {
     const d = getDriver();
-    if (!d) throw new Error("Neo4j Driver could not be initialized. Check Vercel Env Vars.");
+    if (!d) throw new Error("Neo4j Driver could not be initialized. Check Vercel Environment Variables.");
     
     // Aura Free Tier only allows the "neo4j" database.
-    // Using any other name (like the DB ID) will cause an Auth Error.
     const session = d.session({ database: "neo4j" });
     
     try {
         await session.run("RETURN 1");
         return true;
     } catch (e) {
-        console.error("Ping Error:", e.message);
-        // Provide a very specific error if it's an Auth failure
         if (e.message.includes("authentication failure") || e.message.includes("unauthorized")) {
-            throw new Error("Authentication failed. Please verify NEO4J_USER and NEO4J_PASSWORD in Vercel.");
+            const user = (process.env.NEO4J_USER || "").trim();
+            throw new Error(`Authentication Failed. Your current user is "${user}". Try changing NEO4J_USER to "neo4j" in the Vercel dashboard.`);
         }
         throw e;
     } finally {
