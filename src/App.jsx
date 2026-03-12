@@ -1,6 +1,7 @@
-import { useEffect, useState, useCallback, useRef } from "react";
+import { useEffect, useState, useCallback, useRef, useMemo } from "react";
 import DualMapPicker from "./DualMapPicker";
 import NewsPage from "./NewsPage";
+import SchedulesPage from "./SchedulesPage";
 import { FloatingPaths } from "./components/ui/background-paths";
 import { Preloader } from "./components/ui/preloader";
 import stopsJson from "./data/gtfs_stops.json";
@@ -15,147 +16,7 @@ function distM(lat1, lon1, lat2, lon2) {
   return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 }
 
-// ─── Find nearby stops — always returns at least minCount ────────────────────
-function findNearbyStops(stops, lat, lon, radiusM = 3000, minCount = 8) {
-  const sorted = stops
-    .map(s => ({ ...s, distance: distM(lat, lon, s.latitude, s.longitude) }))
-    .sort((a, b) => a.distance - b.distance);
-  const inR = sorted.filter(s => s.distance <= radiusM);
-  return inR.length >= minCount ? inR : sorted.slice(0, minCount);
-}
-
-// ─── Fare helpers ─────────────────────────────────────────────────────────────
-function estimateCab(distM_) {
-  const km = distM_ / 1000;
-  return {
-    km: km.toFixed(1),
-    autoFare: km <= 1.9 ? 30 : Math.round(30 + (km - 1.9) * 15),
-    autoMin: Math.max(5, Math.round((km / 24) * 60)),
-    cabFare: Math.max(60, Math.round(km * 14)),
-    cabMin: Math.max(5, Math.round((km / 21) * 60)),
-    bikeMin: Math.max(4, Math.round((km / 30) * 60)),
-    bikeFare: Math.max(30, Math.round(km * 8)),
-  };
-}
-
-function walkMin(m) { return Math.max(1, Math.round(m / 78)); }
-function walkKm(m) { return (m / 1000).toFixed(2); }
-
-// ─── Pre-build stop/route indexes ────────────────────────────────────────────
-const stopsById = Object.fromEntries(stopsJson.map(s => [s.id, s]));
-
-const orderedCache = {};
-routesJson.forEach(r => {
-  orderedCache[r.id] = routeStopsJson
-    .filter(rs => rs.route_id === r.id)
-    .sort((a, b) => a.stop_sequence - b.stop_sequence);
-});
-
-const routesByStop = {};
-routeStopsJson.forEach(rs => {
-  if (!routesByStop[rs.stop_id]) routesByStop[rs.stop_id] = new Set();
-  routesByStop[rs.stop_id].add(rs.route_id);
-});
-
-// ─── The router ──────────────────────────────────────────────────────────────
-function findRoute(originId, destId) {
-  // Direct
-  let best = null;
-  routesJson.forEach(route => {
-    const ord = orderedCache[route.id];
-    const oI = ord.findIndex(rs => rs.stop_id === originId);
-    const dI = ord.findIndex(rs => rs.stop_id === destId);
-    if (oI !== -1 && dI !== -1 && oI < dI) {
-      const hops = dI - oI, isM = [1, 2].includes(route.route_type);
-      const mins = hops * (isM ? 2.5 : 4);
-      if (!best || mins < best.mins)
-        best = { type: "direct", legs: [{ route, stops: ord.slice(oI, dI + 1).map(rs => stopsById[rs.stop_id]).filter(Boolean) }], hops, mins };
-    }
-  });
-  if (best) return best;
-
-  // 1-interchange
-  let bestM = null;
-  for (const rAId of Array.from(routesByStop[originId] || [])) {
-    const ordA = orderedCache[rAId] || [];
-    const oIA = ordA.findIndex(rs => rs.stop_id === originId);
-    if (oIA === -1) continue;
-    for (let i = oIA + 1; i < ordA.length; i++) {
-      const mid = ordA[i].stop_id;
-      for (const rBId of Array.from(routesByStop[mid] || [])) {
-        if (rBId === rAId) continue;
-        const ordB = orderedCache[rBId] || [];
-        const mIB = ordB.findIndex(rs => rs.stop_id === mid);
-        const dIB = ordB.findIndex(rs => rs.stop_id === destId);
-        if (mIB === -1 || dIB === -1 || mIB >= dIB) continue;
-        const rA = routesJson.find(r => r.id === rAId), rB = routesJson.find(r => r.id === rBId);
-        const hA = i - oIA, hB = dIB - mIB;
-        const mins = hA * ([1, 2].includes(rA?.route_type) ? 2.5 : 4) + hB * ([1, 2].includes(rB?.route_type) ? 2.5 : 4) + 5;
-        if (!bestM || mins < bestM.mins)
-          bestM = {
-            type: "interchange", legs: [
-              { route: rA, stops: ordA.slice(oIA, i + 1).map(rs => stopsById[rs.stop_id]).filter(Boolean) },
-              { route: rB, stops: ordB.slice(mIB, dIB + 1).map(rs => stopsById[rs.stop_id]).filter(Boolean) }
-            ], hops: hA + hB, mins
-          };
-      }
-    }
-  }
-  return bestM;
-}
-
-// ─── Classify: bus / metro / combo ───────────────────────────────────────────
-function classify(r) {
-  if (!r) return null;
-  const types = r.legs.map(l => [1, 2].includes(l.route.route_type) ? "metro" : "bus");
-  if (types.includes("metro") && types.includes("bus")) return "combo";
-  if (types.includes("metro")) return "metro";
-  return "bus";
-}
-
-// ─── BMTC fare table ─────────────────────────────────────────────────────────
-function bmtcFare(hops) {
-  if (hops <= 3) return 7;
-  if (hops <= 8) return 10;
-  if (hops <= 14) return 15;
-  return 20;
-}
-
-// ─── Time helpers ─────────────────────────────────────────────────────────────
-function fmtTime(date) {
-  return date.toLocaleTimeString("en-IN", { hour: "2-digit", minute: "2-digit", hour12: true });
-}
-function addMin(date, min) { return new Date(date.getTime() + min * 60000); }
-function parseTimeInput(str) {
-  // "HH:MM" input → today's Date
-  const [h, m] = str.split(":").map(Number);
-  const d = new Date();
-  d.setHours(h, m, 0, 0);
-  return d;
-}
-
-// ─── Next metro departure (schedule-based) ────────────────────────────────────
-function nextMetroDeparture(baseTime) {
-  const h = baseTime.getHours(), m = baseTime.getMinutes();
-  const inService = h >= 5 && (h < 22 || (h === 22 && m < 30));
-  if (!inService) return null;
-  const peak = (h >= 7 && h < 10) || (h >= 17 && h < 20);
-  const freq = peak ? 6 : 10;
-  const waitMin = freq - (m % freq);
-  return addMin(baseTime, waitMin > freq ? 0 : waitMin);
-}
-
-function nextBmtcDeparture(baseTime) {
-  const h = baseTime.getHours();
-  const inService = h >= 5 && h < 23;
-  if (!inService) return null;
-  const peak = (h >= 7 && h < 10) || (h >= 17 && h < 20);
-  const freq = peak ? 8 : 15;
-  const waitMin = freq - (baseTime.getMinutes() % freq);
-  return addMin(baseTime, waitMin > freq ? 0 : waitMin);
-}
-
-const NAV = ["Home", "News"];
+const NAV = ["Home", "Schedules", "News"];
 
 export default function App() {
   const [preloaderDone, setPreloaderDone] = useState(false);
@@ -188,6 +49,27 @@ export default function App() {
   const [noRoute, setNoRoute] = useState("");
   const [loading, setLoading] = useState(false);
   const [searched, setSearched] = useState(false);
+  const [dbConnected, setDbConnected] = useState(null); // null | true | false
+
+  // ── API URL Helper ────────────────────────────────────────────────────────
+  const getBaseUrl = () => {
+    const isProd = window.location.hostname !== "localhost";
+    return isProd ? "/api" : (import.meta.env.VITE_API_URL || "http://localhost:4001/api");
+  };
+
+  // ── Database health check ──────────────────────────────────────────────────
+  useEffect(() => {
+    const checkDb = async () => {
+      try {
+        const res = await fetch(`${getBaseUrl()}/health`);
+        const data = await res.json();
+        setDbConnected(data.status === "ok");
+      } catch (e) {
+        setDbConnected(false);
+      }
+    };
+    checkDb();
+  }, []);
 
   // ── GPS auto-fetch ────────────────────────────────────────────────────────
   useEffect(() => {
@@ -212,8 +94,7 @@ export default function App() {
     setLoading(true); setSearched(true);
     setBusHit(null); setMetroHit(null); setComboHit(null); setNoRoute("");
 
-    const baseUrl = import.meta.env.VITE_API_URL || "http://localhost:4000/api";
-    let url = `${baseUrl}/route?fromLat=${origin.lat}&fromLon=${origin.lon}&toLat=${dest.lat}&toLon=${dest.lon}`;
+    let url = `${getBaseUrl()}/route?fromLat=${origin.lat}&fromLon=${origin.lon}&toLat=${dest.lat}&toLon=${dest.lon}`;
 
     if (timeMode !== "now") {
       url += `&time=${timeInput}`;
@@ -221,7 +102,10 @@ export default function App() {
 
     try {
       const res = await fetch(url);
-      if (!res.ok) throw new Error("Routing failed");
+      if (!res.ok) {
+        const errData = await res.json().catch(() => ({}));
+        throw new Error(errData.error || "Routing failed");
+      }
       const data = await res.json();
 
       setBusHit(data.bus);
@@ -234,7 +118,7 @@ export default function App() {
       }
     } catch (e) {
       console.error(e);
-      setNoRoute("Error fetching route. Please try again.");
+      setNoRoute(`Routing Error: ${e.message}.`);
     } finally {
       setLoading(false);
     }
@@ -244,11 +128,6 @@ export default function App() {
     if (originLoc && destLoc) compute(originLoc, destLoc);
   };
 
-  // open Google Maps walk
-  const walkLink = (toStop, from) => {
-    if (!from) return "#";
-    return `https://www.google.com/maps/dir/?api=1&origin=${from.lat},${from.lon}&destination=${toStop.latitude},${toStop.longitude}&travelmode=walking`;
-  };
   const rideLink = app => {
     if (!destLoc) return "#";
     const m = {
@@ -261,16 +140,14 @@ export default function App() {
 
   const bothSet = originLoc && destLoc;
   const stats = { stops: stopsJson.length, routes: routesJson.length };
+  const activeStopIds = useMemo(() => new Set(routeStopsJson.map(rs => rs.stop_id)), []);
 
-  // ─── Journey card ─────────────────────────────────────────────────────────
   function JCard({ hit, accent, icon, label }) {
     if (!hit) return null;
-    // API shape: { cls, type, legs, hops, totalMins, fare, depart, arrive, nextDep, oStop, dStop }
     const { legs, hops, totalMins, fare, depart, arrive, nextDep, oStop, dStop, type } = hit;
 
     return (
       <div className="jcard" style={{ borderTopColor: accent }}>
-        {/* Summary bar */}
         <div className="jcard-summary">
           <div className="jcard-summary-left">
             <span className="jcard-mode-icon">{icon}</span>
@@ -286,9 +163,7 @@ export default function App() {
           </div>
         </div>
 
-        {/* Timeline */}
         <div className="timeline">
-          {/* Walk to first stop */}
           <div className="tl-row">
             <div className="tl-dot tl-walk" />
             <div className="tl-body">
@@ -298,8 +173,9 @@ export default function App() {
           </div>
 
           {legs && legs.map((leg, i) => {
-            const isMetro = leg.route.type === 1;
-            const board = leg.stops[0], alight = leg.stops[leg.stops.length - 1];
+            if (!leg.route) return null;
+            const isMetro = leg.mode === 'metro';
+            const board = leg.stops && leg.stops[0], alight = leg.stops && leg.stops[leg.stops.length - 1];
             const dot = isMetro ? "tl-dot-metro" : "tl-dot-bus";
             return (
               <div className="tl-row" key={i}>
@@ -307,12 +183,12 @@ export default function App() {
                 <div className="tl-body">
                   <div className="tl-route-row">
                     <span className={`tl-badge ${isMetro ? "tl-badge-metro" : "tl-badge-bus"}`}>
-                      {leg.route.name}
+                      {leg.route.name || "Transit"}
                     </span>
                   </div>
                   <span className="tl-stop">
-                    Board <strong>{board?.name}</strong> → Alight <strong>{alight?.name}</strong>
-                    &nbsp;·&nbsp;{leg.stops.length - 1} stop{leg.stops.length !== 2 ? "s" : ""}
+                    Board <strong>{board?.name || "Stop"}</strong> → Alight <strong>{alight?.name || "Stop"}</strong>
+                    &nbsp;·&nbsp;{leg.stops ? leg.stops.length - 1 : 0} stop{(leg.stops && leg.stops.length !== 2) ? "s" : ""}
                   </span>
                   {i === 0 && nextDep && (
                     <span className="tl-dep">
@@ -329,7 +205,6 @@ export default function App() {
             );
           })}
 
-          {/* Walk to dest */}
           <div className="tl-row">
             <div className="tl-dot tl-dest" />
             <div className="tl-body">
@@ -342,7 +217,6 @@ export default function App() {
     );
   }
 
-
   return (
     <>
       {!preloaderDone && <Preloader onComplete={() => setPreloaderDone(true)} />}
@@ -351,7 +225,6 @@ export default function App() {
           <FloatingPaths position={1} />
           <FloatingPaths position={-1} />
         </div>
-        {/* ── Top nav ────────────────────────────────────────────────────────── */}
         <header className="top-nav relative z-50">
           <div className="nav-left">
             <img src="/logo.png" alt="Namma Move" className="nav-logo" />
@@ -360,7 +233,7 @@ export default function App() {
           <nav className="nav-links">
             {NAV.map(n => (
               <button key={n} className={`nav-link ${activePage === n ? "active" : ""}`} onClick={() => setActivePage(n)}>
-                {n === "Home" ? "🏠" : "📰"} {n}
+                {n === "Home" ? "🏠" : n === "Schedules" ? "🕒" : "📰"} {n}
               </button>
             ))}
           </nav>
@@ -371,12 +244,28 @@ export default function App() {
           <main className="main-layout relative z-10"><NewsPage darkMode={darkMode} /></main>
         )}
 
+        {activePage === "Schedules" && (
+          <main className="main-layout relative z-10"><SchedulesPage /></main>
+        )}
+
         {activePage === "Home" && (
           <main className="main-layout relative z-10">
             <div className="hero">
               <h1 className="hero-title">Namma Move</h1>
               <div className="hero-pills">
                 <span className="hero-pill">{stats.routes} routes · {stats.stops} stops</span>
+                <span className="hero-pill" style={{ background: 'rgba(124, 58, 237, 0.15)', color: 'var(--purple)', fontWeight: '700' }}>⚡ Metro + Core Bus Active</span>
+                
+                {dbConnected === true && (
+                  <span className="hero-pill" style={{ background: 'rgba(34, 197, 94, 0.15)', color: '#16a34a', fontWeight: '700' }}>✅ Database Connected</span>
+                )}
+                {dbConnected === false && (
+                  <span className="hero-pill" style={{ background: 'rgba(239, 68, 68, 0.15)', color: '#dc2626', fontWeight: '700' }}>⚠️ Database Offline</span>
+                )}
+                {dbConnected === null && (
+                  <span className="hero-pill" style={{ background: 'rgba(158, 200, 185, 0.15)', color: 'var(--text-muted)', fontWeight: '700' }}>⌛ Connecting to DB...</span>
+                )}
+
                 {gpsLoading && <span className="hero-pill gps-loading">📍 Getting location…</span>}
                 {gpsError && <span className="hero-pill gps-err">⚠ {gpsError}</span>}
                 {!gpsLoading && !gpsError && originLoc && (
@@ -385,15 +274,15 @@ export default function App() {
               </div>
             </div>
 
-            {/* ── Search panel ────────────────────────────────────────────── */}
             <div className="search-panel">
               <DualMapPicker
+                stops={stopsJson}
+                activeIds={activeStopIds}
                 onOriginSelected={loc => { setOriginLoc(loc); setSearched(false); }}
                 onDestinationSelected={loc => { setDestLoc(loc); setSearched(false); }}
                 initialOrigin={originLoc}
               />
 
-              {/* Departure time picker */}
               <div className="time-picker">
                 <div className="time-mode-tabs">
                   {[["now", "Leave now"], ["leave", "Leave at"], ["arrive", "Arrive by"]].map(([m, l]) => (
@@ -419,12 +308,10 @@ export default function App() {
               </button>
             </div>
 
-            {/* ── No route hint ────────────────────────────────────────────── */}
             {!bothSet && !searched && (
               <p className="hint-msg">📌 Set start and destination above, then tap Search Routes.</p>
             )}
 
-            {/* ── Results ─────────────────────────────────────────────────── */}
             {searched && !loading && (
               <section className="results">
                 <h2 className="results-title">
@@ -441,7 +328,7 @@ export default function App() {
                     <span>🚫</span>
                     <div>
                       <strong>No transit route found</strong>
-                      <p>Try adjusting your locations or use a cab below.</p>
+                      <p>{noRoute}</p>
                     </div>
                   </div>
                 )}
@@ -452,7 +339,6 @@ export default function App() {
                   <JCard hit={comboHit} accent="#f59e0b" icon="🔀" label="Bus + Metro" />
                 </div>
 
-                {/* Cab / Auto card */}
                 {cabInfo && (
                   <div className="jcard cab-jcard">
                     <div className="jcard-summary">
@@ -468,8 +354,8 @@ export default function App() {
                       <div className="cab-row">
                         <div className="cab-mode"><span>🛺</span> Auto (Meter)</div>
                         <div className="cab-info">
-                          <span className="cab-fare">₹{cabInfo.autoFare}</span>
-                          <span className="cab-time">~{cabInfo.autoMin} min</span>
+                          <span className="cab-fare">₹{cabInfo.autoFare || '---'}</span>
+                          <span className="cab-time">~{cabInfo.autoMin || '---'} min</span>
                           <a href={rideLink("rapido")} target="_blank" rel="noreferrer" className="ride-btn rapido-btn">Rapido</a>
                         </div>
                       </div>
@@ -477,8 +363,8 @@ export default function App() {
                       <div className="cab-row">
                         <div className="cab-mode"><span>🚕</span> Cab</div>
                         <div className="cab-info">
-                          <span className="cab-fare">₹{cabInfo.cabFare}</span>
-                          <span className="cab-time">~{cabInfo.cabMin} min</span>
+                          <span className="cab-fare">₹{cabInfo.cabFare || '---'}</span>
+                          <span className="cab-time">~{cabInfo.cabMin || '---'} min</span>
                           <div className="ride-btn-group">
                             <a href={rideLink("ola")} target="_blank" rel="noreferrer" className="ride-btn ola-btn">Ola</a>
                             <a href={rideLink("uber")} target="_blank" rel="noreferrer" className="ride-btn uber-btn">Uber</a>
@@ -489,8 +375,8 @@ export default function App() {
                       <div className="cab-row">
                         <div className="cab-mode"><span>🏍</span> Bike</div>
                         <div className="cab-info">
-                          <span className="cab-fare">₹{cabInfo.bikeFare}</span>
-                          <span className="cab-time">~{cabInfo.bikeMin} min</span>
+                          <span className="cab-fare">₹{cabInfo.bikeFare || '---'}</span>
+                          <span className="cab-time">~{cabInfo.bikeMin || '---'} min</span>
                           <a href={rideLink("rapido")} target="_blank" rel="noreferrer" className="ride-btn rapido-btn">Rapido</a>
                         </div>
                       </div>
@@ -506,7 +392,7 @@ export default function App() {
         <footer className="bottom-nav">
           {NAV.map(n => (
             <button key={n} className={`bottom-item ${activePage === n ? "active" : ""}`} onClick={() => setActivePage(n)}>
-              {n === "Home" ? "🏠 Home" : "📰 News"}
+              {n === "Home" ? "🏠 Home" : n === "Schedules" ? "🕒 Schedules" : "📰 News"}
             </button>
           ))}
         </footer>
