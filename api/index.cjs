@@ -8,13 +8,26 @@ app.use(cors());
 app.use(express.json());
 
 // ── Routes ──────────────────────────────────────────────────────────────────
-app.use("/api/stops", require("./routes/stops.cjs"));
-app.use("/api/route", require("./routes/route.cjs"));
-app.use("/api/live", require("./routes/live.cjs"));
-app.use("/api/news", require("./routes/news.cjs"));
+const routeRouter = require("./routes/route.cjs");
+const stopsRouter = require("./routes/stops.cjs");
+const liveRouter = require("./routes/live.cjs");
+const newsRouter = require("./routes/news.cjs");
+
+// Support both /api/route and /route (Vercel rewrites often strip /api)
+app.use("/api/route", routeRouter);
+app.use("/route", routeRouter);
+
+app.use("/api/stops", stopsRouter);
+app.use("/stops", stopsRouter);
+
+app.use("/api/live", liveRouter);
+app.use("/live", liveRouter);
+
+app.use("/api/news", newsRouter);
+app.use("/news", newsRouter);
 
 // ── Health check ────────────────────────────────────────────────────────────
-app.get("/api/health", async (_req, res) => {
+app.get(["/api/health", "/health"], async (_req, res) => {
     try {
         await ping();
         res.json({ status: "ok", db: "neo4j connected", ts: new Date().toISOString() });
