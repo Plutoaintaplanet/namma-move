@@ -1,6 +1,6 @@
 // routes/live.js  — GET /api/live/:stopId
 const express = require("express");
-const { driver } = require("../db.cjs");
+const { getSession } = require("../db.cjs");
 const router = express.Router();
 
 const DB = process.env.NEO4J_DATABASE || "neo4j";
@@ -11,7 +11,7 @@ function fmtTime(d) {
 
 router.get("/:stopId", async (req, res) => {
     const { stopId } = req.params;
-    const session = driver.session({ database: DB });
+    const session = getSession();
     try {
         const result = await session.executeRead(tx =>
             tx.run(

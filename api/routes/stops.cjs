@@ -1,12 +1,12 @@
 // routes/stops.js  — GET /api/stops/nearby?lat=&lon=&r=
 const express = require("express");
-const { driver } = require("../db.cjs");
+const { getSession } = require("../db.cjs");
 const router = express.Router();
 
 const DB = process.env.NEO4J_DATABASE || "neo4j";
 
 async function runRead(cypher, params) {
-    const session = driver.session({ database: DB });
+    const session = getSession();
     try {
         const res = await session.executeRead(tx => tx.run(cypher, params));
         return res.records;

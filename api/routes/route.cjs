@@ -1,6 +1,6 @@
 // api/routes/route.cjs — Optimized for Vercel
 const express = require("express");
-const { driver } = require("../db.cjs");
+const { getSession } = require("../db.cjs");
 const router = express.Router();
 const DB = process.env.NEO4J_DATABASE || "neo4j";
 
@@ -8,7 +8,7 @@ const WALK_SPD = 75;
 function walkMin(m) { return Math.max(1, Math.round(m / WALK_SPD)); }
 
 async function runRead(cypher, params = {}) {
-    const s = driver.session({ database: DB });
+    const s = getSession();
     try {
         const r = await s.executeRead(tx => tx.run(cypher, params));
         return r.records;
@@ -59,7 +59,6 @@ router.get("/", async (req, res) => {
         const dIds = dStops.map(s => s.id);
 
         // ── Optimized Single Cypher Query ──
-        // This finds paths between ANY origin stop and ANY destination stop in one go.
         const cypher = `
             MATCH (a:Stop), (b:Stop)
             WHERE a.id IN $oIds AND b.id IN $dIds AND a.id <> b.id
