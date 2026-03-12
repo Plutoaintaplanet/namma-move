@@ -405,7 +405,8 @@ export default function App() {
               <h1 className="hero-title">Namma Move</h1>
               <div className="hero-pills">
                 <span className="hero-pill">{stats.routes} routes · {stats.stops} stops</span>
-                <span className="hero-pill" style={{ background: 'rgba(124, 58, 237, 0.15)', color: 'var(--purple)', fontWeight: '700' }}>⚡ Metro + Core Bus Active</span>
+                <span className="hero-pill" style={{ background: 'rgba(124, 58, 237, 0.15)', color: 'var(--purple)', fontWeight: '700' }}>⚡ Full Network Active</span>
+
                 {dbConnected === true && (
                   <span className="hero-pill" style={{ background: 'rgba(34, 197, 94, 0.15)', color: '#16a34a', fontWeight: '700' }}>✅ Database Connected</span>
                 )}
