@@ -1,4 +1,4 @@
-require("dotenv").config({ path: require('path').join(__dirname, '.env') });
+require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 const { ping } = require("./db.cjs");
@@ -30,9 +30,18 @@ app.use("/news", newsRouter);
 app.get(["/api/health", "/health"], async (_req, res) => {
     try {
         await ping();
-        res.json({ status: "ok", db: "neo4j connected", ts: new Date().toISOString() });
+        res.json({ 
+            status: "ok", 
+            db: "neo4j connected", 
+            env: {
+                hasUri: !!process.env.NEO4J_URI,
+                hasUser: !!process.env.NEO4J_USER,
+                dbName: process.env.NEO4J_DATABASE || "default"
+            },
+            ts: new Date().toISOString() 
+        });
     } catch (e) {
-        res.status(503).json({ status: "error", message: e.message });
+        res.status(503).json({ status: "error", message: e.message, env: !!process.env.NEO4J_URI });
     }
 });
 

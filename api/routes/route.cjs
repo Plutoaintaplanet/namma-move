@@ -18,11 +18,13 @@ async function runRead(cypher, params = {}) {
 async function nearbyStops(lat, lon) {
     const cypher = `
         MATCH (s:Stop)
-        WITH s, point.distance(s.pos, point({latitude: $lat, longitude: $lon})) AS dist
-        WHERE dist < 3000
+        WHERE point.distance(s.pos, point({latitude: $lat, longitude: $lon})) < 5000
+        OPTIONAL MATCH (s)-[r:CONNECTS]-()
+        WITH s, point.distance(s.pos, point({latitude: $lat, longitude: $lon})) AS dist, count(r) as connections
+        WHERE connections > 0 OR s.type = 'metro'
         RETURN s.id AS id, s.name AS name, s.lat AS lat, s.lon AS lon, s.type AS type, dist
         ORDER BY dist
-        LIMIT 10
+        LIMIT 12
     `;
     const recs = await runRead(cypher, { lat, lon });
     return recs.map(r => ({

@@ -189,6 +189,23 @@ export default function App() {
   const [noRoute, setNoRoute] = useState("");
   const [loading, setLoading] = useState(false);
   const [searched, setSearched] = useState(false);
+  const [dbConnected, setDbConnected] = useState(null); // null | true | false
+
+  // ── Database health check ──────────────────────────────────────────────────
+  useEffect(() => {
+    const checkDb = async () => {
+      const isProd = window.location.hostname !== "localhost";
+      const baseUrl = isProd ? "/api" : (import.meta.env.VITE_API_URL || "http://localhost:4001/api");
+      try {
+        const res = await fetch(`${baseUrl}/health`);
+        const data = await res.json();
+        setDbConnected(data.status === "ok");
+      } catch (e) {
+        setDbConnected(false);
+      }
+    };
+    checkDb();
+  }, []);
 
   // ── GPS auto-fetch ────────────────────────────────────────────────────────
   useEffect(() => {
@@ -223,7 +240,10 @@ export default function App() {
 
     try {
       const res = await fetch(url);
-      if (!res.ok) throw new Error("Routing failed");
+      if (!res.ok) {
+        const errData = await res.json().catch(() => ({}));
+        throw new Error(errData.error || "Routing failed");
+      }
       const data = await res.json();
 
       setBusHit(data.bus);
@@ -236,7 +256,7 @@ export default function App() {
       }
     } catch (e) {
       console.error(e);
-      setNoRoute("Error fetching route. Please try again.");
+      setNoRoute(`Routing Error: ${e.message}.`);
     } finally {
       setLoading(false);
     }
@@ -263,6 +283,7 @@ export default function App() {
 
   const bothSet = originLoc && destLoc;
   const stats = { stops: stopsJson.length, routes: routesJson.length };
+  const activeStopIds = useMemo(() => new Set(routeStopsJson.map(rs => rs.stop_id)), []);
 
   // ─── Journey card ─────────────────────────────────────────────────────────
   function JCard({ hit, accent, icon, label }) {
@@ -384,6 +405,13 @@ export default function App() {
               <h1 className="hero-title">Namma Move</h1>
               <div className="hero-pills">
                 <span className="hero-pill">{stats.routes} routes · {stats.stops} stops</span>
+                <span className="hero-pill" style={{ background: 'rgba(124, 58, 237, 0.15)', color: 'var(--purple)', fontWeight: '700' }}>⚡ Metro + Core Bus Active</span>
+                {dbConnected === true && (
+                  <span className="hero-pill" style={{ background: 'rgba(34, 197, 94, 0.15)', color: '#16a34a', fontWeight: '700' }}>✅ Database Connected</span>
+                )}
+                {dbConnected === false && (
+                  <span className="hero-pill" style={{ background: 'rgba(239, 68, 68, 0.15)', color: '#dc2626', fontWeight: '700' }}>⚠️ Database Offline</span>
+                )}
                 {gpsLoading && <span className="hero-pill gps-loading">📍 Getting location…</span>}
                 {gpsError && <span className="hero-pill gps-err">⚠ {gpsError}</span>}
                 {!gpsLoading && !gpsError && originLoc && (
@@ -396,6 +424,7 @@ export default function App() {
             <div className="search-panel">
               <DualMapPicker
                 stops={stopsJson}
+                activeIds={activeStopIds}
                 onOriginSelected={loc => { setOriginLoc(loc); setSearched(false); }}
                 onDestinationSelected={loc => { setDestLoc(loc); setSearched(false); }}
                 initialOrigin={originLoc}
