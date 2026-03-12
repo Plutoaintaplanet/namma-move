@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef, useCallback } from "react";
 import {
-    MapContainer, TileLayer, Marker, useMapEvents, useMap,
+    MapContainer, TileLayer, Marker, useMapEvents, useMap, CircleMarker, Popup
 } from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
@@ -152,7 +152,7 @@ function PlaceSearch({ placeholder, dotEmoji, onPlace, isActive, onActivate }) {
 }
 
 // ── Main DualMapPicker ────────────────────────────────────────────────────────
-export default function DualMapPicker({ onOriginSelected, onDestinationSelected, initialOrigin }) {
+export default function DualMapPicker({ stops = [], activeIds = new Set(), onOriginSelected, onDestinationSelected, initialOrigin }) {
     const [pinMode, setPinMode] = useState("destination");
     const [originPos, setOriginPos] = useState(null);
     const [destPos, setDestPos] = useState(null);
@@ -222,6 +222,31 @@ export default function DualMapPicker({ onOriginSelected, onDestinationSelected,
                     onOriginDrop={handleOriginDrop}
                     onDestDrop={handleDestDrop}
                 />
+
+                {/* Transit Stops */}
+                {stops.map((s) => {
+                    const isActive = activeIds.has(s.id);
+                    return (
+                        <CircleMarker
+                            key={s.id}
+                            center={[s.latitude, s.longitude]}
+                            radius={isActive ? 5 : 3}
+                            pathOptions={{
+                                fillColor: s.id.toString().startsWith("M-") ? "var(--purple)" : "var(--teal)",
+                                color: "var(--bg-surface)",
+                                weight: 1,
+                                fillOpacity: isActive ? 0.9 : 0.3
+                            }}
+                        >
+                            <Popup>
+                                <strong>{s.name}</strong><br />
+                                {s.id.toString().startsWith("M-") ? "🚇 Metro Station" : "🚌 Bus Stop"}
+                                {!isActive && !s.id.toString().startsWith("M-") && <><br/><em>(Pin only - no route data)</em></>}
+                            </Popup>
+                        </CircleMarker>
+                    );
+                })}
+
                 {originPos && <Marker position={originPos} icon={greenIcon} />}
                 {destPos && <Marker position={destPos} icon={redIcon} />}
             </MapContainer>
