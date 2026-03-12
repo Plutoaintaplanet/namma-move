@@ -2,7 +2,6 @@
 const express = require("express");
 const { getSession } = require("../db.cjs");
 const router = express.Router();
-const DB = process.env.NEO4J_DATABASE || "neo4j";
 
 const WALK_SPD = 75; 
 function walkMin(m) { return Math.max(1, Math.round(m / WALK_SPD)); }

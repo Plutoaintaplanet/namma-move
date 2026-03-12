@@ -40,16 +40,12 @@ function getDriver() {
 async function ping() {
     const d = getDriver();
     if (!d) {
-        const missing = [];
-        if (!process.env.NEO4J_URI) missing.push("NEO4J_URI");
-        if (!process.env.NEO4J_USER) missing.push("NEO4J_USER");
-        if (!process.env.NEO4J_PASSWORD) missing.push("NEO4J_PASSWORD");
-        throw new Error(`Driver not initialized - missing env vars: ${missing.join(", ")}`);
+        throw new Error("Driver not initialized - missing env vars");
     }
     
-    // Explicitly use "neo4j" if no database name is provided, 
-    // as Aura Free tier usually only has one database named "neo4j"
-    const dbName = process.env.NEO4J_DATABASE || "neo4j";
+    // Aura Free databases are ALWAYS named "neo4j". 
+    // Using the DB ID as the database name will cause authentication failure.
+    const dbName = "neo4j"; 
     const session = d.session({ database: dbName });
     
     try {
@@ -57,17 +53,17 @@ async function ping() {
         return true;
     } catch (e) {
         console.error(`Ping failed for database "${dbName}":`, e.message);
-        throw e;
+        throw new Error(`${e.message} (Note: Ensure NEO4J_DATABASE is NOT set to your DB ID in Vercel)`);
     } finally {
         await session.close();
     }
 }
 
-// For routes, always get the fresh driver instance
 function getSession() {
     const d = getDriver();
     if (!d) throw new Error("Neo4j Driver not available");
-    return d.session({ database: process.env.NEO4J_DATABASE || "neo4j" });
+    // Standardize on "neo4j" database name for Aura
+    return d.session({ database: "neo4j" });
 }
 
 // Exporting functions instead of a static driver instance for better serverless handling
