@@ -91,6 +91,11 @@ def main():
         
     print(f"Current: {len(stops)} stops, {len(routes)} routes, {len(route_stops)} route-stops.")
     
+    # --- CLEANUP: Remove any existing Metro data to avoid duplicates/stale coords ---
+    stops = [s for s in stops if not s['id'].startswith('M-STA-') and s['id'] not in ['M_AGPP', 'M_BYPH', 'M_BSNK', 'M_JTPM', 'M_CLGA', 'M_CKPE', 'M_CBPK', 'M_DSH', 'M_DJNR', 'M_KLPK', 'M_VDSA', 'M_GDCP', 'M_YPI', 'M_HLRU', 'M_DKIA', 'M_UWVL', 'M_IDN', 'M_JLHL', 'M_JPN']]
+    routes = [r for r in routes if r['id'] not in ['M-PL', 'M-GL', 'M-YL']]
+    route_stops = [rs for rs in route_stops if rs['route_id'] not in ['M-PL', 'M-GL', 'M-YL']]
+    
     metro_stations = {}
     
     print("\nGeocoding Metro Stations via Nominatim...")
@@ -106,9 +111,13 @@ def main():
         for i, stop_name in enumerate(line_data["stops"]):
             if stop_name not in metro_stations:
                 print(f"  Geocoding {stop_name}...")
-                lat, lon = fetch_coords(stop_name)
+                # Try with "BMRCL" keyword first for better accuracy
+                lat, lon = fetch_coords(f"{stop_name} BMRCL")
+                if not lat:
+                    lat, lon = fetch_coords(stop_name)
+                
                 # Small delay to respect Nominatim limits
-                time.sleep(0.4)
+                time.sleep(0.6)
                 
                 if not lat:
                     print(f"  [WARN] Failed finding {stop_name}. Using roughly Majestic center.")

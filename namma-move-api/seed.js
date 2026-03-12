@@ -93,6 +93,12 @@ async function seed() {
                 SET r.route_name = e.routeName,
                     r.route_type = e.routeType,
                     r.travel_min = e.travelMin
+                WITH a, b, e
+                WHERE e.routeType = 1
+                MERGE (b)-[r2:CONNECTS {route_id: e.routeId + "_REV", seq: e.seq}]->(a)
+                SET r2.route_name = e.routeName + " (Reverse)",
+                    r2.route_type = e.routeType,
+                    r2.travel_min = e.travelMin
             `, { batch });
             process.stdout.write(`  Inserted ${Math.min(i + BATCH_SIZE, preparedEdges.length)} / ${preparedEdges.length}\r`);
         }

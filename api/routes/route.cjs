@@ -38,13 +38,13 @@ async function runRead(cypher, params = {}) {
 let _stopsCache = null;
 async function getAllStops() {
     if (_stopsCache) return _stopsCache;
-    const recs = await runRead("MATCH (s:Stop)-[:CONNECTS]-() RETURN DISTINCT s.id AS id, s.name AS name, s.lat AS lat, s.lon AS lon, s.type AS type");
+    const recs = await runRead("MATCH (s:Stop) RETURN s.id AS id, s.name AS name, s.lat AS lat, s.lon AS lon, s.type AS type");
     _stopsCache = recs.map(r => ({ id: r.get("id"), name: r.get("name"), lat: r.get("lat"), lon: r.get("lon"), type: r.get("type") }));
     return _stopsCache;
 }
 
 // ── Find nearby stops using JS Haversine (avoids Neo4j float param issue) ────
-const METRO_RADIUS_M = 6000;
+const METRO_RADIUS_M = 8000;
 const BUS_RADIUS_M = 1500;
 async function nearbyStops(lat, lon) {
     const all = await getAllStops();
@@ -53,6 +53,7 @@ async function nearbyStops(lat, lon) {
         .sort((a, b) => a.dist - b.dist);
     const buses = sorted.filter(s => s.type !== "metro" && s.dist <= BUS_RADIUS_M).slice(0, 6);
     const metros = sorted.filter(s => s.type === "metro" && s.dist <= METRO_RADIUS_M).slice(0, 3);
+    console.log(`Nearby for ${lat},${lon}: Metros:`, metros.map(m => `${m.name} (${Math.round(m.dist)}m)`));
     const fallbackBuses = buses.length ? buses : sorted.filter(s => s.type !== "metro").slice(0, 5);
     return [...fallbackBuses, ...metros].sort((a, b) => a.dist - b.dist);
 }
