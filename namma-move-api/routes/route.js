@@ -63,7 +63,7 @@ async function nearbyStops(lat, lon) {
 async function findRoute(fromId, toId) {
     const recs = await runRead(
         `MATCH (a:Stop {id: $from}), (b:Stop {id: $to})
-     MATCH path = shortestPath((a)-[:CONNECTS*1..60]-(b))
+     MATCH path = shortestPath((a)-[:CONNECTS*1..150]->(b))
      WITH path,
           reduce(t=0.0, r IN relationships(path) | t + r.travel_min) AS totalMin,
           [r IN relationships(path) | r.route_id]   AS routeIds,

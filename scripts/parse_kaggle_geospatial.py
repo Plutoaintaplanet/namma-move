@@ -80,7 +80,8 @@ with zipfile.ZipFile(ARCHIVE_PATH, 'r') as z:
                     # Search local 3x3 grid cells
                     for dx in [-1, 0, 1]:
                         for dy in [-1, 0, 1]:
-                            cell_key = (gk[0]+dx, gk[1]+dy)
+                            gx, gy = gk
+                            cell_key = (gx + dx, gy + dy)
                             if cell_key in stops_grid:
                                 for stop in stops_grid[cell_key]:
                                     d = distance_approx(plat, plon, stop['latitude'], stop['longitude'])
@@ -88,14 +89,14 @@ with zipfile.ZipFile(ARCHIVE_PATH, 'r') as z:
                                         min_dist = d
                                         closest_stop = stop['id']
                                         
-                    if closest_stop and closest_stop not in seen_stops:
-                        seen_stops.add(closest_stop)
+                    if closest_stop is not None and closest_stop not in seen_stops:
+                        seen_stops.add(str(closest_stop))
                         route_stops_out.append({
                             "route_id": rid,
                             "stop_id": closest_stop,
                             "stop_sequence": seq
                         })
-                        seq += 1
+                        seq = seq + 1
             
             if r_idx % 500 == 0 and r_idx > 0:
                 print(f"Processed {r_idx} routes... Found {len(route_stops_out)} connections")

@@ -1,52 +1,52 @@
-// routes/stops.js  — GET /api/stops/nearby?lat=&lon=&r=
+// api/routes/stops.cjs — Search and Discovery for Stops
 const express = require("express");
 const { driver } = require("../db.cjs");
 const router = express.Router();
-
 const DB = process.env.NEO4J_DATABASE || "neo4j";
 
-async function runRead(cypher, params) {
-    const session = driver.session({ database: DB });
+async function runRead(cypher, params = {}) {
+    const s = driver.session({ database: DB });
     try {
-        const res = await session.executeRead(tx => tx.run(cypher, params));
-        return res.records;
-    } finally {
-        await session.close();
-    }
+        const r = await s.executeRead(tx => tx.run(cypher, params));
+        return r.records;
+    } finally { await s.close(); }
 }
 
-router.get("/nearby", async (req, res) => {
-    const { lat, lon, r = 3000 } = req.query;
-    if (!lat || !lon) return res.status(400).json({ error: "lat and lon required" });
+// ── Search by name ────────────────────────────────────────────────────────────
+router.get("/search", async (req, res) => {
+    const { q } = req.query;
+    if (!q || q.length < 2) return res.json([]);
 
     try {
-        const recs = await runRead(
-            `MATCH (s:Stop)
-       WITH s, point.distance(
-         point({latitude: s.lat, longitude: s.lon}),
-         point({latitude: $lat, longitude: $lon})
-       ) AS dist
-       WHERE dist <= $r
-       RETURN s.id AS id, s.name AS name, s.lat AS lat, s.lon AS lon, s.type AS type, dist
-       ORDER BY dist LIMIT 20`,
-            { lat: parseFloat(lat), lon: parseFloat(lon), r: parseFloat(r) }
-        );
-        const stops = recs.map(r => ({
-            id: r.get("id"), name: r.get("name"), lat: r.get("lat"),
-            lon: r.get("lon"), type: r.get("type"), distance: Math.round(r.get("dist")),
-        }));
-        res.json({ stops });
+        const cypher = `
+            MATCH (s:Stop)
+            WHERE s.name CONTAINS $q OR s.id CONTAINS $q
+            RETURN s.id AS id, s.name AS name, s.lat AS lat, s.lon AS lon, s.type AS type
+            LIMIT 20
+        `;
+        const recs = await runRead(cypher, { q: q.toUpperCase() });
+        res.json(recs.map(r => r.toObject()));
     } catch (e) {
-        console.error(e);
         res.status(500).json({ error: e.message });
     }
 });
 
-router.get("/:id", async (req, res) => {
+// ── Nearby stops ──────────────────────────────────────────────────────────────
+router.get("/nearby", async (req, res) => {
+    const { lat, lon } = req.query;
+    if (!lat || !lon) return res.status(400).json({ error: "lat, lon required" });
+
     try {
-        const recs = await runRead(`MATCH (s:Stop {id: $id}) RETURN s`, { id: req.params.id });
-        if (recs.length === 0) return res.status(404).json({ error: "Stop not found" });
-        res.json(recs[0].get("s").properties);
+        const cypher = `
+            MATCH (s:Stop)
+            WITH s, point.distance(s.pos, point({latitude: $lat, longitude: $lon})) AS dist
+            WHERE dist < 2000
+            RETURN s.id AS id, s.name AS name, s.lat AS lat, s.lon AS lon, s.type AS type, dist
+            ORDER BY dist
+            LIMIT 10
+        `;
+        const recs = await runRead(cypher, { lat: parseFloat(lat), lon: parseFloat(lon) });
+        res.json(recs.map(r => r.toObject()));
     } catch (e) {
         res.status(500).json({ error: e.message });
     }

@@ -1,6 +1,7 @@
 import { useEffect, useState, useCallback, useRef } from "react";
 import DualMapPicker from "./DualMapPicker";
 import NewsPage from "./NewsPage";
+import SchedulesPage from "./SchedulesPage";
 import { FloatingPaths } from "./components/ui/background-paths";
 import { Preloader } from "./components/ui/preloader";
 import stopsJson from "./data/gtfs_stops.json";
@@ -155,7 +156,7 @@ function nextBmtcDeparture(baseTime) {
   return addMin(baseTime, waitMin > freq ? 0 : waitMin);
 }
 
-const NAV = ["Home", "News"];
+const NAV = ["Home", "Schedules", "News"];
 
 export default function App() {
   const [preloaderDone, setPreloaderDone] = useState(false);
@@ -212,7 +213,8 @@ export default function App() {
     setLoading(true); setSearched(true);
     setBusHit(null); setMetroHit(null); setComboHit(null); setNoRoute("");
 
-    const baseUrl = import.meta.env.VITE_API_URL || "http://localhost:4000/api";
+    const isProd = window.location.hostname !== "localhost";
+    const baseUrl = isProd ? "/api" : (import.meta.env.VITE_API_URL || "http://localhost:4001/api");
     let url = `${baseUrl}/route?fromLat=${origin.lat}&fromLon=${origin.lon}&toLat=${dest.lat}&toLon=${dest.lon}`;
 
     if (timeMode !== "now") {
@@ -298,8 +300,9 @@ export default function App() {
           </div>
 
           {legs && legs.map((leg, i) => {
-            const isMetro = leg.route.type === 1;
-            const board = leg.stops[0], alight = leg.stops[leg.stops.length - 1];
+            if (!leg.route) return null;
+            const isMetro = leg.route.type === 1 || leg.mode === 'metro';
+            const board = leg.stops && leg.stops[0], alight = leg.stops && leg.stops[leg.stops.length - 1];
             const dot = isMetro ? "tl-dot-metro" : "tl-dot-bus";
             return (
               <div className="tl-row" key={i}>
@@ -307,12 +310,12 @@ export default function App() {
                 <div className="tl-body">
                   <div className="tl-route-row">
                     <span className={`tl-badge ${isMetro ? "tl-badge-metro" : "tl-badge-bus"}`}>
-                      {leg.route.name}
+                      {leg.route.name || "Transit"}
                     </span>
                   </div>
                   <span className="tl-stop">
-                    Board <strong>{board?.name}</strong> → Alight <strong>{alight?.name}</strong>
-                    &nbsp;·&nbsp;{leg.stops.length - 1} stop{leg.stops.length !== 2 ? "s" : ""}
+                    Board <strong>{board?.name || "Stop"}</strong> → Alight <strong>{alight?.name || "Stop"}</strong>
+                    &nbsp;·&nbsp;{leg.stops ? leg.stops.length - 1 : 0} stop{(leg.stops && leg.stops.length !== 2) ? "s" : ""}
                   </span>
                   {i === 0 && nextDep && (
                     <span className="tl-dep">
@@ -360,7 +363,7 @@ export default function App() {
           <nav className="nav-links">
             {NAV.map(n => (
               <button key={n} className={`nav-link ${activePage === n ? "active" : ""}`} onClick={() => setActivePage(n)}>
-                {n === "Home" ? "🏠" : "📰"} {n}
+                {n === "Home" ? "🏠" : n === "Schedules" ? "🕒" : "📰"} {n}
               </button>
             ))}
           </nav>
@@ -369,6 +372,10 @@ export default function App() {
 
         {activePage === "News" && (
           <main className="main-layout relative z-10"><NewsPage darkMode={darkMode} /></main>
+        )}
+
+        {activePage === "Schedules" && (
+          <main className="main-layout relative z-10"><SchedulesPage /></main>
         )}
 
         {activePage === "Home" && (
@@ -388,6 +395,7 @@ export default function App() {
             {/* ── Search panel ────────────────────────────────────────────── */}
             <div className="search-panel">
               <DualMapPicker
+                stops={stopsJson}
                 onOriginSelected={loc => { setOriginLoc(loc); setSearched(false); }}
                 onDestinationSelected={loc => { setDestLoc(loc); setSearched(false); }}
                 initialOrigin={originLoc}
@@ -506,7 +514,7 @@ export default function App() {
         <footer className="bottom-nav">
           {NAV.map(n => (
             <button key={n} className={`bottom-item ${activePage === n ? "active" : ""}`} onClick={() => setActivePage(n)}>
-              {n === "Home" ? "🏠 Home" : "📰 News"}
+              {n === "Home" ? "🏠 Home" : n === "Schedules" ? "🕒 Schedules" : "📰 News"}
             </button>
           ))}
         </footer>

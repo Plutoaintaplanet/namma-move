@@ -133,7 +133,7 @@ def main():
                     "longitude": lon
                 })
             else:
-                stop_id = metro_stations[stop_name]
+                stop_id = str(metro_stations[stop_name])
                 
             route_stops.append({
                 "route_id": line_data["id"],

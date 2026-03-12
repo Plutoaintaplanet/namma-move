@@ -1,1 +1,6817 @@
-[{"route_id":"M-PL","stop_id":"M-STA-1","stop_sequence":1},{"route_id":"M-PL","stop_id":"M-STA-2","stop_sequence":2},{"route_id":"M-PL","stop_id":"M-STA-3","stop_sequence":3},{"route_id":"M-PL","stop_id":"M-STA-4","stop_sequence":4},{"route_id":"M-PL","stop_id":"M-STA-5","stop_sequence":5},{"route_id":"M-PL","stop_id":"M-STA-6","stop_sequence":6},{"route_id":"M-PL","stop_id":"M-STA-7","stop_sequence":7},{"route_id":"M-PL","stop_id":"M-STA-8","stop_sequence":8},{"route_id":"M-PL","stop_id":"M-STA-9","stop_sequence":9},{"route_id":"M-PL","stop_id":"M-STA-10","stop_sequence":10},{"route_id":"M-PL","stop_id":"M-STA-11","stop_sequence":11},{"route_id":"M-PL","stop_id":"M-STA-12","stop_sequence":12},{"route_id":"M-PL","stop_id":"M-STA-13","stop_sequence":13},{"route_id":"M-PL","stop_id":"M-STA-14","stop_sequence":14},{"route_id":"M-PL","stop_id":"M-STA-15","stop_sequence":15},{"route_id":"M-PL","stop_id":"M-STA-16","stop_sequence":16},{"route_id":"M-PL","stop_id":"M-STA-17","stop_sequence":17},{"route_id":"M-PL","stop_id":"M-STA-18","stop_sequence":18},{"route_id":"M-PL","stop_id":"M-STA-19","stop_sequence":19},{"route_id":"M-PL","stop_id":"M-STA-20","stop_sequence":20},{"route_id":"M-PL","stop_id":"M-STA-21","stop_sequence":21},{"route_id":"M-PL","stop_id":"M-STA-22","stop_sequence":22},{"route_id":"M-PL","stop_id":"M-STA-23","stop_sequence":23},{"route_id":"M-PL","stop_id":"M-STA-24","stop_sequence":24},{"route_id":"M-PL","stop_id":"M-STA-25","stop_sequence":25},{"route_id":"M-PL","stop_id":"M-STA-26","stop_sequence":26},{"route_id":"M-PL","stop_id":"M-STA-27","stop_sequence":27},{"route_id":"M-PL","stop_id":"M-STA-28","stop_sequence":28},{"route_id":"M-PL","stop_id":"M-STA-29","stop_sequence":29},{"route_id":"M-PL","stop_id":"M-STA-30","stop_sequence":30},{"route_id":"M-PL","stop_id":"M-STA-31","stop_sequence":31},{"route_id":"M-PL","stop_id":"M-STA-32","stop_sequence":32},{"route_id":"M-PL","stop_id":"M-STA-33","stop_sequence":33},{"route_id":"M-PL","stop_id":"M-STA-34","stop_sequence":34},{"route_id":"M-PL","stop_id":"M-STA-35","stop_sequence":35},{"route_id":"M-PL","stop_id":"M-STA-36","stop_sequence":36},{"route_id":"M-PL","stop_id":"M-STA-37","stop_sequence":37},{"route_id":"M-GL","stop_id":"M-STA-38","stop_sequence":1},{"route_id":"M-GL","stop_id":"M-STA-39","stop_sequence":2},{"route_id":"M-GL","stop_id":"M-STA-40","stop_sequence":3},{"route_id":"M-GL","stop_id":"M-STA-41","stop_sequence":4},{"route_id":"M-GL","stop_id":"M-STA-42","stop_sequence":5},{"route_id":"M-GL","stop_id":"M-STA-43","stop_sequence":6},{"route_id":"M-GL","stop_id":"M-STA-44","stop_sequence":7},{"route_id":"M-GL","stop_id":"M-STA-45","stop_sequence":8},{"route_id":"M-GL","stop_id":"M-STA-46","stop_sequence":9},{"route_id":"M-GL","stop_id":"M-STA-47","stop_sequence":10},{"route_id":"M-GL","stop_id":"M-STA-48","stop_sequence":11},{"route_id":"M-GL","stop_id":"M-STA-49","stop_sequence":12},{"route_id":"M-GL","stop_id":"M-STA-50","stop_sequence":13},{"route_id":"M-GL","stop_id":"M-STA-51","stop_sequence":14},{"route_id":"M-GL","stop_id":"M-STA-52","stop_sequence":15},{"route_id":"M-GL","stop_id":"M-STA-53","stop_sequence":16},{"route_id":"M-GL","stop_id":"M-STA-23","stop_sequence":17},{"route_id":"M-GL","stop_id":"M-STA-54","stop_sequence":18},{"route_id":"M-GL","stop_id":"M-STA-55","stop_sequence":19},{"route_id":"M-GL","stop_id":"M-STA-56","stop_sequence":20},{"route_id":"M-GL","stop_id":"M-STA-57","stop_sequence":21},{"route_id":"M-GL","stop_id":"M-STA-58","stop_sequence":22},{"route_id":"M-GL","stop_id":"M-STA-59","stop_sequence":23},{"route_id":"M-GL","stop_id":"M-STA-60","stop_sequence":24},{"route_id":"M-GL","stop_id":"M-STA-61","stop_sequence":25},{"route_id":"M-GL","stop_id":"M-STA-62","stop_sequence":26},{"route_id":"M-GL","stop_id":"M-STA-63","stop_sequence":27},{"route_id":"M-GL","stop_id":"M-STA-64","stop_sequence":28},{"route_id":"M-GL","stop_id":"M-STA-65","stop_sequence":29},{"route_id":"M-GL","stop_id":"M-STA-66","stop_sequence":30},{"route_id":"M-GL","stop_id":"M-STA-67","stop_sequence":31},{"route_id":"M-GL","stop_id":"M-STA-68","stop_sequence":32},{"route_id":"M-YL","stop_id":"M-STA-60","stop_sequence":1},{"route_id":"M-YL","stop_id":"M-STA-69","stop_sequence":2},{"route_id":"M-YL","stop_id":"M-STA-70","stop_sequence":3},{"route_id":"M-YL","stop_id":"M-STA-71","stop_sequence":4},{"route_id":"M-YL","stop_id":"M-STA-72","stop_sequence":5},{"route_id":"M-YL","stop_id":"M-STA-73","stop_sequence":6},{"route_id":"M-YL","stop_id":"M-STA-74","stop_sequence":7},{"route_id":"M-YL","stop_id":"M-STA-75","stop_sequence":8},{"route_id":"M-YL","stop_id":"M-STA-76","stop_sequence":9},{"route_id":"M-YL","stop_id":"M-STA-77","stop_sequence":10},{"route_id":"M-YL","stop_id":"M-STA-78","stop_sequence":11},{"route_id":"M-YL","stop_id":"M-STA-79","stop_sequence":12},{"route_id":"M-YL","stop_id":"M-STA-80","stop_sequence":13},{"route_id":"M-YL","stop_id":"M-STA-81","stop_sequence":14},{"route_id":"M-YL","stop_id":"M-STA-82","stop_sequence":15},{"route_id":"M-YL","stop_id":"M-STA-83","stop_sequence":16}]
+[
+  {
+    "route_id": "2",
+    "stop_id": "2299",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "13",
+    "stop_id": "3745",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "14",
+    "stop_id": "311",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "18",
+    "stop_id": "2299",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "21",
+    "stop_id": "2489",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "22",
+    "stop_id": "2299",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "25",
+    "stop_id": "2706",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "26",
+    "stop_id": "2299",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "27",
+    "stop_id": "3745",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "29",
+    "stop_id": "3745",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "33",
+    "stop_id": "2299",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "34",
+    "stop_id": "3745",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "35",
+    "stop_id": "2299",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "37",
+    "stop_id": "3745",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "44",
+    "stop_id": "3571",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "47",
+    "stop_id": "4421",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "49",
+    "stop_id": "2299",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "54",
+    "stop_id": "2489",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "56",
+    "stop_id": "2299",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "58",
+    "stop_id": "2299",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "59",
+    "stop_id": "2489",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "61",
+    "stop_id": "4298",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "65",
+    "stop_id": "2489",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "66",
+    "stop_id": "3745",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "74",
+    "stop_id": "3745",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "76",
+    "stop_id": "2489",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "80",
+    "stop_id": "2299",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "82",
+    "stop_id": "2299",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "83",
+    "stop_id": "2489",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "84",
+    "stop_id": "2489",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "86",
+    "stop_id": "2299",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "88",
+    "stop_id": "2299",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "89",
+    "stop_id": "2299",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "91",
+    "stop_id": "4428",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "95",
+    "stop_id": "3745",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "96",
+    "stop_id": "2299",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "104",
+    "stop_id": "2299",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "108",
+    "stop_id": "2489",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "111",
+    "stop_id": "2489",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "112",
+    "stop_id": "3745",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "114",
+    "stop_id": "2489",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "120",
+    "stop_id": "2626",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "122",
+    "stop_id": "2299",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "123",
+    "stop_id": "3745",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "126",
+    "stop_id": "2299",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "128",
+    "stop_id": "3745",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "129",
+    "stop_id": "2299",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "132",
+    "stop_id": "3745",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "139",
+    "stop_id": "3745",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "140",
+    "stop_id": "2489",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "141",
+    "stop_id": "3745",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "143",
+    "stop_id": "2489",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "144",
+    "stop_id": "3745",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "145",
+    "stop_id": "2299",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "146",
+    "stop_id": "2299",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "152",
+    "stop_id": "3345",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "154",
+    "stop_id": "4302",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "155",
+    "stop_id": "1825",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "164",
+    "stop_id": "3745",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "166",
+    "stop_id": "3745",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "169",
+    "stop_id": "1916",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "171",
+    "stop_id": "2299",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "174",
+    "stop_id": "2446",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "175",
+    "stop_id": "896",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "177",
+    "stop_id": "896",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "180",
+    "stop_id": "2267",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "184",
+    "stop_id": "639",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "189",
+    "stop_id": "2015",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "190",
+    "stop_id": "1915",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "195",
+    "stop_id": "754",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "196",
+    "stop_id": "3745",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "197",
+    "stop_id": "1915",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "203",
+    "stop_id": "4424",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "210",
+    "stop_id": "4187",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "212",
+    "stop_id": "43",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "214",
+    "stop_id": "4024",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "215",
+    "stop_id": "105",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "217",
+    "stop_id": "2489",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "226",
+    "stop_id": "2489",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "229",
+    "stop_id": "2489",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "230",
+    "stop_id": "2489",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "231",
+    "stop_id": "2489",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "234",
+    "stop_id": "2766",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "241",
+    "stop_id": "2489",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "242",
+    "stop_id": "2489",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "246",
+    "stop_id": "2299",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "250",
+    "stop_id": "825",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "251",
+    "stop_id": "3747",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "252",
+    "stop_id": "3324",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "253",
+    "stop_id": "1595",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "255",
+    "stop_id": "2489",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "257",
+    "stop_id": "2489",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "261",
+    "stop_id": "2299",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "263",
+    "stop_id": "2489",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "264",
+    "stop_id": "2299",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "265",
+    "stop_id": "2299",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "266",
+    "stop_id": "2489",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "267",
+    "stop_id": "2612",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "268",
+    "stop_id": "2489",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "269",
+    "stop_id": "2299",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "270",
+    "stop_id": "3745",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "271",
+    "stop_id": "2299",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "273",
+    "stop_id": "2299",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "275",
+    "stop_id": "2489",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "276",
+    "stop_id": "4284",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "277",
+    "stop_id": "1339",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "278",
+    "stop_id": "3065",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "279",
+    "stop_id": "3065",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "280",
+    "stop_id": "420",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "283",
+    "stop_id": "2489",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "286",
+    "stop_id": "1839",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "288",
+    "stop_id": "4089",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "289",
+    "stop_id": "260",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "290",
+    "stop_id": "4013",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "291",
+    "stop_id": "2489",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "293",
+    "stop_id": "3533",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "295",
+    "stop_id": "1094",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "300",
+    "stop_id": "313",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "301",
+    "stop_id": "2489",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "306",
+    "stop_id": "1040",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "311",
+    "stop_id": "2053",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "314",
+    "stop_id": "732",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "315",
+    "stop_id": "2053",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "319",
+    "stop_id": "2353",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "320",
+    "stop_id": "1744",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "322",
+    "stop_id": "2985",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "325",
+    "stop_id": "1539",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "327",
+    "stop_id": "1462",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "330",
+    "stop_id": "2804",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "331",
+    "stop_id": "2091",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "335",
+    "stop_id": "4203",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "336",
+    "stop_id": "3288",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "337",
+    "stop_id": "1134",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "343",
+    "stop_id": "410",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "345",
+    "stop_id": "1700",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "346",
+    "stop_id": "1939",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "347",
+    "stop_id": "2504",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "350",
+    "stop_id": "25",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "352",
+    "stop_id": "1581",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "353",
+    "stop_id": "3486",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "354",
+    "stop_id": "3729",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "360",
+    "stop_id": "206",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "361",
+    "stop_id": "3781",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "362",
+    "stop_id": "4293",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "364",
+    "stop_id": "4411",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "365",
+    "stop_id": "349",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "366",
+    "stop_id": "349",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "367",
+    "stop_id": "3499",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "368",
+    "stop_id": "349",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "369",
+    "stop_id": "1702",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "370",
+    "stop_id": "3748",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "374",
+    "stop_id": "4131",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "375",
+    "stop_id": "688",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "377",
+    "stop_id": "3151",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "381",
+    "stop_id": "4083",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "382",
+    "stop_id": "2126",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "399",
+    "stop_id": "1202",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "400",
+    "stop_id": "1558",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "401",
+    "stop_id": "4425",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "407",
+    "stop_id": "3151",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "410",
+    "stop_id": "1843",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "414",
+    "stop_id": "2373",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "415",
+    "stop_id": "4314",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "500",
+    "stop_id": "311",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "501",
+    "stop_id": "311",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "502",
+    "stop_id": "2091",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "506",
+    "stop_id": "1040",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "600",
+    "stop_id": "311",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "601",
+    "stop_id": "311",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "100E",
+    "stop_id": "637",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "111A",
+    "stop_id": "2489",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "111C",
+    "stop_id": "2299",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "111E",
+    "stop_id": "1825",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "112A",
+    "stop_id": "3745",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "114B",
+    "stop_id": "2299",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "114A",
+    "stop_id": "3745",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "114C",
+    "stop_id": "2299",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "114D",
+    "stop_id": "3745",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "114G",
+    "stop_id": "2489",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "115A",
+    "stop_id": "2155",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "125E",
+    "stop_id": "3745",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "121A",
+    "stop_id": "3745",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "126A",
+    "stop_id": "2489",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "12E",
+    "stop_id": "2299",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "129C",
+    "stop_id": "4270",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "13C",
+    "stop_id": "3745",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "13A",
+    "stop_id": "3745",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "139A",
+    "stop_id": "1051",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "13H",
+    "stop_id": "3745",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "13K",
+    "stop_id": "3745",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "13J",
+    "stop_id": "3745",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "13E",
+    "stop_id": "3745",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "13F",
+    "stop_id": "3745",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "13G",
+    "stop_id": "3745",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "140E",
+    "stop_id": "2489",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "140A",
+    "stop_id": "2489",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "140B",
+    "stop_id": "2489",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "140D",
+    "stop_id": "2229",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "141E",
+    "stop_id": "3745",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "143A",
+    "stop_id": "1825",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "144E",
+    "stop_id": "3745",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "144A",
+    "stop_id": "3745",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "144K",
+    "stop_id": "2267",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "144G",
+    "stop_id": "3962",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "14B",
+    "stop_id": "309",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "146E",
+    "stop_id": "2299",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "146B",
+    "stop_id": "2299",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "15A",
+    "stop_id": "2489",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "15C",
+    "stop_id": "2299",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "155A",
+    "stop_id": "2473",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "15H",
+    "stop_id": "2299",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "15F",
+    "stop_id": "2489",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "161C",
+    "stop_id": "3745",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "161D",
+    "stop_id": "3745",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "161B",
+    "stop_id": "3745",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "163A",
+    "stop_id": "2489",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "15E",
+    "stop_id": "2299",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "171E",
+    "stop_id": "2155",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "171F",
+    "stop_id": "2229",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "165E",
+    "stop_id": "2299",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "168A",
+    "stop_id": "2489",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "168E",
+    "stop_id": "2299",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "176G",
+    "stop_id": "1272",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "176E",
+    "stop_id": "2267",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "176D",
+    "stop_id": "1272",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "173A",
+    "stop_id": "896",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "176A",
+    "stop_id": "2267",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "171H",
+    "stop_id": "2299",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "171G",
+    "stop_id": "2299",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "176CA",
+    "stop_id": "2780",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "176C",
+    "stop_id": "3962",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "1E",
+    "stop_id": "896",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "201H",
+    "stop_id": "2446",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "201J",
+    "stop_id": "1915",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "201A",
+    "stop_id": "1149",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "201S",
+    "stop_id": "1153",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "201U",
+    "stop_id": "273",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "201Q",
+    "stop_id": "1915",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "201MD",
+    "stop_id": "1153",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "201MJ",
+    "stop_id": "1916",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "201N",
+    "stop_id": "1153",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "201M",
+    "stop_id": "1915",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "201MA",
+    "stop_id": "1915",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "201L",
+    "stop_id": "1153",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "201K",
+    "stop_id": "1153",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "210E",
+    "stop_id": "4232",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "210F",
+    "stop_id": "4187",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "210EA",
+    "stop_id": "466",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "210FA",
+    "stop_id": "3359",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "210G",
+    "stop_id": "4232",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "210CD",
+    "stop_id": "2830",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "210A",
+    "stop_id": "1787",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "210C",
+    "stop_id": "2220",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "210B",
+    "stop_id": "904",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "210CA",
+    "stop_id": "1425",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "210P",
+    "stop_id": "844",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "210NB",
+    "stop_id": "307",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "210NA",
+    "stop_id": "3359",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "210N",
+    "stop_id": "4187",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "210I",
+    "stop_id": "844",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "210H",
+    "stop_id": "4187",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "210GA",
+    "stop_id": "2524",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "211R",
+    "stop_id": "121",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "211RA",
+    "stop_id": "680",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "211L",
+    "stop_id": "395",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "211N",
+    "stop_id": "507",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "211P",
+    "stop_id": "902",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "211Q",
+    "stop_id": "2258",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "211H",
+    "stop_id": "2951",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "211J",
+    "stop_id": "4193",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "211K",
+    "stop_id": "1441",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "211DA",
+    "stop_id": "2744",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "210ZA",
+    "stop_id": "841",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "211E",
+    "stop_id": "2211",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "211G",
+    "stop_id": "2400",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "210V",
+    "stop_id": "309",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "210X",
+    "stop_id": "760",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "210R",
+    "stop_id": "4232",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "210Q",
+    "stop_id": "844",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "215A",
+    "stop_id": "2466",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "215AB",
+    "stop_id": "2466",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "215B",
+    "stop_id": "221",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "215C",
+    "stop_id": "1858",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "213B",
+    "stop_id": "2096",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "213D",
+    "stop_id": "2289",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "213DA",
+    "stop_id": "680",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "213DC",
+    "stop_id": "2289",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "213F",
+    "stop_id": "353",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "212D",
+    "stop_id": "43",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "212M",
+    "stop_id": "2333",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "213M",
+    "stop_id": "81",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "213L",
+    "stop_id": "1644",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "213N",
+    "stop_id": "3172",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "213P",
+    "stop_id": "4032",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "213V",
+    "stop_id": "1539",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "213G",
+    "stop_id": "3178",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "213H",
+    "stop_id": "446",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "213J",
+    "stop_id": "576",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "213K",
+    "stop_id": "1456",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "214D",
+    "stop_id": "4015",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "214E",
+    "stop_id": "2963",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "214G",
+    "stop_id": "1384",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "214F",
+    "stop_id": "2951",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "213Z",
+    "stop_id": "1539",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "214H",
+    "stop_id": "1451",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "214L",
+    "stop_id": "2094",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "215K",
+    "stop_id": "131",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "215N",
+    "stop_id": "131",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "215NA",
+    "stop_id": "105",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "215NB",
+    "stop_id": "3089",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "215P",
+    "stop_id": "3860",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "215R",
+    "stop_id": "2466",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "215W",
+    "stop_id": "309",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "215U",
+    "stop_id": "2466",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "215T",
+    "stop_id": "4155",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "215Z",
+    "stop_id": "351",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "215Y",
+    "stop_id": "309",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "215X",
+    "stop_id": "4092",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "216B",
+    "stop_id": "256",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "215ZA",
+    "stop_id": "125",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "221B",
+    "stop_id": "4027",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "221E",
+    "stop_id": "2489",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "217B",
+    "stop_id": "2333",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "215CA",
+    "stop_id": "1858",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "215CB",
+    "stop_id": "2466",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "215CD",
+    "stop_id": "1817",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "215D",
+    "stop_id": "1219",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "215E",
+    "stop_id": "1219",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "215F",
+    "stop_id": "2466",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "215H",
+    "stop_id": "1858",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "215J",
+    "stop_id": "2466",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "226M",
+    "stop_id": "507",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "226P",
+    "stop_id": "2489",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "226L",
+    "stop_id": "2489",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "226K",
+    "stop_id": "2489",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "226G",
+    "stop_id": "3745",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "226H",
+    "stop_id": "311",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "226E",
+    "stop_id": "2489",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "226D",
+    "stop_id": "2489",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "225P",
+    "stop_id": "2489",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "225M",
+    "stop_id": "1500",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "227L",
+    "stop_id": "2489",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "227NA",
+    "stop_id": "2489",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "227R",
+    "stop_id": "2489",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "227P",
+    "stop_id": "1720",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "227J",
+    "stop_id": "2489",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "227K",
+    "stop_id": "2489",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "227E",
+    "stop_id": "2489",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "227C",
+    "stop_id": "2489",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "227B",
+    "stop_id": "4027",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "227A",
+    "stop_id": "2851",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "226VC",
+    "stop_id": "2489",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "226Z",
+    "stop_id": "1709",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "226VA",
+    "stop_id": "2489",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "226VB",
+    "stop_id": "2489",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "226S",
+    "stop_id": "2489",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "226T",
+    "stop_id": "4007",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "226U",
+    "stop_id": "2489",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "226Q",
+    "stop_id": "2299",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "226R",
+    "stop_id": "2489",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "225B",
+    "stop_id": "1897",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "224E",
+    "stop_id": "2489",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "225C",
+    "stop_id": "2299",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "224D",
+    "stop_id": "1143",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "224A",
+    "stop_id": "4218",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "223F",
+    "stop_id": "2489",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "223E",
+    "stop_id": "2489",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "223H",
+    "stop_id": "2489",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "221J",
+    "stop_id": "2489",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "225F",
+    "stop_id": "2489",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "225L",
+    "stop_id": "4421",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "225D",
+    "stop_id": "2299",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "225DA",
+    "stop_id": "2489",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "225CF",
+    "stop_id": "2299",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "235A",
+    "stop_id": "2489",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "234D",
+    "stop_id": "4181",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "234C",
+    "stop_id": "2766",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "235D",
+    "stop_id": "2299",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "234A",
+    "stop_id": "2489",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "237D",
+    "stop_id": "321",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "237J",
+    "stop_id": "321",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "237A",
+    "stop_id": "3290",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "238A",
+    "stop_id": "2299",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "235K",
+    "stop_id": "1113",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "235F",
+    "stop_id": "3863",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "235Q",
+    "stop_id": "2299",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "235P",
+    "stop_id": "858",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "228B",
+    "stop_id": "4114",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "228F",
+    "stop_id": "2489",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "228H",
+    "stop_id": "2299",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "228E",
+    "stop_id": "4098",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "229A",
+    "stop_id": "2489",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "229D",
+    "stop_id": "2489",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "227T",
+    "stop_id": "2489",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "227S",
+    "stop_id": "1354",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "227U",
+    "stop_id": "2489",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "227V",
+    "stop_id": "2489",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "227X",
+    "stop_id": "4091",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "227W",
+    "stop_id": "2489",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "227VC",
+    "stop_id": "970",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "227VA",
+    "stop_id": "4248",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "227ZA",
+    "stop_id": "2489",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "227Z",
+    "stop_id": "2489",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "231F",
+    "stop_id": "2489",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "231G",
+    "stop_id": "2286",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "231H",
+    "stop_id": "1038",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "231J",
+    "stop_id": "2489",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "231K",
+    "stop_id": "2489",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "231L",
+    "stop_id": "2299",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "231P",
+    "stop_id": "2489",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "230A",
+    "stop_id": "2489",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "231B",
+    "stop_id": "2489",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "231C",
+    "stop_id": "2988",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "231D",
+    "stop_id": "2489",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "231E",
+    "stop_id": "2489",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "241K",
+    "stop_id": "2489",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "241L",
+    "stop_id": "3745",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "241G",
+    "stop_id": "2489",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "241N",
+    "stop_id": "2489",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "241M",
+    "stop_id": "2489",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "241D",
+    "stop_id": "2299",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "242C",
+    "stop_id": "2489",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "242AA",
+    "stop_id": "309",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "241S",
+    "stop_id": "3745",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "241B",
+    "stop_id": "2309",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "240P",
+    "stop_id": "1897",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "240M",
+    "stop_id": "2489",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "240R",
+    "stop_id": "2299",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "241CJ",
+    "stop_id": "2489",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "241CB",
+    "stop_id": "2299",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "241CN",
+    "stop_id": "2489",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "241C",
+    "stop_id": "2489",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "238VR",
+    "stop_id": "914",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "238VA",
+    "stop_id": "3745",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "238V",
+    "stop_id": "2299",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "240K",
+    "stop_id": "2489",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "240C",
+    "stop_id": "2489",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "240A",
+    "stop_id": "2649",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "239D",
+    "stop_id": "3745",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "239C",
+    "stop_id": "2299",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "239A",
+    "stop_id": "3745",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "238Z",
+    "stop_id": "3745",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "238C",
+    "stop_id": "321",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "238AB",
+    "stop_id": "2299",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "238T",
+    "stop_id": "2712",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "238G",
+    "stop_id": "2734",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "248AB",
+    "stop_id": "1843",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "246A",
+    "stop_id": "3745",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "248B",
+    "stop_id": "822",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "248C",
+    "stop_id": "3437",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "248D",
+    "stop_id": "4284",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "248M",
+    "stop_id": "4061",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "248K",
+    "stop_id": "2881",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "248J",
+    "stop_id": "4302",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "248N",
+    "stop_id": "822",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "244C",
+    "stop_id": "2299",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "244G",
+    "stop_id": "3745",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "244K",
+    "stop_id": "2299",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "245GA",
+    "stop_id": "2299",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "245J",
+    "stop_id": "2299",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "245K",
+    "stop_id": "2299",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "245M",
+    "stop_id": "2299",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "245N",
+    "stop_id": "3745",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "245Q",
+    "stop_id": "2299",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "243D",
+    "stop_id": "2299",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "243H",
+    "stop_id": "3745",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "243F",
+    "stop_id": "2299",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "243K",
+    "stop_id": "3745",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "243J",
+    "stop_id": "2299",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "242CD",
+    "stop_id": "2489",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "242D",
+    "stop_id": "2489",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "242F",
+    "stop_id": "2489",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "242E",
+    "stop_id": "2489",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "242J",
+    "stop_id": "2489",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "242K",
+    "stop_id": "2489",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "242T",
+    "stop_id": "2299",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "242TB",
+    "stop_id": "2489",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "242JA",
+    "stop_id": "3745",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "242JK",
+    "stop_id": "2489",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "242VC",
+    "stop_id": "507",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "242VB",
+    "stop_id": "2489",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "242ZB",
+    "stop_id": "2489",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "251C",
+    "stop_id": "3745",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "250Z",
+    "stop_id": "19",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "251A",
+    "stop_id": "2115",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "250YA",
+    "stop_id": "2299",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "250YB",
+    "stop_id": "2299",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "250X",
+    "stop_id": "3745",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "250W",
+    "stop_id": "3745",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "250Y",
+    "stop_id": "2299",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "250TA",
+    "stop_id": "2489",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "250SA",
+    "stop_id": "2299",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "250V",
+    "stop_id": "3745",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "250S",
+    "stop_id": "1321",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "250R",
+    "stop_id": "871",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "250M",
+    "stop_id": "2881",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "250N",
+    "stop_id": "2881",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "250P",
+    "stop_id": "822",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "250H",
+    "stop_id": "871",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "250G",
+    "stop_id": "3518",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "250J",
+    "stop_id": "4127",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "250F",
+    "stop_id": "3827",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "250E",
+    "stop_id": "4060",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "250D",
+    "stop_id": "2299",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "250CC",
+    "stop_id": "2962",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "250CB",
+    "stop_id": "2724",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "250C",
+    "stop_id": "258",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "250BA",
+    "stop_id": "3723",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "250B",
+    "stop_id": "4060",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "250AC",
+    "stop_id": "822",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "250AB",
+    "stop_id": "2870",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "250A",
+    "stop_id": "258",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "24A",
+    "stop_id": "2489",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "248Q",
+    "stop_id": "2115",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "248Z",
+    "stop_id": "2182",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "248P",
+    "stop_id": "4060",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "252F",
+    "stop_id": "3324",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "252E",
+    "stop_id": "2563",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "252D",
+    "stop_id": "3451",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "251G",
+    "stop_id": "2982",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "251M",
+    "stop_id": "2226",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "251E",
+    "stop_id": "2563",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "258M",
+    "stop_id": "2489",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "258MA",
+    "stop_id": "2489",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "258P",
+    "stop_id": "2489",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "258Q",
+    "stop_id": "2489",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "258S",
+    "stop_id": "2489",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "258SA",
+    "stop_id": "2489",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "258SB",
+    "stop_id": "2489",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "258SD",
+    "stop_id": "2299",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "258AB",
+    "stop_id": "2299",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "258E",
+    "stop_id": "2489",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "258K",
+    "stop_id": "2489",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "258KA",
+    "stop_id": "2489",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "257G",
+    "stop_id": "2299",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "257E",
+    "stop_id": "2299",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "257H",
+    "stop_id": "3745",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "258A",
+    "stop_id": "2489",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "257C",
+    "stop_id": "2299",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "257B",
+    "stop_id": "2489",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "257A",
+    "stop_id": "2489",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "257D",
+    "stop_id": "2489",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "25A",
+    "stop_id": "2299",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "25B",
+    "stop_id": "2299",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "258YA",
+    "stop_id": "2299",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "258VB",
+    "stop_id": "2299",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "258V",
+    "stop_id": "2489",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "258TB",
+    "stop_id": "2489",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "258Y",
+    "stop_id": "2489",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "258W",
+    "stop_id": "2299",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "258VC",
+    "stop_id": "2489",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "263E",
+    "stop_id": "2489",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "263B",
+    "stop_id": "1287",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "263A",
+    "stop_id": "4095",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "25N",
+    "stop_id": "2299",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "25F",
+    "stop_id": "2299",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "25D",
+    "stop_id": "2299",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "264A",
+    "stop_id": "2299",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "263R",
+    "stop_id": "3745",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "263P",
+    "stop_id": "2654",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "263J",
+    "stop_id": "2489",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "263H",
+    "stop_id": "1117",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "263G",
+    "stop_id": "1287",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "252FA",
+    "stop_id": "4079",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "252FB",
+    "stop_id": "4079",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "252H",
+    "stop_id": "2563",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "252J",
+    "stop_id": "3324",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "252K",
+    "stop_id": "2219",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "252R",
+    "stop_id": "1761",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "252N",
+    "stop_id": "3324",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "252L",
+    "stop_id": "3324",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "252GA",
+    "stop_id": "124",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "253HC",
+    "stop_id": "1475",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "253F",
+    "stop_id": "2130",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "253J",
+    "stop_id": "1594",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "253E",
+    "stop_id": "3426",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "253N",
+    "stop_id": "2398",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "253M",
+    "stop_id": "4150",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "253P",
+    "stop_id": "1653",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "252U",
+    "stop_id": "4079",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "252V",
+    "stop_id": "3324",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "252RA",
+    "stop_id": "140",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "253A",
+    "stop_id": "673",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "253D",
+    "stop_id": "4122",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "255F",
+    "stop_id": "2489",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "255H",
+    "stop_id": "2489",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "255D",
+    "stop_id": "2299",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "255C",
+    "stop_id": "2489",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "255AA",
+    "stop_id": "2299",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "256C",
+    "stop_id": "2299",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "256B",
+    "stop_id": "2489",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "255K",
+    "stop_id": "3745",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "255J",
+    "stop_id": "2489",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "253W",
+    "stop_id": "4059",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "254C",
+    "stop_id": "2117",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "253T",
+    "stop_id": "2181",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "253V",
+    "stop_id": "4150",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "253Q",
+    "stop_id": "811",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "253R",
+    "stop_id": "1368",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "255A",
+    "stop_id": "2489",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "254E",
+    "stop_id": "2295",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "254D",
+    "stop_id": "2295",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "270G",
+    "stop_id": "3745",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "270H",
+    "stop_id": "2023",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "270D",
+    "stop_id": "3745",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "270HA",
+    "stop_id": "1609",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "270A",
+    "stop_id": "3745",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "271C",
+    "stop_id": "2299",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "271A",
+    "stop_id": "10",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "271D",
+    "stop_id": "2299",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "271E",
+    "stop_id": "2299",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "271F",
+    "stop_id": "2489",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "271G",
+    "stop_id": "2299",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "271K",
+    "stop_id": "2299",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "271H",
+    "stop_id": "2299",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "271Q",
+    "stop_id": "4420",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "271P",
+    "stop_id": "2299",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "271R",
+    "stop_id": "4429",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "272E",
+    "stop_id": "3745",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "272B",
+    "stop_id": "3745",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "273B",
+    "stop_id": "2299",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "265A",
+    "stop_id": "2299",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "265B",
+    "stop_id": "4079",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "265D",
+    "stop_id": "4288",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "266D",
+    "stop_id": "2489",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "266E",
+    "stop_id": "2489",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "266C",
+    "stop_id": "2489",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "266B",
+    "stop_id": "2489",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "266A",
+    "stop_id": "2489",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "266K",
+    "stop_id": "2489",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "266H",
+    "stop_id": "2299",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "266G",
+    "stop_id": "2489",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "266F",
+    "stop_id": "2489",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "266R",
+    "stop_id": "2489",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "266Q",
+    "stop_id": "2489",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "266M",
+    "stop_id": "2489",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "267A",
+    "stop_id": "2299",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "267B",
+    "stop_id": "3745",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "267C",
+    "stop_id": "3461",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "269B",
+    "stop_id": "2299",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "269A",
+    "stop_id": "2489",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "279E",
+    "stop_id": "604",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "279C",
+    "stop_id": "4021",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "279A",
+    "stop_id": "604",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "278K",
+    "stop_id": "3311",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "278E",
+    "stop_id": "604",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "278A",
+    "stop_id": "4021",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "281K",
+    "stop_id": "3346",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "281C",
+    "stop_id": "1733",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "282C",
+    "stop_id": "3533",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "282B",
+    "stop_id": "2876",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "280F",
+    "stop_id": "1664",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "280L",
+    "stop_id": "4384",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "280M",
+    "stop_id": "3626",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "280E",
+    "stop_id": "2197",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "280C",
+    "stop_id": "2825",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "280A",
+    "stop_id": "50",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "27N",
+    "stop_id": "3745",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "279H",
+    "stop_id": "604",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "279F",
+    "stop_id": "604",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "275E",
+    "stop_id": "1788",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "275C",
+    "stop_id": "1788",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "273J",
+    "stop_id": "2299",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "273H",
+    "stop_id": "2299",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "273F",
+    "stop_id": "2299",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "275B",
+    "stop_id": "2299",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "275A",
+    "stop_id": "2299",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "273C",
+    "stop_id": "2299",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "273E",
+    "stop_id": "2489",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "276D",
+    "stop_id": "2489",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "276C",
+    "stop_id": "2634",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "276E",
+    "stop_id": "4284",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "276K",
+    "stop_id": "4021",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "290A",
+    "stop_id": "3404",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "290B",
+    "stop_id": "2299",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "289M",
+    "stop_id": "2299",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "289K",
+    "stop_id": "2084",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "289H",
+    "stop_id": "1664",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "289F",
+    "stop_id": "1664",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "290E",
+    "stop_id": "3745",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "290F",
+    "stop_id": "3745",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "290J",
+    "stop_id": "2299",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "290K",
+    "stop_id": "3745",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "290D",
+    "stop_id": "2299",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "290C",
+    "stop_id": "3066",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "286E",
+    "stop_id": "4262",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "286F",
+    "stop_id": "2299",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "286D",
+    "stop_id": "3900",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "286G",
+    "stop_id": "1839",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "286H",
+    "stop_id": "1840",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "287A",
+    "stop_id": "3745",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "287F",
+    "stop_id": "749",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "287G",
+    "stop_id": "926",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "287D",
+    "stop_id": "4314",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "287JA",
+    "stop_id": "107",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "287N",
+    "stop_id": "4314",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "287M",
+    "stop_id": "1557",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "282G",
+    "stop_id": "2377",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "282E",
+    "stop_id": "2417",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "282D",
+    "stop_id": "530",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "284E",
+    "stop_id": "81",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "283B",
+    "stop_id": "2489",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "283A",
+    "stop_id": "2489",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "286A",
+    "stop_id": "1840",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "286B",
+    "stop_id": "883",
+    "stop_sequence": 2
+  },
+  {
+    "route_id": "288D",
+    "stop_id": "2393",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "288H",
+    "stop_id": "4089",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "288M",
+    "stop_id": "4284",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "289C",
+    "stop_id": "1633",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "289D",
+    "stop_id": "1664",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "289E",
+    "stop_id": "883",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "287P",
+    "stop_id": "749",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "287Q",
+    "stop_id": "604",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "288A",
+    "stop_id": "2393",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "295E",
+    "stop_id": "317",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "296A",
+    "stop_id": "4384",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "296B",
+    "stop_id": "1549",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "295C",
+    "stop_id": "1094",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "295D",
+    "stop_id": "4383",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "296D",
+    "stop_id": "1549",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "294F",
+    "stop_id": "3505",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "294E",
+    "stop_id": "524",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "295A",
+    "stop_id": "1094",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "297M",
+    "stop_id": "1042",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "298C",
+    "stop_id": "2489",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "297F",
+    "stop_id": "500",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "297H",
+    "stop_id": "1567",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "297B",
+    "stop_id": "1032",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "296T",
+    "stop_id": "1551",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "297A",
+    "stop_id": "1774",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "298P",
+    "stop_id": "1664",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "296N",
+    "stop_id": "2068",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "296Q",
+    "stop_id": "1551",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "296F",
+    "stop_id": "2800",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "292C",
+    "stop_id": "2373",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "292E",
+    "stop_id": "3057",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "293A",
+    "stop_id": "2489",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "291N",
+    "stop_id": "1401",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "291R",
+    "stop_id": "1825",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "292B",
+    "stop_id": "3057",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "293K",
+    "stop_id": "2703",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "293L",
+    "stop_id": "4383",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "293J",
+    "stop_id": "2800",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "293M",
+    "stop_id": "658",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "293P",
+    "stop_id": "3745",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "294A",
+    "stop_id": "2072",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "294B",
+    "stop_id": "2034",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "294D",
+    "stop_id": "108",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "293C",
+    "stop_id": "2373",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "293B",
+    "stop_id": "2068",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "293H",
+    "stop_id": "983",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "293D",
+    "stop_id": "3792",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "291J",
+    "stop_id": "2489",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "291H",
+    "stop_id": "3481",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "291G",
+    "stop_id": "3745",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "291E",
+    "stop_id": "97",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "291D",
+    "stop_id": "3745",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "291M",
+    "stop_id": "1401",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "291L",
+    "stop_id": "3745",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "291K",
+    "stop_id": "3452",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "290Q",
+    "stop_id": "3481",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "290N",
+    "stop_id": "4013",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "290NA",
+    "stop_id": "3481",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "290L",
+    "stop_id": "3745",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "291A",
+    "stop_id": "2489",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "290RA",
+    "stop_id": "4279",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "290R",
+    "stop_id": "3533",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "290QA",
+    "stop_id": "3146",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "302N",
+    "stop_id": "2299",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "303A",
+    "stop_id": "1908",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "302M",
+    "stop_id": "3745",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "303C",
+    "stop_id": "3745",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "303B",
+    "stop_id": "2489",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "303D",
+    "stop_id": "2299",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "303E",
+    "stop_id": "2489",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "304B",
+    "stop_id": "1631",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "303F",
+    "stop_id": "3745",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "304M",
+    "stop_id": "76",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "304F",
+    "stop_id": "39",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "304N",
+    "stop_id": "146",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "304E",
+    "stop_id": "2132",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "304V",
+    "stop_id": "818",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "304NA",
+    "stop_id": "3249",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "304Q",
+    "stop_id": "1249",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "304S",
+    "stop_id": "2132",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "305F",
+    "stop_id": "3026",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "305G",
+    "stop_id": "1066",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "305H",
+    "stop_id": "3026",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "304Z",
+    "stop_id": "818",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "305B",
+    "stop_id": "2708",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "300P",
+    "stop_id": "3698",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "300MB",
+    "stop_id": "1984",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "300L",
+    "stop_id": "2244",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "301D",
+    "stop_id": "1664",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "301E",
+    "stop_id": "2477",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "301F",
+    "stop_id": "4057",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "302A",
+    "stop_id": "253",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "301R",
+    "stop_id": "3026",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "302B",
+    "stop_id": "2299",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "302C",
+    "stop_id": "3745",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "302D",
+    "stop_id": "2489",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "302F",
+    "stop_id": "2299",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "302K",
+    "stop_id": "2299",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "300E",
+    "stop_id": "3745",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "300D",
+    "stop_id": "3745",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "300B",
+    "stop_id": "2299",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "300F",
+    "stop_id": "3745",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "300H",
+    "stop_id": "2053",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "2A",
+    "stop_id": "2299",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "29E",
+    "stop_id": "3745",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "298PB",
+    "stop_id": "1664",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "2B",
+    "stop_id": "2299",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "2E",
+    "stop_id": "2299",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "300A",
+    "stop_id": "2489",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "320A",
+    "stop_id": "3032",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "320H",
+    "stop_id": "1265",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "320J",
+    "stop_id": "1637",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "322A",
+    "stop_id": "4025",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "31E",
+    "stop_id": "2299",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "317YD",
+    "stop_id": "1137",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "319E",
+    "stop_id": "1637",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "31A",
+    "stop_id": "2299",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "31B",
+    "stop_id": "2299",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "317D",
+    "stop_id": "2195",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "317J",
+    "stop_id": "2063",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "317K",
+    "stop_id": "2544",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "317R",
+    "stop_id": "870",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "317S",
+    "stop_id": "410",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "317T",
+    "stop_id": "4199",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "317SA",
+    "stop_id": "1133",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "317W",
+    "stop_id": "1249",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "317Y",
+    "stop_id": "1401",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "317YA",
+    "stop_id": "2259",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "316C",
+    "stop_id": "1723",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "316B",
+    "stop_id": "643",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "315V",
+    "stop_id": "2092",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "316G",
+    "stop_id": "2762",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "316K",
+    "stop_id": "2098",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "316F",
+    "stop_id": "872",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "316D",
+    "stop_id": "484",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "315H",
+    "stop_id": "2914",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "315L",
+    "stop_id": "71",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "314T",
+    "stop_id": "393",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "314P",
+    "stop_id": "1824",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "314X",
+    "stop_id": "5",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "314N",
+    "stop_id": "4268",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "314K",
+    "stop_id": "957",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "314H",
+    "stop_id": "2730",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "314E",
+    "stop_id": "1165",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "314F",
+    "stop_id": "4268",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "314G",
+    "stop_id": "688",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "314D",
+    "stop_id": "2730",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "314B",
+    "stop_id": "957",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "314C",
+    "stop_id": "732",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "313T",
+    "stop_id": "4057",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "313G",
+    "stop_id": "1310",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "313U",
+    "stop_id": "4219",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "313D",
+    "stop_id": "2053",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "313E",
+    "stop_id": "2092",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "313C",
+    "stop_id": "3",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "313B",
+    "stop_id": "4289",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "312A",
+    "stop_id": "2790",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "311K",
+    "stop_id": "2092",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "311F",
+    "stop_id": "2053",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "311E",
+    "stop_id": "240",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "310E",
+    "stop_id": "2366",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "310C",
+    "stop_id": "4166",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "308B",
+    "stop_id": "2801",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "307B",
+    "stop_id": "2091",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "30E",
+    "stop_id": "3962",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "306Q",
+    "stop_id": "1040",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "306M",
+    "stop_id": "3385",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "306P",
+    "stop_id": "1543",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "306K",
+    "stop_id": "1651",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "306H",
+    "stop_id": "1520",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "306L",
+    "stop_id": "2621",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "306E",
+    "stop_id": "3113",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "306G",
+    "stop_id": "3821",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "306D",
+    "stop_id": "1040",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "305S",
+    "stop_id": "3855",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "305Q",
+    "stop_id": "3339",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "305NT",
+    "stop_id": "2263",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "305L",
+    "stop_id": "4200",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "305P",
+    "stop_id": "586",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "305K",
+    "stop_id": "2259",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "347K",
+    "stop_id": "37",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "348B",
+    "stop_id": "3300",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "348E",
+    "stop_id": "4433",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "348H",
+    "stop_id": "1695",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "348J",
+    "stop_id": "2765",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "348L",
+    "stop_id": "1669",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "349D",
+    "stop_id": "1723",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "349E",
+    "stop_id": "880",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "349F",
+    "stop_id": "815",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "349J",
+    "stop_id": "2489",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "349K",
+    "stop_id": "1723",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "34C",
+    "stop_id": "3745",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "349M",
+    "stop_id": "2100",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "34F",
+    "stop_id": "3745",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "34S",
+    "stop_id": "3745",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "346CA",
+    "stop_id": "1723",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "346B",
+    "stop_id": "1131",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "346D",
+    "stop_id": "857",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "346J",
+    "stop_id": "325",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "346E",
+    "stop_id": "1106",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "346P",
+    "stop_id": "3734",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "346T",
+    "stop_id": "1107",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "347A",
+    "stop_id": "827",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "347B",
+    "stop_id": "2504",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "347C",
+    "stop_id": "827",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "342H",
+    "stop_id": "3648",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "343B",
+    "stop_id": "2385",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "343L",
+    "stop_id": "1623",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "344D",
+    "stop_id": "450",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "343M",
+    "stop_id": "3021",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "335H",
+    "stop_id": "2091",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "336A",
+    "stop_id": "2295",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "335K",
+    "stop_id": "546",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "340K",
+    "stop_id": "3828",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "341E",
+    "stop_id": "1531",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "340T",
+    "stop_id": "46",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "333D",
+    "stop_id": "879",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "333K",
+    "stop_id": "4346",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "333Q",
+    "stop_id": "575",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "333B",
+    "stop_id": "39",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "335B",
+    "stop_id": "393",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "330B",
+    "stop_id": "39",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "330D",
+    "stop_id": "1098",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "330E",
+    "stop_id": "1047",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "331B",
+    "stop_id": "4203",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "331E",
+    "stop_id": "419",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "330G",
+    "stop_id": "1134",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "328H",
+    "stop_id": "1664",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "328C",
+    "stop_id": "4334",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "327D",
+    "stop_id": "1462",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "327A",
+    "stop_id": "1154",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "329L",
+    "stop_id": "427",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "329J",
+    "stop_id": "3793",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "329H",
+    "stop_id": "427",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "328HB",
+    "stop_id": "206",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "325A",
+    "stop_id": "1539",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "324E",
+    "stop_id": "4296",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "323M",
+    "stop_id": "2160",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "323L",
+    "stop_id": "3166",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "323G",
+    "stop_id": "3496",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "323F",
+    "stop_id": "3166",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "323C",
+    "stop_id": "4025",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "323B",
+    "stop_id": "2513",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "322E",
+    "stop_id": "176",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "326C",
+    "stop_id": "2092",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "366G",
+    "stop_id": "533",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "366K",
+    "stop_id": "4184",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "366KA",
+    "stop_id": "3006",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "366M",
+    "stop_id": "667",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "366N",
+    "stop_id": "1330",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "366P",
+    "stop_id": "349",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "366R",
+    "stop_id": "4193",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "366B",
+    "stop_id": "1530",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "366C",
+    "stop_id": "3711",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "365P",
+    "stop_id": "125",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "365R",
+    "stop_id": "376",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "365W",
+    "stop_id": "4197",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "365Q",
+    "stop_id": "1181",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "365E",
+    "stop_id": "3710",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "365D",
+    "stop_id": "533",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "365J",
+    "stop_id": "1931",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "365N",
+    "stop_id": "1330",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "369B",
+    "stop_id": "3708",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "369C",
+    "stop_id": "1702",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "368D",
+    "stop_id": "3708",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "368C",
+    "stop_id": "1929",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "368F",
+    "stop_id": "1048",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "367C",
+    "stop_id": "915",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "366Z",
+    "stop_id": "126",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "367D",
+    "stop_id": "2122",
+    "stop_sequence": 2
+  },
+  {
+    "route_id": "367CA",
+    "stop_id": "876",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "366X",
+    "stop_id": "4026",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "366W",
+    "stop_id": "4197",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "366T",
+    "stop_id": "2624",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "36D",
+    "stop_id": "2299",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "36B",
+    "stop_id": "2299",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "36A",
+    "stop_id": "2299",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "369N",
+    "stop_id": "4411",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "369P",
+    "stop_id": "410",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "369M",
+    "stop_id": "1702",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "369J",
+    "stop_id": "915",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "369E",
+    "stop_id": "837",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "369G",
+    "stop_id": "837",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "369F",
+    "stop_id": "1620",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "369D",
+    "stop_id": "3708",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "374K",
+    "stop_id": "2670",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "374M",
+    "stop_id": "3151",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "374G",
+    "stop_id": "4297",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "374F",
+    "stop_id": "844",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "374E",
+    "stop_id": "844",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "374C",
+    "stop_id": "309",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "373J",
+    "stop_id": "3701",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "372G",
+    "stop_id": "2079",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "372E",
+    "stop_id": "876",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "372J",
+    "stop_id": "589",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "372H",
+    "stop_id": "3224",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "371A",
+    "stop_id": "2100",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "371D",
+    "stop_id": "2100",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "372A",
+    "stop_id": "858",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "370B",
+    "stop_id": "2459",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "370A",
+    "stop_id": "4173",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "36F",
+    "stop_id": "2299",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "356CA",
+    "stop_id": "4360",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "356C",
+    "stop_id": "1207",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "356CW",
+    "stop_id": "1207",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "350G",
+    "stop_id": "592",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "350H",
+    "stop_id": "2163",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "351C",
+    "stop_id": "3497",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "351H",
+    "stop_id": "3803",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "353A",
+    "stop_id": "3454",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "353B",
+    "stop_id": "1929",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "353E",
+    "stop_id": "1604",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "354A",
+    "stop_id": "2802",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "355D",
+    "stop_id": "1929",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "355Q",
+    "stop_id": "1181",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "356A",
+    "stop_id": "4074",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "356B",
+    "stop_id": "2489",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "356M",
+    "stop_id": "126",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "356Z",
+    "stop_id": "752",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "358A",
+    "stop_id": "3618",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "356E",
+    "stop_id": "1578",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "356F",
+    "stop_id": "31",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "356H",
+    "stop_id": "3986",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "361K",
+    "stop_id": "3040",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "362C",
+    "stop_id": "410",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "361C",
+    "stop_id": "125",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "360H",
+    "stop_id": "2379",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "360M",
+    "stop_id": "25",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "360Q",
+    "stop_id": "985",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "361A",
+    "stop_id": "3852",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "360C",
+    "stop_id": "292",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "360E",
+    "stop_id": "514",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "361B",
+    "stop_id": "834",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "364G",
+    "stop_id": "2385",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "364D",
+    "stop_id": "1048",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "365B",
+    "stop_id": "2716",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "364A",
+    "stop_id": "182",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "363A",
+    "stop_id": "3301",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "362S",
+    "stop_id": "125",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "362F",
+    "stop_id": "3735",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "362K",
+    "stop_id": "322",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "364B",
+    "stop_id": "1048",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "364C",
+    "stop_id": "4293",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "415B",
+    "stop_id": "4314",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "412A",
+    "stop_id": "2140",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "415F",
+    "stop_id": "4314",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "415H",
+    "stop_id": "91",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "415J",
+    "stop_id": "749",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "415G",
+    "stop_id": "3686",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "415E",
+    "stop_id": "91",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "415D",
+    "stop_id": "3425",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "43B",
+    "stop_id": "2299",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "43C",
+    "stop_id": "2299",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "43G",
+    "stop_id": "2299",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "43E",
+    "stop_id": "2299",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "43H",
+    "stop_id": "2299",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "43J",
+    "stop_id": "2299",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "43M",
+    "stop_id": "2299",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "45D",
+    "stop_id": "2299",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "45B",
+    "stop_id": "2299",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "45A",
+    "stop_id": "2489",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "45E",
+    "stop_id": "2299",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "49A",
+    "stop_id": "624",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "45J",
+    "stop_id": "914",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "45F",
+    "stop_id": "2299",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "500A",
+    "stop_id": "1560",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "374MA",
+    "stop_id": "3151",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "375B",
+    "stop_id": "3701",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "377A",
+    "stop_id": "3151",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "378D",
+    "stop_id": "2333",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "378H",
+    "stop_id": "1202",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "378A",
+    "stop_id": "2333",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "37E",
+    "stop_id": "3745",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "37B",
+    "stop_id": "3745",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "378M",
+    "stop_id": "844",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "37F",
+    "stop_id": "3745",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "380G",
+    "stop_id": "978",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "380H",
+    "stop_id": "1820",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "380E",
+    "stop_id": "3818",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "380C",
+    "stop_id": "1531",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "381J",
+    "stop_id": "1329",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "381G",
+    "stop_id": "4191",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "380P",
+    "stop_id": "267",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "380N",
+    "stop_id": "4175",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "382A",
+    "stop_id": "3753",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "382D",
+    "stop_id": "2948",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "383C",
+    "stop_id": "586",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "383B",
+    "stop_id": "1621",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "398B",
+    "stop_id": "752",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "399E",
+    "stop_id": "817",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "3B",
+    "stop_id": "304",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "3E",
+    "stop_id": "304",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "3F",
+    "stop_id": "1657",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "400A",
+    "stop_id": "2477",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "400F",
+    "stop_id": "2477",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "401A",
+    "stop_id": "3324",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "401BA",
+    "stop_id": "844",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "401BC",
+    "stop_id": "383",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "401AG",
+    "stop_id": "321",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "401AE",
+    "stop_id": "3324",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "401AC",
+    "stop_id": "4425",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "401MA",
+    "stop_id": "3551",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "401KC",
+    "stop_id": "1051",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "401JC",
+    "stop_id": "320",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "401JA",
+    "stop_id": "3533",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "401J",
+    "stop_id": "1718",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "401E",
+    "stop_id": "754",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "401RD",
+    "stop_id": "2333",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "401RC",
+    "stop_id": "1051",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "407D",
+    "stop_id": "4425",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "409A",
+    "stop_id": "1664",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "401W",
+    "stop_id": "3324",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "401Z",
+    "stop_id": "4420",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "402J",
+    "stop_id": "4407",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "403B",
+    "stop_id": "2489",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "410M",
+    "stop_id": "4429",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "410C",
+    "stop_id": "4297",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "410D",
+    "stop_id": "1202",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "411J",
+    "stop_id": "349",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "411G",
+    "stop_id": "2091",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "411B",
+    "stop_id": "349",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "59A",
+    "stop_id": "2489",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "59B",
+    "stop_id": "2489",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "59H",
+    "stop_id": "2489",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "57B",
+    "stop_id": "2299",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "57A",
+    "stop_id": "2299",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "55B",
+    "stop_id": "2489",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "54E",
+    "stop_id": "2299",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "510A",
+    "stop_id": "311",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "50A",
+    "stop_id": "3745",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "506A",
+    "stop_id": "1040",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "504C",
+    "stop_id": "2804",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "504E",
+    "stop_id": "1149",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "502HC",
+    "stop_id": "824",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "502M",
+    "stop_id": "2053",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "504B",
+    "stop_id": "2479",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "502H",
+    "stop_id": "824",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "502HA",
+    "stop_id": "1326",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "502HB",
+    "stop_id": "822",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "502F",
+    "stop_id": "1843",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "502E",
+    "stop_id": "1557",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "61G",
+    "stop_id": "754",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "61F",
+    "stop_id": "1341",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "61J",
+    "stop_id": "756",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "61E",
+    "stop_id": "4298",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "61C",
+    "stop_id": "395",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "61D",
+    "stop_id": "4298",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "61B",
+    "stop_id": "3644",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "61A",
+    "stop_id": "754",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "60E",
+    "stop_id": "634",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "60G",
+    "stop_id": "634",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "60L",
+    "stop_id": "1832",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "60J",
+    "stop_id": "1341",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "600KB",
+    "stop_id": "1207",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "600QA",
+    "stop_id": "311",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "60B",
+    "stop_id": "2015",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "60C",
+    "stop_id": "754",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "600FB",
+    "stop_id": "1207",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "600FA",
+    "stop_id": "1930",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "600FC",
+    "stop_id": "1929",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "600KA",
+    "stop_id": "1203",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "600D",
+    "stop_id": "3734",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "500QK",
+    "stop_id": "896",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "500L",
+    "stop_id": "4138",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "500D",
+    "stop_id": "730",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "500H",
+    "stop_id": "2477",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "500DC",
+    "stop_id": "752",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "500C",
+    "stop_id": "2053",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "500AB",
+    "stop_id": "1560",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "500B",
+    "stop_id": "730",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "501F",
+    "stop_id": "2467",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "501K",
+    "stop_id": "480",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "501L",
+    "stop_id": "2479",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "501N",
+    "stop_id": "1850",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "502A",
+    "stop_id": "2333",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "502DA",
+    "stop_id": "104",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "501A",
+    "stop_id": "309",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "501B",
+    "stop_id": "1560",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "501C",
+    "stop_id": "2333",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "500T",
+    "stop_id": "1974",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "500TA",
+    "stop_id": "575",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "87A",
+    "stop_id": "2299",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "86E",
+    "stop_id": "1897",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "83D",
+    "stop_id": "2489",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "83C",
+    "stop_id": "4428",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "82C",
+    "stop_id": "4425",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "89A",
+    "stop_id": "2299",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "80R",
+    "stop_id": "2299",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "82B",
+    "stop_id": "1399",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "82A",
+    "stop_id": "2299",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "94E",
+    "stop_id": "3745",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "94D",
+    "stop_id": "3745",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "91F",
+    "stop_id": "3877",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "90E",
+    "stop_id": "2299",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "92E",
+    "stop_id": "3745",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "94C",
+    "stop_id": "3745",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "95A",
+    "stop_id": "2489",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "95B",
+    "stop_id": "2489",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "95G",
+    "stop_id": "3745",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "95D",
+    "stop_id": "2489",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "89D",
+    "stop_id": "2299",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "89C",
+    "stop_id": "2299",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "89B",
+    "stop_id": "2299",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "89E",
+    "stop_id": "2299",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "89H",
+    "stop_id": "2489",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "89F",
+    "stop_id": "2299",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "77B",
+    "stop_id": "3237",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "75H",
+    "stop_id": "2734",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "75E",
+    "stop_id": "2734",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "77D",
+    "stop_id": "2489",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "77E",
+    "stop_id": "2489",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "77C",
+    "stop_id": "3237",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "77F",
+    "stop_id": "2489",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "78A",
+    "stop_id": "2299",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "79B",
+    "stop_id": "3745",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "79A",
+    "stop_id": "3745",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "79D",
+    "stop_id": "3745",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "78E",
+    "stop_id": "2299",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "61K",
+    "stop_id": "3101",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "63B",
+    "stop_id": "3745",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "63E",
+    "stop_id": "3745",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "61M",
+    "stop_id": "4277",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "65B",
+    "stop_id": "311",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "75C",
+    "stop_id": "896",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "80B",
+    "stop_id": "2299",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "80C",
+    "stop_id": "2299",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "80D",
+    "stop_id": "2299",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "80E",
+    "stop_id": "2299",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "80G",
+    "stop_id": "2299",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "80H",
+    "stop_id": "914",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "80K",
+    "stop_id": "2299",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "80L",
+    "stop_id": "2299",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "79E",
+    "stop_id": "3745",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "79G",
+    "stop_id": "3745",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "79F",
+    "stop_id": "3745",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "79K",
+    "stop_id": "3745",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "79J",
+    "stop_id": "3745",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "79H",
+    "stop_id": "3745",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "7F",
+    "stop_id": "1915",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "7D",
+    "stop_id": "1915",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "7E",
+    "stop_id": "1149",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "BC-8A",
+    "stop_id": "3324",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "BC-9B",
+    "stop_id": "219",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "BC-9D",
+    "stop_id": "260",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "BC-6",
+    "stop_id": "1708",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "BC-7",
+    "stop_id": "1708",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "FDR-1",
+    "stop_id": "4232",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "ELCFDR-3",
+    "stop_id": "730",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "FDR-2",
+    "stop_id": "4232",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "CHAKRA-2A",
+    "stop_id": "309",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "CHAKRA-2",
+    "stop_id": "309",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "BIGBLUE-3",
+    "stop_id": "1207",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "D-6",
+    "stop_id": "2091",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "AS-3",
+    "stop_id": "3971",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "AS-4",
+    "stop_id": "3066",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "AS-6",
+    "stop_id": "2855",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "AS-7",
+    "stop_id": "822",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "AS-15",
+    "stop_id": "668",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "AS-12",
+    "stop_id": "2612",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "AS-17",
+    "stop_id": "1657",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "AS-18",
+    "stop_id": "760",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "AS-19",
+    "stop_id": "2088",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "AS-2",
+    "stop_id": "1500",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "BC-3A",
+    "stop_id": "591",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "BC-4A",
+    "stop_id": "4411",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "AS-8",
+    "stop_id": "3695",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "96H",
+    "stop_id": "2299",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "96G",
+    "stop_id": "2299",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "98C",
+    "stop_id": "2299",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "96E",
+    "stop_id": "2299",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "AS-10",
+    "stop_id": "1930",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "AS-1",
+    "stop_id": "221",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "99B",
+    "stop_id": "896",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "99A",
+    "stop_id": "2918",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "98F",
+    "stop_id": "4271",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "98E",
+    "stop_id": "2604",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "96A",
+    "stop_id": "2299",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "96C",
+    "stop_id": "2299",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "96B",
+    "stop_id": "2299",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "MF-6",
+    "stop_id": "2765",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "MF-7",
+    "stop_id": "2091",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "MF-9",
+    "stop_id": "1799",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "MP-10",
+    "stop_id": "223",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "MP-2",
+    "stop_id": "2299",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "MP-265A",
+    "stop_id": "2299",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "MP-362B",
+    "stop_id": "1276",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "MP-201RC",
+    "stop_id": "957",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "MP-45F",
+    "stop_id": "2299",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "MP-501A",
+    "stop_id": "1558",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "MBS-24",
+    "stop_id": "2091",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "MBS-2",
+    "stop_id": "4407",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "MBS-17",
+    "stop_id": "2116",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "MBS-6",
+    "stop_id": "4284",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "MBS-5",
+    "stop_id": "1843",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "MBS-8",
+    "stop_id": "309",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "MF-1",
+    "stop_id": "2299",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "MBS-9",
+    "stop_id": "4284",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "MF-10",
+    "stop_id": "3745",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "MF-4",
+    "stop_id": "730",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "MF-5",
+    "stop_id": "3251",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "G-4",
+    "stop_id": "349",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "G-5",
+    "stop_id": "2100",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "G-8",
+    "stop_id": "2890",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "G-6",
+    "stop_id": "3742",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "K-2",
+    "stop_id": "2855",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "JPV-10",
+    "stop_id": "223",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "HS-4",
+    "stop_id": "1880",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "MBS-14",
+    "stop_id": "3481",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "MBS-12",
+    "stop_id": "138",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "KHC-1",
+    "stop_id": "3023",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "MBS-11",
+    "stop_id": "4314",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "G-11",
+    "stop_id": "2890",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "G-2",
+    "stop_id": "3649",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "FDR-8",
+    "stop_id": "304",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "FDR-7",
+    "stop_id": "844",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "G-3",
+    "stop_id": "1207",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "WFS-2",
+    "stop_id": "609",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "WFS-1",
+    "stop_id": "609",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "V-600K",
+    "stop_id": "630",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "V-600M",
+    "stop_id": "1207",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "V-600CF",
+    "stop_id": "1207",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "V-500D",
+    "stop_id": "730",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "V-500KG",
+    "stop_id": "1804",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "V-500KM",
+    "stop_id": "1804",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "V-505A",
+    "stop_id": "1207",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "V-500P",
+    "stop_id": "1804",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "V-500BM",
+    "stop_id": "1804",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "V-45G",
+    "stop_id": "2152",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "V-500CB",
+    "stop_id": "182",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "V-401RV",
+    "stop_id": "309",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "V-365V",
+    "stop_id": "349",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "V-360B",
+    "stop_id": "206",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "V-375A",
+    "stop_id": "1207",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "V-356C",
+    "stop_id": "1207",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "V-335EV",
+    "stop_id": "1804",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "V-335T",
+    "stop_id": "1804",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "V-342F",
+    "stop_id": "3648",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "V-2",
+    "stop_id": "2010",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "V-215H",
+    "stop_id": "1858",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "V-316G",
+    "stop_id": "2762",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "V-331G",
+    "stop_id": "4348",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "V-276G",
+    "stop_id": "1207",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "V-333T",
+    "stop_id": "2091",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "TR-6",
+    "stop_id": "3601",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "TR-7",
+    "stop_id": "1916",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "TR-8",
+    "stop_id": "2547",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "V-195",
+    "stop_id": "754",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "TR-2",
+    "stop_id": "383",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "TR-4A",
+    "stop_id": "3481",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "TR-5",
+    "stop_id": "3090",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "TR-10",
+    "stop_id": "2155",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "PK-89A",
+    "stop_id": "720",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "NLMF-2",
+    "stop_id": "1594",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "NLMF-1",
+    "stop_id": "822",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "MPAC-362C",
+    "stop_id": "3745",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "MP-96A",
+    "stop_id": "2299",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "MP-96",
+    "stop_id": "2299",
+    "stop_sequence": 1
+  },
+  {
+    "route_id": "MP-60A",
+    "stop_id": "1897",
+    "stop_sequence": 1
+  }
+]
