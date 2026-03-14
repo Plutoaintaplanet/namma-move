@@ -60,16 +60,16 @@ async function nearbyStops(lat, lon) {
 }
 
 // ── Fallback logic helper ─────────────────────────────────────────────────────
-async function nearbyMetrosOnly(lat, lon, limit = 5) {
+async function nearbyMetrosOnly(lat, lon) {
     const cypher = `
         MATCH (s:Stop {type: 'metro'})
         WHERE point.distance(s.pos, point({latitude: $lat, longitude: $lon})) < 10000
         RETURN s.id AS id, s.name AS name, s.lat AS lat, s.lon AS lon, s.type AS type, 
                point.distance(s.pos, point({latitude: $lat, longitude: $lon})) AS dist
         ORDER BY dist
-        LIMIT $limit
+        LIMIT 5
     `;
-    const recs = await runRead(cypher, { lat, lon, limit });
+    const recs = await runRead(cypher, { lat, lon });
     return recs.map(r => ({
         id: r.get("id"),
         name: r.get("name"),
