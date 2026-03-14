@@ -34,15 +34,25 @@ async function seed() {
         console.log(`Creating ${stops.length} Stop nodes...`);
         const formattedStops = stops.map(s => ({
             id: s.id, name: s.name, lat: s.latitude, lon: s.longitude,
-            type: s.id.startsWith("M") ? "metro" : "bus"
+            type: s.id.toString().startsWith("M") ? "metro" : "bus"
         }));
-        await session.run(
-            `UNWIND $batch AS s
-             MERGE (n:Stop {id: s.id})
-             SET n.name = s.name, n.lat = s.lat, n.lon = s.lon, n.type = s.type`,
-            { batch: formattedStops }
-        );
-        console.log("  ✅ Stop nodes created");
+        
+        // Chunk stop insertion to avoid large payload errors
+        for (let i = 0; i < formattedStops.length; i += 2000) {
+            const chunk = formattedStops.slice(i, i + 2000);
+            await session.run(
+                `UNWIND $batch AS s
+                 MERGE (n:Stop {id: s.id})
+                 SET n.name = s.name, 
+                     n.lat = s.lat, 
+                     n.lon = s.lon, 
+                     n.type = s.type,
+                     n.pos = point({latitude: s.lat, longitude: s.lon})`,
+                { batch: chunk }
+            );
+            process.stdout.write(`  Inserted ${Math.min(i + 2000, formattedStops.length)} stops...\r`);
+        }
+        console.log("\n  ✅ Stop nodes created");
 
         // ── Build ordered route-stop map ──────────────────────────────────────────
         const routeMap = Object.fromEntries(routes.map(r => [r.id, r]));

@@ -17,16 +17,14 @@ async function runRead(cypher, params = {}) {
 async function nearbyStops(lat, lon) {
     const cypher = `
         MATCH (s:Stop)
-        WHERE point.distance(s.pos, point({latitude: $lat, longitude: $lon})) < 5000
-        OPTIONAL MATCH (s)-[r:CONNECTS]-()
-        WITH s, point.distance(s.pos, point({latitude: $lat, longitude: $lon})) AS dist, count(r) as connections
-        WHERE connections > 0 OR s.type = 'metro'
-        RETURN s.id AS id, s.name AS name, s.lat AS lat, s.lon AS lon, s.type AS type, dist
+        WHERE point.distance(s.pos, point({latitude: $lat, longitude: $lon})) < 3000
+        RETURN s.id AS id, s.name AS name, s.lat AS lat, s.lon AS lon, s.type AS type, 
+               point.distance(s.pos, point({latitude: $lat, longitude: $lon})) AS dist
         ORDER BY dist
-        LIMIT 12
+        LIMIT 50
     `;
     const recs = await runRead(cypher, { lat, lon });
-    return recs.map(r => ({
+    const all = recs.map(r => ({
         id: r.get("id"),
         name: r.get("name"),
         lat: r.get("lat"),
@@ -34,6 +32,11 @@ async function nearbyStops(lat, lon) {
         type: r.get("type"),
         dist: r.get("dist")
     }));
+
+    const buses = all.filter(s => s.type !== 'metro' && s.dist < 1500).slice(0, 8);
+    const metros = all.filter(s => s.type === 'metro' && s.dist < 3000).slice(0, 4);
+    
+    return [...buses, ...metros].sort((a, b) => a.dist - b.dist);
 }
 
 router.get("/", async (req, res) => {
