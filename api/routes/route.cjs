@@ -33,16 +33,16 @@ async function runRead(cypher, params = {}) {
 }
 
 // ── Optimized Nearby Search (Spatial) ─────────────────────────────────────────
-async function nearbyStops(lat, lon, radius = 3000, limit = 40) {
+async function nearbyStops(lat, lon, radius = 3000) {
     const cypher = `
         MATCH (s:Stop)
         WHERE point.distance(s.pos, point({latitude: $lat, longitude: $lon})) < $radius
         RETURN s.id AS id, s.name AS name, s.lat AS lat, s.lon AS lon, s.type AS type, 
                point.distance(s.pos, point({latitude: $lat, longitude: $lon})) AS dist
         ORDER BY dist
-        LIMIT $limit
+        LIMIT 40
     `;
-    const recs = await runRead(cypher, { lat, lon, radius, limit });
+    const recs = await runRead(cypher, { lat, lon, radius });
     return recs.map(r => ({
         id: r.get("id"),
         name: r.get("name"),
@@ -54,7 +54,23 @@ async function nearbyStops(lat, lon, radius = 3000, limit = 40) {
 }
 
 async function nearbyMetrosOnly(lat, lon) {
-    return await nearbyStops(lat, lon, 10000, 5); // Larger radius for Metro
+    const cypher = `
+        MATCH (s:Stop {type: 'metro'})
+        WHERE point.distance(s.pos, point({latitude: $lat, longitude: $lon})) < 10000
+        RETURN s.id AS id, s.name AS name, s.lat AS lat, s.lon AS lon, s.type AS type, 
+               point.distance(s.pos, point({latitude: $lat, longitude: $lon})) AS dist
+        ORDER BY dist
+        LIMIT 5
+    `;
+    const recs = await runRead(cypher, { lat, lon });
+    return recs.map(r => ({
+        id: r.get("id"),
+        name: r.get("name"),
+        lat: r.get("lat"),
+        lon: r.get("lon"),
+        type: r.get("type"),
+        dist: r.get("dist")
+    }));
 }
 
 // ── Routing Logic ─────────────────────────────────────────────────────────────
