@@ -124,6 +124,7 @@ async function seed() {
         try {
             await session.run("CREATE INDEX stop_id IF NOT EXISTS FOR (s:Stop) ON (s.id)");
             await session.run("CREATE INDEX stop_name IF NOT EXISTS FOR (s:Stop) ON (s.name)");
+            await session.run("CREATE POINT INDEX stop_pos IF NOT EXISTS FOR (s:Stop) ON (s.pos)");
         } catch (e) {
             console.log("  (Some indexes already exist, that's OK)");
         }

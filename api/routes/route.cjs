@@ -1,4 +1,4 @@
-// api/routes/route.cjs — Enhanced for Mode-specific Results and Speed
+// api/routes/route.cjs — Optimized for Speed & Metro Visibility
 const express = require("express");
 const { getSession } = require("../db.cjs");
 const router = express.Router();
@@ -32,37 +32,70 @@ async function runRead(cypher, params = {}) {
     } finally { await s.close(); }
 }
 
-async function nearbyStops(lat, lon, radius = 3000) {
+// ── Optimized Nearby Search (Always grabs Metro + Bus separately) ─────────────
+async function nearbyStops(lat, lon) {
+    // Spatial index (CREATE POINT INDEX) makes this near-instant
     const cypher = `
         MATCH (s:Stop)
-        WHERE point.distance(s.pos, point({latitude: $lat, longitude: $lon})) < $radius
-        RETURN s.id AS id, s.name AS name, s.lat AS lat, s.lon AS lon, s.type AS type, 
-               point.distance(s.pos, point({latitude: $lat, longitude: $lon})) AS dist
+        WHERE point.distance(s.pos, point({latitude: $lat, longitude: $lon})) < 4000
+        WITH s, point.distance(s.pos, point({latitude: $lat, longitude: $lon})) AS dist
         ORDER BY dist
-        LIMIT 50
-    `;
-    const recs = await runRead(cypher, { lat, lon, radius });
-    return recs.map(r => ({
-        id: r.get("id"),
-        name: r.get("name"),
-        lat: r.get("lat"),
-        lon: r.get("lon"),
-        type: r.get("type"),
-        dist: r.get("dist")
-    }));
-}
-
-async function nearbyMetrosOnly(lat, lon) {
-    const cypher = `
-        MATCH (s:Stop {type: 'metro'})
-        WHERE point.distance(s.pos, point({latitude: $lat, longitude: $lon})) < 10000
-        RETURN s.id AS id, s.name AS name, s.lat AS lat, s.lon AS lon, s.type AS type, 
-               point.distance(s.pos, point({latitude: $lat, longitude: $lon})) AS dist
-        ORDER BY dist
-        LIMIT 5
+        WITH s.type as type, collect({id: s.id, name: s.name, lat: s.lat, lon: s.lon, type: s.type, dist: dist}) as stops
+        RETURN 
+            [x IN stops WHERE x.type = 'metro'][0..5] as metros,
+            [x IN stops WHERE x.type = 'bus'][0..10] as buses
     `;
     const recs = await runRead(cypher, { lat, lon });
-    return recs.map(r => ({ id: r.get("id"), name: r.get("name"), lat: r.get("lat"), lon: r.get("lon"), type: r.get("type"), dist: r.get("dist") }));
+    if (!recs.length) return [];
+    
+    const metros = recs[0].get("metros") || [];
+    const buses = recs[0].get("buses") || [];
+    return [...metros, ...buses];
+}
+
+async function findRoute(fromId, toId) {
+    const recs = await runRead(
+        `MATCH (a:Stop {id: $from}), (b:Stop {id: $to})
+         MATCH path = shortestPath((a)-[:CONNECTS*1..60]->(b))
+         WITH path,
+              reduce(t=0.0, r IN relationships(path) | t + coalesce(r.travel_min, 3.0)) AS totalMin,
+              [r IN relationships(path) | { id: r.route_id, name: r.route_name, type: r.route_type }] AS segments,
+              [n IN nodes(path) | {id:n.id, name:n.name, lat:n.lat, lon:n.lon, type: n.type}] AS nodeList
+         RETURN nodeList, segments, totalMin
+         ORDER BY totalMin LIMIT 1`,
+        { from: fromId, to: toId }
+    );
+    if (!recs.length) return null;
+
+    const rec = recs[0];
+    const nodeList = rec.get("nodeList"), segments = rec.get("segments");
+    const totalMin = Number(rec.get("totalMin"));
+
+    const legs = [];
+    let cur = { 
+        mode: segments[0].type === 1 ? 'metro' : 'bus',
+        route: { id: segments[0].id, name: segments[0].name, type: segments[0].type }, 
+        duration: 0,
+        stops: [nodeList[0], nodeList[1]] 
+    };
+    for (let i = 1; i < segments.length; i++) {
+        if (segments[i].id === cur.route.id) { 
+            cur.stops.push(nodeList[i + 1]); 
+        } else { 
+            legs.push(cur); 
+            cur = { 
+                mode: segments[i].type === 1 ? 'metro' : 'bus',
+                route: { id: segments[i].id, name: segments[i].name, type: segments[i].type }, 
+                duration: 0,
+                stops: [nodeList[i], nodeList[i + 1]] 
+            }; 
+        }
+    }
+    legs.push(cur);
+
+    const types = legs.map(l => l.mode);
+    const cls = types.includes("metro") && types.includes("bus") ? "combo" : types.includes("metro") ? "metro" : "bus";
+    return { legs, cls, totalMin, hops: nodeList.length - 1 };
 }
 
 router.get("/", async (req, res) => {
@@ -86,94 +119,62 @@ router.get("/", async (req, res) => {
     };
 
     try {
-        const [allO, allD] = await Promise.all([nearbyStops(fLat, fLon), nearbyStops(tLat, tLon)]);
-        
-        const oStops = [...allO.filter(s => s.type === 'metro').slice(0, 4), ...allO.filter(s => s.type !== 'metro').slice(0, 8)];
-        const dStops = [...allD.filter(s => s.type === 'metro').slice(0, 4), ...allD.filter(s => s.type !== 'metro').slice(0, 8)];
-        const oIds = oStops.map(s => s.id);
-        const dIds = dStops.map(s => s.id);
-
-        const cypher = `
-            MATCH (a:Stop), (b:Stop)
-            WHERE a.id IN $oIds AND b.id IN $dIds AND a.id <> b.id
-            MATCH path = shortestPath((a)-[:CONNECTS*1..60]->(b))
-            WITH path, a, b,
-                 reduce(t=0.0, r IN relationships(path) | t + coalesce(r.travel_min, 3.0)) AS totalMin,
-                 [r IN relationships(path) | { id: r.route_id, name: r.route_name, type: r.route_type }] AS segments,
-                 [n IN nodes(path) | { id: n.id, name: n.name, lat: n.lat, lon: n.lon, type: n.type }] AS nodeList
-            RETURN a.id AS oId, b.id AS dId, segments, nodeList, totalMin
-            ORDER BY totalMin ASC
-            LIMIT 30
-        `;
-        
-        const routeRecs = await runRead(cypher, { oIds, dIds });
-        
+        const [oStops, dStops] = await Promise.all([nearbyStops(fLat, fLon), nearbyStops(tLat, tLon)]);
         let bestBus = null, bestMetro = null, bestCombo = null;
 
-        for (const rec of routeRecs) {
-            const oId = rec.get("oId"), dId = rec.get("dId");
-            const segments = rec.get("segments"), nodeList = rec.get("nodeList");
-            const pathMin = rec.get("totalMin");
+        // Try to find direct or interchange paths between all nearby stop pairs
+        for (const oS of oStops) {
+            for (const dS of dStops) {
+                if (oS.id === dS.id) continue;
+                const r = await findRoute(oS.id, dS.id);
+                if (!r) continue;
+                
+                const totalMins = walkMin(oS.dist) + r.totalMin + walkMin(dS.dist);
+                const tf = r.legs.reduce((s, l) => s + fare(l.route.type, l.stops.length - 1), 0);
+                const arr = new Date(baseTime.getTime() + totalMins * 60000);
+                
+                const entry = {
+                    cls: r.cls, type: r.legs.length > 1 ? "interchange" : "direct",
+                    legs: r.legs, hops: r.hops, totalMins: Math.round(totalMins), fare: tf,
+                    depart: baseTime.toLocaleTimeString("en-IN", { hour: "2-digit", minute: "2-digit", hour12: true }),
+                    arrive: arr.toLocaleTimeString("en-IN", { hour: "2-digit", minute: "2-digit", hour12: true }),
+                    nextDep: nextDep(r.legs[0].route.type, baseTime),
+                    oStop: { ...oS, walkMin: walkMin(oS.dist) },
+                    dStop: { ...dS, walkMin: walkMin(dS.dist) },
+                };
 
-            const oS = oStops.find(s => s.id === oId);
-            const dS = dStops.find(s => s.id === dId);
-
-            const legs = [];
-            let cur = { 
-                mode: segments[0].type === 1 ? 'metro' : 'bus',
-                route: { id: segments[0].id, name: segments[0].name, type: segments[0].type },
-                stops: [nodeList[0], nodeList[1]]
-            };
-            for (let i = 1; i < segments.length; i++) {
-                if (segments[i].id === cur.route.id) {
-                    cur.stops.push(nodeList[i + 1]);
-                } else {
-                    legs.push(cur);
-                    cur = {
-                        mode: segments[i].type === 1 ? 'metro' : 'bus',
-                        route: { id: segments[i].id, name: segments[i].name, type: segments[i].type },
-                        stops: [nodeList[i], nodeList[i + 1]]
-                    };
-                }
+                if (r.cls === "bus" && (!bestBus || totalMins < bestBus.totalMins)) bestBus = entry;
+                if (r.cls === "metro" && (!bestMetro || totalMins < bestMetro.totalMins)) bestMetro = entry;
+                if (r.cls === "combo" && (!bestCombo || totalMins < bestCombo.totalMins)) bestCombo = entry;
             }
-            legs.push(cur);
-
-            const types = legs.map(l => l.mode);
-            const cls = types.includes("metro") && types.includes("bus") ? "combo" : types.includes("metro") ? "metro" : "bus";
-            const totalMins = walkMin(oS.dist) + pathMin + walkMin(dS.dist);
-            const tf = legs.reduce((s, l) => s + fare(l.route.type, l.stops.length - 1), 0);
-            const arr = new Date(baseTime.getTime() + totalMins * 60000);
-
-            const entry = {
-                cls, type: legs.length > 1 ? "interchange" : "direct",
-                legs, hops: nodeList.length - 1, totalMins: Math.round(totalMins), fare: tf,
-                depart: baseTime.toLocaleTimeString("en-IN", { hour: "2-digit", minute: "2-digit", hour12: true }),
-                arrive: arr.toLocaleTimeString("en-IN", { hour: "2-digit", minute: "2-digit", hour12: true }),
-                nextDep: nextDep(legs[0].route.type, baseTime),
-                oStop: { ...oS, walkMin: walkMin(oS.dist) },
-                dStop: { ...dS, walkMin: walkMin(dS.dist) },
-            };
-
-            if (cls === "bus" && (!bestBus || totalMins < bestBus.totalMins)) bestBus = entry;
-            if (cls === "metro" && (!bestMetro || totalMins < bestMetro.totalMins)) bestMetro = entry;
-            if (cls === "combo" && (!bestCombo || totalMins < bestCombo.totalMins)) bestCombo = entry;
         }
 
-        // ── Bus-to-Metro combo fallback ─────────────────────────────────────
+        // ── Manual Bus-to-Metro combo fallback (if no direct paths found) ─────
         if (!bestCombo) {
-            const [mO, mD] = await Promise.all([nearbyMetrosOnly(fLat, fLon), nearbyMetrosOnly(tLat, tLon)]);
-            for (const bS of oStops.filter(s => s.type !== "metro").slice(0, 4)) {
-                for (const bM of mO) {
-                    const busPath = await runRead(`MATCH (a:Stop {id:$f}), (b:Stop {id:$t}) MATCH p=shortestPath((a)-[:CONNECTS*1..40]->(b)) RETURN p, reduce(s=0.0, r IN relationships(p)|s+coalesce(r.travel_min,4.0)) as m`, { f: bS.id, t: bM.id });
-                    if (!busPath.length) continue;
-                    for (const aM of mD) {
-                        if (bM.id === aM.id) continue;
-                        const metPath = await runRead(`MATCH (a:Stop {id:$f}), (b:Stop {id:$t}) MATCH p=shortestPath((a)-[:CONNECTS*1..40]->(b)) RETURN p, reduce(s=0.0, r IN relationships(p)|s+coalesce(r.travel_min,2.5)) as m`, { f: bM.id, t: aM.id });
-                        if (!metPath.length) continue;
-                        // Build manual combo (simplified)
-                        const total = walkMin(bS.dist) + busPath[0].get("m") + metPath[0].get("m") + walkMin(aM.dist);
+            const mO = oStops.filter(s => s.type === 'metro');
+            const mD = dStops.filter(s => s.type === 'metro');
+            const bO = oStops.filter(s => s.type === 'bus');
+
+            for (const busStart of bO) {
+                for (const boardMetro of mO) {
+                    const busPath = await findRoute(busStart.id, boardMetro.id);
+                    if (!busPath || busPath.cls !== "bus") continue;
+
+                    for (const alightMetro of mD) {
+                        if (boardMetro.id === alightMetro.id) continue;
+                        const metroPath = await findRoute(boardMetro.id, alightMetro.id);
+                        if (!metroPath || metroPath.cls !== "metro") continue;
+
+                        const total = walkMin(busStart.dist) + busPath.totalMin + metroPath.totalMin + walkMin(alightMetro.dist);
                         if (!bestCombo || total < bestCombo.totalMins) {
-                            bestCombo = { cls: "combo", totalMins: Math.round(total), type: "interchange", fare: 40, depart: baseTime.toLocaleTimeString("en-IN", { hour: "2-digit", minute: "2-digit", hour12: true }), arrive: new Date(baseTime.getTime() + total * 60000).toLocaleTimeString("en-IN", { hour: "2-digit", minute: "2-digit", hour12: true }), oStop: { ...bS, walkMin: walkMin(bS.dist) }, dStop: { ...aM, walkMin: walkMin(aM.dist) }, legs: [{ mode: 'bus', route: { name: 'Bus' } }, { mode: 'metro', route: { name: 'Metro' } }] };
+                            bestCombo = {
+                                cls: "combo", type: "interchange", totalMins: Math.round(total), fare: 45,
+                                legs: [...busPath.legs, ...metroPath.legs],
+                                depart: baseTime.toLocaleTimeString("en-IN", { hour: "2-digit", minute: "2-digit", hour12: true }),
+                                arrive: new Date(baseTime.getTime() + total * 60000).toLocaleTimeString("en-IN", { hour: "2-digit", minute: "2-digit", hour12: true }),
+                                oStop: { ...busStart, walkMin: walkMin(busStart.dist) },
+                                dStop: { ...alightMetro, walkMin: walkMin(alightMetro.dist) }
+                            };
                         }
                     }
                 }
