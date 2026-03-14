@@ -75,7 +75,7 @@ async function seed() {
             const travelMin = isMetro ? 2.5 : 4;
 
             for (let i = 0; i < ordered.length - 1; i++) {
-                edgeBatch.push({
+                const edge = {
                     from: ordered[i].stop_id,
                     to: ordered[i + 1].stop_id,
                     routeId: routeId,
@@ -83,7 +83,18 @@ async function seed() {
                     routeType: route.route_type,
                     travelMin: travelMin,
                     seq: i
-                });
+                };
+                edgeBatch.push(edge);
+
+                // If Metro, add the return direction as well
+                if (isMetro) {
+                    edgeBatch.push({
+                        ...edge,
+                        from: ordered[i + 1].stop_id,
+                        to: ordered[i].stop_id,
+                        seq: i // same seq or reversed, doesn't matter much for shortestPath
+                    });
+                }
             }
         }
 

@@ -1,4 +1,4 @@
-// api/routes/route.cjs — Super-Query Optimized for Vercel (4 vCPU / 8GB)
+// api/routes/route.cjs — Enhanced for Mode-specific Results and Speed
 const express = require("express");
 const { getSession } = require("../db.cjs");
 const router = express.Router();
@@ -39,7 +39,7 @@ async function nearbyStops(lat, lon, radius = 3000) {
         RETURN s.id AS id, s.name AS name, s.lat AS lat, s.lon AS lon, s.type AS type, 
                point.distance(s.pos, point({latitude: $lat, longitude: $lon})) AS dist
         ORDER BY dist
-        LIMIT 40
+        LIMIT 50
     `;
     const recs = await runRead(cypher, { lat, lon, radius });
     return recs.map(r => ({
@@ -50,6 +50,19 @@ async function nearbyStops(lat, lon, radius = 3000) {
         type: r.get("type"),
         dist: r.get("dist")
     }));
+}
+
+async function nearbyMetrosOnly(lat, lon) {
+    const cypher = `
+        MATCH (s:Stop {type: 'metro'})
+        WHERE point.distance(s.pos, point({latitude: $lat, longitude: $lon})) < 10000
+        RETURN s.id AS id, s.name AS name, s.lat AS lat, s.lon AS lon, s.type AS type, 
+               point.distance(s.pos, point({latitude: $lat, longitude: $lon})) AS dist
+        ORDER BY dist
+        LIMIT 5
+    `;
+    const recs = await runRead(cypher, { lat, lon });
+    return recs.map(r => ({ id: r.get("id"), name: r.get("name"), lat: r.get("lat"), lon: r.get("lon"), type: r.get("type"), dist: r.get("dist") }));
 }
 
 router.get("/", async (req, res) => {
@@ -75,25 +88,22 @@ router.get("/", async (req, res) => {
     try {
         const [allO, allD] = await Promise.all([nearbyStops(fLat, fLon), nearbyStops(tLat, tLon)]);
         
-        // Use a focused set of stops for the batch query
-        const oStops = [...allO.filter(s => s.type === 'metro').slice(0, 3), ...allO.filter(s => s.type !== 'metro').slice(0, 6)];
-        const dStops = [...allD.filter(s => s.type === 'metro').slice(0, 3), ...allD.filter(s => s.type !== 'metro').slice(0, 6)];
+        const oStops = [...allO.filter(s => s.type === 'metro').slice(0, 4), ...allO.filter(s => s.type !== 'metro').slice(0, 8)];
+        const dStops = [...allD.filter(s => s.type === 'metro').slice(0, 4), ...allD.filter(s => s.type !== 'metro').slice(0, 8)];
         const oIds = oStops.map(s => s.id);
         const dIds = dStops.map(s => s.id);
 
-        // ── THE SUPER QUERY ──
-        // Finds all paths between all nearby stops in ONE round-trip
         const cypher = `
             MATCH (a:Stop), (b:Stop)
             WHERE a.id IN $oIds AND b.id IN $dIds AND a.id <> b.id
-            MATCH path = shortestPath((a)-[:CONNECTS*1..60]-(b))
+            MATCH path = shortestPath((a)-[:CONNECTS*1..60]->(b))
             WITH path, a, b,
-                 reduce(t=0.0, r IN relationships(path) | t + coalesce(r.travel_min, 2.0)) AS totalMin,
+                 reduce(t=0.0, r IN relationships(path) | t + coalesce(r.travel_min, 3.0)) AS totalMin,
                  [r IN relationships(path) | { id: r.route_id, name: r.route_name, type: r.route_type }] AS segments,
                  [n IN nodes(path) | { id: n.id, name: n.name, lat: n.lat, lon: n.lon, type: n.type }] AS nodeList
             RETURN a.id AS oId, b.id AS dId, segments, nodeList, totalMin
             ORDER BY totalMin ASC
-            LIMIT 15
+            LIMIT 30
         `;
         
         const routeRecs = await runRead(cypher, { oIds, dIds });
@@ -108,7 +118,6 @@ router.get("/", async (req, res) => {
             const oS = oStops.find(s => s.id === oId);
             const dS = dStops.find(s => s.id === dId);
 
-            // Reconstruct legs from segments
             const legs = [];
             let cur = { 
                 mode: segments[0].type === 1 ? 'metro' : 'bus',
@@ -148,6 +157,27 @@ router.get("/", async (req, res) => {
             if (cls === "bus" && (!bestBus || totalMins < bestBus.totalMins)) bestBus = entry;
             if (cls === "metro" && (!bestMetro || totalMins < bestMetro.totalMins)) bestMetro = entry;
             if (cls === "combo" && (!bestCombo || totalMins < bestCombo.totalMins)) bestCombo = entry;
+        }
+
+        // ── Bus-to-Metro combo fallback ─────────────────────────────────────
+        if (!bestCombo) {
+            const [mO, mD] = await Promise.all([nearbyMetrosOnly(fLat, fLon), nearbyMetrosOnly(tLat, tLon)]);
+            for (const bS of oStops.filter(s => s.type !== "metro").slice(0, 4)) {
+                for (const bM of mO) {
+                    const busPath = await runRead(`MATCH (a:Stop {id:$f}), (b:Stop {id:$t}) MATCH p=shortestPath((a)-[:CONNECTS*1..40]->(b)) RETURN p, reduce(s=0.0, r IN relationships(p)|s+coalesce(r.travel_min,4.0)) as m`, { f: bS.id, t: bM.id });
+                    if (!busPath.length) continue;
+                    for (const aM of mD) {
+                        if (bM.id === aM.id) continue;
+                        const metPath = await runRead(`MATCH (a:Stop {id:$f}), (b:Stop {id:$t}) MATCH p=shortestPath((a)-[:CONNECTS*1..40]->(b)) RETURN p, reduce(s=0.0, r IN relationships(p)|s+coalesce(r.travel_min,2.5)) as m`, { f: bM.id, t: aM.id });
+                        if (!metPath.length) continue;
+                        // Build manual combo (simplified)
+                        const total = walkMin(bS.dist) + busPath[0].get("m") + metPath[0].get("m") + walkMin(aM.dist);
+                        if (!bestCombo || total < bestCombo.totalMins) {
+                            bestCombo = { cls: "combo", totalMins: Math.round(total), type: "interchange", fare: 40, depart: baseTime.toLocaleTimeString("en-IN", { hour: "2-digit", minute: "2-digit", hour12: true }), arrive: new Date(baseTime.getTime() + total * 60000).toLocaleTimeString("en-IN", { hour: "2-digit", minute: "2-digit", hour12: true }), oStop: { ...bS, walkMin: walkMin(bS.dist) }, dStop: { ...aM, walkMin: walkMin(aM.dist) }, legs: [{ mode: 'bus', route: { name: 'Bus' } }, { mode: 'metro', route: { name: 'Metro' } }] };
+                        }
+                    }
+                }
+            }
         }
 
         res.json({ bus: bestBus, metro: bestMetro, combo: bestCombo, cab });
