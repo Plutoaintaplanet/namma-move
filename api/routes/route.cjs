@@ -102,7 +102,7 @@ router.get("/", async (req, res) => {
 
         for (const rec of routeRecs) {
             const oId = rec.get("oId"), dId = rec.get("dId");
-            const segments = rec.get("segments"), nodeList = rec.get("node_list");
+            const segments = rec.get("segments"), nodeList = rec.get("nodeList");
             const pathMin = rec.get("totalMin");
 
             const oS = oStops.find(s => s.id === oId);
