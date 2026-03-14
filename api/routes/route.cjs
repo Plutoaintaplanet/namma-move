@@ -181,14 +181,8 @@ router.get("/", async (req, res) => {
 
         // ── Bus-to-Metro combo fallback ─────────────────────────────────────
         if (!bestCombo) {
-            const all = await getAllStops();
-            const metroStops = all.filter(s => s.type === "metro")
-                .map(s => ({ ...s, distFromO: haversine(fLat, fLon, s.lat, s.lon) }))
-                .sort((a, b) => a.distFromO - b.distFromO).slice(0, 5);
-
-            const dMetros = all.filter(s => s.type === "metro")
-                .map(s => ({ ...s, distFromD: haversine(tLat, tLon, s.lat, s.lon) }))
-                .sort((a, b) => a.distFromD - b.distFromD).slice(0, 5);
+            const metroStops = await nearbyMetrosOnly(fLat, fLon, 5);
+            const dMetros = await nearbyMetrosOnly(tLat, tLon, 5);
 
             for (const busStop of oStops.filter(s => s.type !== "metro").slice(0, 5)) {
                 for (const boardMetro of metroStops) {
