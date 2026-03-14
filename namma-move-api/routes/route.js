@@ -44,15 +44,15 @@ async function getAllStops() {
 }
 
 // ── Find nearby stops using JS Haversine (avoids Neo4j float param issue) ────
-const METRO_RADIUS_M = 2000; // walk up to 2km to reach a Metro station
-const BUS_RADIUS_M = 1200; // keep bus stops within 1.2km
+const METRO_RADIUS_M = 3000; // walk/auto up to 3km to reach a Metro station
+const BUS_RADIUS_M = 1500; // keep bus stops within 1.5km
 async function nearbyStops(lat, lon) {
     const all = await getAllStops();
     const sorted = all
         .map(s => ({ ...s, dist: haversine(lat, lon, s.lat, s.lon) }))
         .sort((a, b) => a.dist - b.dist);
-    const buses = sorted.filter(s => s.type !== "metro" && s.dist <= BUS_RADIUS_M).slice(0, 6);
-    const metros = sorted.filter(s => s.type === "metro" && s.dist <= METRO_RADIUS_M).slice(0, 3);
+    const buses = sorted.filter(s => s.type !== "metro" && s.dist <= BUS_RADIUS_M).slice(0, 10);
+    const metros = sorted.filter(s => s.type === "metro" && s.dist <= METRO_RADIUS_M).slice(0, 4);
     // If no buses within radius, take the 5 closest regardless
     const fallbackBuses = buses.length ? buses : sorted.filter(s => s.type !== "metro").slice(0, 5);
     return [...fallbackBuses, ...metros].sort((a, b) => a.dist - b.dist);
