@@ -14,14 +14,14 @@ LINES = {
         "id": "M-PL",
         "name": "Purple Line",
         "stops": [
-            "Whitefield (Kadugodi)", "Hopefarm Channasandra", "Kadugodi Tree Park", "Pattandur Agrahara",
+            "Whitefield (Kadugodi)", "Hope Farm Channasandra", "Kadugodi Tree Park", "Pattandur Agrahara",
             "Sri Sathya Sai Hospital", "Nallurhalli", "Kundalahalli", "Seetharam Palya", "Hoodi",
-            "Garudacharapalya", "Singayyanapalya", "Krishnarajapura (K.R. Pura)", "Benniganahalli",
+            "Garudacharapalya", "Singayyanapalya", "Krishnarajapura", "Benniganahalli",
             "Baiyappanahalli", "Swami Vivekananda Road", "Indiranagar", "Halasuru", "Trinity",
-            "Mahatma Gandhi Road", "Cubbon Park", "Dr. B. R. Ambedkar Station, Vidhana Soudha",
-            "Sir M. Visvesvaraya Station, Central College", "Nadaprabhu Kempegowda Station, Majestic",
-            "Krantivira Sangolli Rayanna Railway Station", "Magadi Road", "Sri Balagangadharanatha Swamiji Station, Hosahalli",
-            "Vijayanagar", "Attiguppe", "Deepanjali Nagar", "Mysuru Road", "Pantharapalya - Nayandahalli",
+            "Mahatma Gandhi Road", "Cubbon Park", "Vidhana Soudha",
+            "Sir M. Visvesvaraya", "Majestic",
+            "KSR Railway Station", "Magadi Road", "Hosahalli",
+            "Vijayanagar", "Attiguppe", "Deepanjali Nagar", "Mysuru Road", "Nayandahalli",
             "Rajarajeshwari Nagar", "Jnanabharathi", "Pattanagere", "Kengeri Bus Terminal", "Kengeri", "Challaghatta"
         ]
     },
@@ -32,7 +32,7 @@ LINES = {
             "Madavara", "Chikkabidarakallu", "Manjunathanagara", "Nagasandra", "Dasarahalli", 
             "Jalahalli", "Peenya Industry", "Peenya", "Goraguntepalya", "Yeshwanthpur", 
             "Sandal Soap Factory", "Mahalakshmi", "Rajajinagar", "Kuvempu Road", "Srirampura", 
-            "Mantri Square Sampige Road", "Nadaprabhu Kempegowda Station, Majestic", "Chickpete", 
+            "Mantri Square Sampige Road", "Majestic", "Chickpete", 
             "Krishna Rajendra Market", "National College", "Lalbagh", "South End Circle", 
             "Jayanagar", "Rashtreeya Vidyalaya Road", "Banashankari", "Jaya Prakash Nagar", 
             "Yelachenahalli", "Konanakunte Cross", "Doddakallasandra", "Vajarahalli", 
@@ -54,29 +54,25 @@ LINES = {
 import time
 
 def fetch_coords(name):
-    # Nominatim search
-    q = urllib.parse.quote(f"{name} Metro Station Bengaluru")
-    url = f"https://nominatim.openstreetmap.org/search?q={q}&format=json&limit=1"
-    req = urllib.request.Request(url, headers={'User-Agent': 'NammaMoveMetroBuilder/1.0'})
-    try:
-        with urllib.request.urlopen(req) as response:
-            data = json.loads(response.read().decode())
-            if data:
-                return float(data[0]['lat']), float(data[0]['lon'])
-    except Exception as e:
-        pass
+    # Try different combinations for Nominatim
+    queries = [
+        f"{name} Metro Station, Bengaluru",
+        f"{name} Station, Bengaluru",
+        f"{name}, Bengaluru",
+    ]
     
-    # Fallback broader query
-    q = urllib.parse.quote(f"{name} Bengaluru")
-    url = f"https://nominatim.openstreetmap.org/search?q={q}&format=json&limit=1"
-    req = urllib.request.Request(url, headers={'User-Agent': 'NammaMoveMetroBuilder/1.0'})
-    try:
-        with urllib.request.urlopen(req) as response:
-            data = json.loads(response.read().decode())
-            if data:
-                return float(data[0]['lat']), float(data[0]['lon'])
-    except Exception:
-        pass
+    for q_text in queries:
+        q = urllib.parse.quote(q_text)
+        url = f"https://nominatim.openstreetmap.org/search?q={q}&format=json&limit=1"
+        req = urllib.request.Request(url, headers={'User-Agent': 'NammaMoveMetroBuilder/1.1'})
+        try:
+            with urllib.request.urlopen(req) as response:
+                data = json.loads(response.read().decode())
+                if data:
+                    return float(data[0]['lat']), float(data[0]['lon'])
+        except Exception:
+            pass
+        time.sleep(1.0) # Respect Nominatim rate limits
     
     return None, None
 

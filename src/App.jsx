@@ -55,7 +55,7 @@ export default function App() {
   // ── API URL Helper ────────────────────────────────────────────────────────
   const getBaseUrl = () => {
     const isProd = window.location.hostname !== "localhost";
-    return isProd ? "/api" : (import.meta.env.VITE_API_URL || "http://localhost:4001/api");
+    return isProd ? "/api" : (import.meta.env.VITE_API_URL || "http://localhost:4000/api");
   };
 
   // ── Database health check ──────────────────────────────────────────────────

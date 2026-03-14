@@ -24,9 +24,9 @@ function getNextDepartures(baseTime, freqMin, count = 3) {
 }
 
 const METRO_LINES = [
-    { id: "M-P", name: "Purple Line", color: "var(--purple)", from: "Whitefield", to: "Challaghatta", freq: 6 },
-    { id: "M-G", name: "Green Line", color: "var(--teal)", from: "Madavara", to: "Silk Institute", freq: 8 },
-    { id: "M-Y", name: "Yellow Line", color: "var(--accent)", from: "RV Road", to: "Bommasandra", freq: 10 }
+    { id: "M-PL", name: "Purple Line", color: "var(--purple)", from: "Whitefield", to: "Challaghatta", freq: 6 },
+    { id: "M-GL", name: "Green Line", color: "var(--teal)", from: "Madavara", to: "Silk Institute", freq: 8 },
+    { id: "M-YL", name: "Yellow Line", color: "var(--accent)", from: "RV Road", to: "Bommasandra", freq: 10 }
 ];
 
 export default function SchedulesPage() {
@@ -36,12 +36,12 @@ export default function SchedulesPage() {
 
     const now = new Date();
 
-    // ── Bus Logic ─────────────────────────────────────────────────────────────
+    // ── Bus/Stop Logic ─────────────────────────────────────────────────────────────
     const filteredStops = useMemo(() => {
         if (busSearch.length < 3) return [];
         return stopsJson
-            .filter(s => !s.id.toString().startsWith("M-") && s.name.toLowerCase().includes(busSearch.toLowerCase()))
-            .slice(0, 6);
+            .filter(s => s.name.toLowerCase().includes(busSearch.toLowerCase()))
+            .slice(0, 8);
     }, [busSearch]);
 
     const stopSchedules = useMemo(() => {
@@ -58,13 +58,24 @@ export default function SchedulesPage() {
             const route = routesJson.find(r => r.id === rid);
             if (!route) return null;
             
-            // BMTC frequency estimation: 15-20 min normally, 8-12 min peak
-            const h = now.getHours();
-            const isPeak = (h >= 8 && h < 11) || (h >= 17 && h < 20);
-            const freq = isPeak ? 12 : 20;
+            // Frequency estimation: 
+            // Metro: 6-10 min
+            // Bus: 15-20 min normally, 8-12 min peak
+            let freq = 20;
+            const isMetro = rid.toString().startsWith("M-");
+            
+            if (isMetro) {
+                const ml = METRO_LINES.find(l => l.id === rid);
+                freq = ml ? ml.freq : 8;
+            } else {
+                const h = now.getHours();
+                const isPeak = (h >= 8 && h < 11) || (h >= 17 && h < 20);
+                freq = isPeak ? 12 : 20;
+            }
             
             return {
                 ...route,
+                isMetro,
                 next: getNextDepartures(now, freq, 3)
             };
         }).filter(Boolean);
@@ -78,11 +89,11 @@ export default function SchedulesPage() {
                     <button 
                         className={`news-filter-btn ${tab === "metro" ? "active" : ""}`}
                         onClick={() => setTab("metro")}
-                    >🚇 Metro</button>
+                    >🚇 Lines</button>
                     <button 
                         className={`news-filter-btn ${tab === "bus" ? "active" : ""}`}
                         onClick={() => setTab("bus")}
-                    >🚌 BMTC Bus</button>
+                    >🔍 Search Stops</button>
                 </div>
             </div>
 
@@ -131,7 +142,7 @@ export default function SchedulesPage() {
                                     type="text"
                                     value={busSearch}
                                     onChange={(e) => { setBusSearch(e.target.value); setSelectedStop(null); }}
-                                    placeholder="Search for a bus stop (e.g. Majestic)"
+                                    placeholder="Search for a stop (e.g. Majestic or Indiranagar)"
                                     className="map-search-input"
                                     style={{ background: 'var(--bg)', color: 'var(--text)' }}
                                 />
@@ -139,7 +150,7 @@ export default function SchedulesPage() {
                                     <ul className="nominatim-results">
                                         {filteredStops.map(s => (
                                             <li key={s.id} onClick={() => { setSelectedStop(s); setBusSearch(s.name); }}>
-                                                {s.name}
+                                                {s.id.startsWith("M-") ? "🚇 " : "🚌 "} {s.name}
                                             </li>
                                         ))}
                                     </ul>
@@ -156,11 +167,11 @@ export default function SchedulesPage() {
                             ) : (
                                 <div className="jcards-col">
                                     {stopSchedules.map(route => (
-                                        <div key={route.id} className="jcard" style={{ borderTopColor: 'var(--teal)' }}>
+                                        <div key={route.id} className="jcard" style={{ borderTopColor: route.isMetro ? 'var(--purple)' : 'var(--teal)' }}>
                                             <div className="jcard-summary">
                                                 <div className="jcard-summary-left">
-                                                    <div className="tl-badge tl-badge-bus" style={{fontSize: '1rem', padding: '4px 12px'}}>
-                                                        {route.short_name}
+                                                    <div className={`tl-badge ${route.isMetro ? 'tl-badge-metro' : 'tl-badge-bus'}`} style={{fontSize: '1rem', padding: '4px 12px'}}>
+                                                        {route.isMetro ? '🚇' : ''} {route.short_name}
                                                     </div>
                                                     <div>
                                                         <div className="jcard-label">{route.long_name || 'Regular Service'}</div>
@@ -172,7 +183,7 @@ export default function SchedulesPage() {
                                                 <div className="tl-label" style={{marginBottom: '8px', fontSize: '0.75rem'}}>Today's Schedule (Estimated)</div>
                                                 <div style={{display: 'flex', gap: '8px', flexWrap: 'wrap'}}>
                                                     {route.next.map((d, i) => (
-                                                        <div key={i} className="results-time-badge">
+                                                        <div key={i} className="results-time-badge" style={route.isMetro ? {borderColor: 'var(--purple)', color: 'var(--purple)'} : {}}>
                                                             {fmtTime(d)}
                                                         </div>
                                                     ))}
@@ -189,8 +200,8 @@ export default function SchedulesPage() {
                         <div className="no-route" style={{marginTop: '20px'}}>
                             <span>💡</span>
                             <div>
-                                <strong>Find Bus Timings</strong>
-                                <p>Enter a stop name above to see all buses passing through and their estimated arrival times.</p>
+                                <strong>Find Timings</strong>
+                                <p>Enter a stop or station name above to see all buses and trains passing through.</p>
                             </div>
                         </div>
                     )}
