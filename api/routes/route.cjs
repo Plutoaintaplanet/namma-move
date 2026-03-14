@@ -33,25 +33,51 @@ async function runRead(cypher, params = {}) {
     } finally { await s.close(); }
 }
 
-let _stopsCache = null;
-async function getAllStops() {
-    if (_stopsCache) return _stopsCache;
-    const recs = await runRead("MATCH (s:Stop)-[:CONNECTS]-() RETURN DISTINCT s.id AS id, s.name AS name, s.lat AS lat, s.lon AS lon, s.type AS type");
-    _stopsCache = recs.map(r => ({ id: r.get("id"), name: r.get("name"), lat: r.get("lat"), lon: r.get("lon"), type: r.get("type") }));
-    return _stopsCache;
+async function nearbyStops(lat, lon) {
+    const cypher = `
+        MATCH (s:Stop)
+        WHERE point.distance(s.pos, point({latitude: $lat, longitude: $lon})) < 3000
+        RETURN s.id AS id, s.name AS name, s.lat AS lat, s.lon AS lon, s.type AS type, 
+               point.distance(s.pos, point({latitude: $lat, longitude: $lon})) AS dist
+        ORDER BY dist
+        LIMIT 50
+    `;
+    const recs = await runRead(cypher, { lat, lon });
+    const all = recs.map(r => ({
+        id: r.get("id"),
+        name: r.get("name"),
+        lat: r.get("lat"),
+        lon: r.get("lon"),
+        type: r.get("type"),
+        dist: r.get("dist")
+    }));
+
+    const buses = all.filter(s => s.type !== 'metro' && s.dist < 1500).slice(0, 8);
+    const metros = all.filter(s => s.type === 'metro' && s.dist < 3000).slice(0, 4);
+    
+    const fallbackBuses = buses.length ? buses : all.filter(s => s.type !== 'metro').slice(0, 5);
+    return [...fallbackBuses, ...metros].sort((a, b) => a.dist - b.dist);
 }
 
-const METRO_RADIUS_M = 3000; 
-const BUS_RADIUS_M = 1500; 
-async function nearbyStops(lat, lon) {
-    const all = await getAllStops();
-    const sorted = all
-        .map(s => ({ ...s, dist: haversine(lat, lon, s.lat, s.lon) }))
-        .sort((a, b) => a.dist - b.dist);
-    const buses = sorted.filter(s => s.type !== "metro" && s.dist <= BUS_RADIUS_M).slice(0, 8);
-    const metros = sorted.filter(s => s.type === "metro" && s.dist <= METRO_RADIUS_M).slice(0, 4);
-    const fallbackBuses = buses.length ? buses : sorted.filter(s => s.type !== "metro").slice(0, 5);
-    return [...fallbackBuses, ...metros].sort((a, b) => a.dist - b.dist);
+// ── Fallback logic helper ─────────────────────────────────────────────────────
+async function nearbyMetrosOnly(lat, lon, limit = 5) {
+    const cypher = `
+        MATCH (s:Stop {type: 'metro'})
+        WHERE point.distance(s.pos, point({latitude: $lat, longitude: $lon})) < 10000
+        RETURN s.id AS id, s.name AS name, s.lat AS lat, s.lon AS lon, s.type AS type, 
+               point.distance(s.pos, point({latitude: $lat, longitude: $lon})) AS dist
+        ORDER BY dist
+        LIMIT $limit
+    `;
+    const recs = await runRead(cypher, { lat, lon, limit });
+    return recs.map(r => ({
+        id: r.get("id"),
+        name: r.get("name"),
+        lat: r.get("lat"),
+        lon: r.get("lon"),
+        type: r.get("type"),
+        dist: r.get("dist")
+    }));
 }
 
 async function findRoute(fromId, toId) {
