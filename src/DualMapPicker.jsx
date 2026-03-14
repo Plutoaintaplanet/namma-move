@@ -79,10 +79,11 @@ function MapCentre({ center }) {
 }
 
 // ── Autocomplete search input ─────────────────────────────────────────────────
-function PlaceSearch({ placeholder, dotEmoji, onPlace, isActive, onActivate }) {
+function PlaceSearch({ placeholder, dotEmoji, onPlace, isActive, onActivate, showGps }) {
     const [query, setQuery] = useState("");
     const [results, setResults] = useState([]);
     const [loading, setLoading] = useState(false);
+    const [gpsLoading, setGpsLoading] = useState(false);
     const debounceRef = useRef(null);
     const wrapRef = useRef(null);
 
@@ -119,6 +120,21 @@ function PlaceSearch({ placeholder, dotEmoji, onPlace, isActive, onActivate }) {
         });
     };
 
+    const handleGps = () => {
+        if (!("geolocation" in navigator)) return;
+        setGpsLoading(true);
+        navigator.geolocation.getCurrentPosition(
+            pos => {
+                const loc = { lat: pos.coords.latitude, lon: pos.coords.longitude, label: "📍 Current location" };
+                setQuery("📍 Current location");
+                onPlace(loc);
+                setGpsLoading(false);
+            },
+            () => setGpsLoading(false),
+            { enableHighAccuracy: true, timeout: 8000 }
+        );
+    };
+
     return (
         <div className="dual-input-row" ref={wrapRef}>
             <span className="pin-dot">{dotEmoji}</span>
@@ -142,6 +158,16 @@ function PlaceSearch({ placeholder, dotEmoji, onPlace, isActive, onActivate }) {
                     </ul>
                 )}
             </div>
+            {showGps && (
+                <button 
+                    className="pin-toggle-btn" 
+                    title="Use Current Location" 
+                    onClick={handleGps}
+                    style={{ fontSize: '0.9rem', color: gpsLoading ? 'var(--accent)' : 'inherit' }}
+                >
+                    {gpsLoading ? '⌛' : '🎯'}
+                </button>
+            )}
             <button
                 className={`pin-toggle-btn ${isActive ? "active" : ""}`}
                 title={`Drop ${dotEmoji} pin on map`}
@@ -191,6 +217,7 @@ export default function DualMapPicker({ stops = [], activeIds = new Set(), onOri
                 isActive={pinMode === "origin"}
                 onActivate={() => setPinMode("origin")}
                 onPlace={handleOriginDrop}
+                showGps
             />
             <PlaceSearch
                 placeholder="To — search or pin on map"
