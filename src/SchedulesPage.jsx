@@ -24,8 +24,8 @@ function getNextDepartures(baseTime, freqMin, count = 3) {
 }
 
 const METRO_LINES = [
-    { id: "M-PL", name: "Purple Line", color: "var(--purple)", from: "Whitefield", to: "Challaghatta", freq: 6 },
-    { id: "M-GL", name: "Green Line", color: "var(--teal)", from: "Madavara", to: "Silk Institute", freq: 8 },
+    { id: "M-PL", name: "Purple Line", color: "var(--purple)", from: "Baiyappanahalli", to: "Challaghatta", freq: 6 },
+    { id: "M-GL", name: "Green Line", color: "var(--teal)", from: "Nagasandra", to: "Silk Institute", freq: 8 },
     { id: "M-YL", name: "Yellow Line", color: "var(--accent)", from: "RV Road", to: "Bommasandra", freq: 10 }
 ];
 
