@@ -22,8 +22,9 @@ const driver = neo4j.driver(
 );
 
 async function seed() {
-    const session = driver.session();
-    console.log("🌱 Seeding Neo4j...\n");
+    const dbName = (process.env.NEO4J_DATABASE || "").trim() || undefined;
+    const session = driver.session({ database: dbName });
+    console.log(`🌱 Seeding Neo4j database: ${dbName || 'default'}...\n`);
 
     try {
         // ── Clear existing data ────────────────────────────────────────────────────

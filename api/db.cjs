@@ -1,5 +1,6 @@
+const path = require("path");
+require("dotenv").config({ path: path.join(__dirname, ".env") });
 const neo4j = require("neo4j-driver");
-require("dotenv").config();
 
 let driver;
 
@@ -54,7 +55,7 @@ async function ping() {
 function getSession() {
     const d = getDriver();
     if (!d) throw new Error("Neo4j Driver not available");
-    const dbName = process.env.NEO4J_DATABASE || undefined;
+    const dbName = (process.env.NEO4J_DATABASE || "").trim() || undefined;
     return d.session({ database: dbName });
 }
 
