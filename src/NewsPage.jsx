@@ -69,10 +69,10 @@ const FALLBACK_NEWS = [
 ];
 
 const CATEGORY_COLORS = {
-    BMTC: { bg: "rgba(0,166,166,0.12)", color: "#006d73" },
-    Metro: { bg: "rgba(139,92,246,0.12)", color: "#7c3aed" },
-    Integration: { bg: "rgba(249,115,22,0.12)", color: "#c2410c" },
-    Update: { bg: "rgba(16,185,129,0.12)", color: "#047857" },
+    BMTC: { bg: "var(--primary-light)", color: "var(--primary)" },
+    Metro: { bg: "rgba(124, 58, 237, 0.1)", color: "#7c3aed" },
+    Integration: { bg: "rgba(249, 115, 22, 0.1)", color: "var(--accent)" },
+    Update: { bg: "var(--primary-light)", color: "var(--primary)" },
 };
 
 function timeAgo(dateStr) {
@@ -148,13 +148,11 @@ export default function NewsPage({ darkMode }) {
     const visible = filter === "All" ? articles : articles.filter((a) => a.category === filter);
 
     return (
-        <div className="news-page">
+        <div className="news-page-container">
             {/* Header */}
-            <div className="news-header">
-                <h2 className="news-title">📰 Bengaluru Transit News</h2>
-                <span className={`news-source-badge ${source === "live" ? "live" : ""}`}>
-                    {source === "live" ? "🟢 Live" : "📂 Curated"}
-                </span>
+            <div className="page-header">
+                <h2>📰 Bengaluru Transit News</h2>
+                <p>Stay updated with the latest from BMTC and Namma Metro.</p>
             </div>
 
             {/* Category filter pills */}

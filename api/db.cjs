@@ -11,6 +11,8 @@ function getDriver() {
     const user = (process.env.NEO4J_USER || "").trim();
     const password = (process.env.NEO4J_PASSWORD || "").trim();
 
+    console.log("getDriver Debug:", { uri: !!uri, user: !!user, pass: !!password });
+
     if (!uri || !user || !password) {
         return null;
     }
@@ -59,4 +61,7 @@ function getSession() {
     return d.session({ database: dbName });
 }
 
-module.exports = { getDriver, ping, getSession };
+module.exports = { 
+    get driver() { return getDriver(); },
+    getDriver, ping, getSession 
+};

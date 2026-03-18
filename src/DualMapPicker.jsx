@@ -1,9 +1,11 @@
-import { useEffect, useState, useRef, useCallback } from "react";
+import { useEffect, useState, useRef, useCallback, useMemo } from "react";
 import {
-    MapContainer, TileLayer, Marker, useMapEvents, useMap, CircleMarker, Popup
+    MapContainer, TileLayer, Marker, useMapEvents, useMap, CircleMarker, Popup, Polyline
 } from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
+import routeStopsJson from "./data/gtfs_route_stops.json";
+import routesJson from "./data/gtfs_routes.json";
 
 // Fix Leaflet icon paths in Vite
 delete L.Icon.Default.prototype._getIconUrl;
@@ -31,7 +33,6 @@ async function nominatimSearch(query) {
     const q = encodeURIComponent(query + ", Bangalore, India");
     const primaryUrl = `https://nominatim.openstreetmap.org/search?q=${q}&format=json&limit=8&addressdetails=1`;
 
-    // Primary request with proper User-Agent
     try {
         const res = await fetch(primaryUrl, {
             headers: {
@@ -46,7 +47,6 @@ async function nominatimSearch(query) {
         }
     } catch { /* fall through */ }
 
-    // Fallback via allorigins CORS proxy
     try {
         const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(primaryUrl)}`;
         const res = await fetch(proxyUrl, { signal: AbortSignal.timeout(7000) });
@@ -60,14 +60,37 @@ async function nominatimSearch(query) {
     return [];
 }
 
-function MapClickHandler({ pinMode, onOriginDrop, onDestDrop }) {
-    useMapEvents({
+// ── Road-snapping helper using OSRM ──
+async function fetchRoadPath(coords) {
+    if (!coords || coords.length < 2) return coords;
+    // OSRM expects {lon},{lat} pairs. Max coords for OSRM public is usually ~100.
+    const limitedCoords = coords.slice(0, 100);
+    const query = limitedCoords.map(c => `${c[1]},${c[0]}`).join(';');
+    const url = `https://router.project-osrm.org/route/v1/driving/${query}?overview=full&geometries=geojson`;
+    
+    try {
+        const res = await fetch(url);
+        const data = await res.json();
+        if (data.code === 'Ok') {
+            return data.routes[0].geometry.coordinates.map(c => [c[1], c[0]]);
+        }
+    } catch (e) {
+        console.error("OSRM Error:", e);
+    }
+    return coords; 
+}
+
+function MapClickHandler({ pinMode, onOriginDrop, onDestDrop, setZoom }) {
+    const map = useMapEvents({
         click(e) {
             const { lat, lng } = e.latlng;
             const loc = { lat, lon: lng, label: "Dropped pin" };
             if (pinMode === "origin") onOriginDrop(loc);
             else onDestDrop(loc);
         },
+        zoomend() {
+            setZoom(map.getZoom());
+        }
     });
     return null;
 }
@@ -78,7 +101,6 @@ function MapCentre({ center }) {
     return null;
 }
 
-// ── Autocomplete search input ─────────────────────────────────────────────────
 function PlaceSearch({ placeholder, dotEmoji, onPlace, isActive, onActivate, showGps }) {
     const [query, setQuery] = useState("");
     const [results, setResults] = useState([]);
@@ -87,7 +109,6 @@ function PlaceSearch({ placeholder, dotEmoji, onPlace, isActive, onActivate, sho
     const debounceRef = useRef(null);
     const wrapRef = useRef(null);
 
-    // Close dropdown when clicking outside
     useEffect(() => {
         const handler = (e) => {
             if (wrapRef.current && !wrapRef.current.contains(e.target)) setResults([]);
@@ -131,7 +152,7 @@ function PlaceSearch({ placeholder, dotEmoji, onPlace, isActive, onActivate, sho
                 setGpsLoading(false);
             },
             () => setGpsLoading(false),
-            { enableHighAccuracy: true, timeout: 8000 }
+            { enableHighAccuracy: false, timeout: 10000, maximumAge: 60000 }
         );
     };
 
@@ -177,12 +198,65 @@ function PlaceSearch({ placeholder, dotEmoji, onPlace, isActive, onActivate, sho
     );
 }
 
-// ── Main DualMapPicker ────────────────────────────────────────────────────────
+// ── New RouteLine Component with Snapping ──
+function RouteLine({ rid, coords, isDebug = false }) {
+    const [snappedCoords, setSnappedCoords] = useState(coords);
+
+    useEffect(() => {
+        // If it's a bus route and we have enough coords, try snapping
+        if (!rid.toString().startsWith("M-") && coords.length >= 2) {
+            // Only snap debug lines if they are short enough to avoid OSRM rate limits
+            if (!isDebug || coords.length < 25) {
+                fetchRoadPath(coords).then(setSnappedCoords);
+            }
+        }
+    }, [coords, rid, isDebug]);
+
+    return (
+        <Polyline 
+            positions={snappedCoords} 
+            pathOptions={{ 
+                color: rid.toString().startsWith("M-") ? "#7c3aed" : "#00A86B", 
+                weight: isDebug ? 2 : 4, 
+                opacity: isDebug ? 0.3 : 0.8 
+            }} 
+        />
+    );
+}
+
 export default function DualMapPicker({ stops = [], activeIds = new Set(), onOriginSelected, onDestinationSelected, initialOrigin }) {
     const [pinMode, setPinMode] = useState("destination");
     const [originPos, setOriginPos] = useState(null);
     const [destPos, setDestPos] = useState(null);
     const [mapCenter, setMapCenter] = useState(BENGALURU_CENTER);
+    const [zoom, setZoom] = useState(12);
+    const [showAllRoutes, setShowAllRoutes] = useState(false);
+    const [routeLines, setRouteLines] = useState([]);
+    const [loadingRoutes, setLoadingRoutes] = useState(false);
+
+    useEffect(() => {
+        if (!showAllRoutes) {
+            setRouteLines([]);
+            return;
+        }
+        setLoadingRoutes(true);
+        const timer = setTimeout(() => {
+            const grouped = {};
+            routeStopsJson.forEach(rs => {
+                if (!grouped[rs.route_id]) grouped[rs.route_id] = [];
+                grouped[rs.route_id].push(rs.stop_id);
+            });
+            const stopMap = {};
+            stops.forEach(s => { stopMap[s.id] = [s.latitude, s.longitude]; });
+            const lines = Object.keys(grouped).slice(0, 50).map(rid => { // Limit to 50 for safety
+                const coords = grouped[rid].map(sid => stopMap[sid]).filter(Boolean);
+                return { id: rid, coords };
+            }).filter(r => r.coords.length > 1);
+            setRouteLines(lines);
+            setLoadingRoutes(false);
+        }, 100);
+        return () => clearTimeout(timer);
+    }, [showAllRoutes, stops]);
 
     useEffect(() => {
         if (initialOrigin && !originPos) {
@@ -192,8 +266,6 @@ export default function DualMapPicker({ stops = [], activeIds = new Set(), onOri
         }
     }, [initialOrigin]);
 
-    // FIXED: handleOriginDrop / handleDestDrop used as onPlace callbacks
-    // They update map markers AND call parent callbacks (which trigger computeAll).
     const handleOriginDrop = useCallback((loc) => {
         const pos = [loc.lat, loc.lon];
         setOriginPos(pos);
@@ -209,66 +281,40 @@ export default function DualMapPicker({ stops = [], activeIds = new Set(), onOri
         onDestinationSelected?.(loc);
     }, [onDestinationSelected]);
 
+    const visibleStops = stops.filter(s => {
+        const isMetro = s.id.toString().startsWith("M-");
+        if (isMetro) return true;
+        return zoom > 14; 
+    });
+
     return (
         <div className="dual-map-picker">
-            <PlaceSearch
-                placeholder="From — search or pin on map"
-                dotEmoji="🟢"
-                isActive={pinMode === "origin"}
-                onActivate={() => setPinMode("origin")}
-                onPlace={handleOriginDrop}
-                showGps
-            />
-            <PlaceSearch
-                placeholder="To — search or pin on map"
-                dotEmoji="🔴"
-                isActive={pinMode === "destination"}
-                onActivate={() => setPinMode("destination")}
-                onPlace={handleDestDrop}
-            />
+            <PlaceSearch placeholder="Where from?" dotEmoji="🟢" isActive={pinMode === "origin"} onActivate={() => setPinMode("origin")} onPlace={handleOriginDrop} showGps />
+            <PlaceSearch placeholder="Where to?" dotEmoji="🔴" isActive={pinMode === "destination"} onActivate={() => setPinMode("destination")} onPlace={handleDestDrop} />
 
             <p className="pin-mode-hint">
-                {pinMode === "origin"
-                    ? "🟢 Tap the map to set your start point"
-                    : "🔴 Tap the map to set your destination"}
+                {pinMode === "origin" ? "🟢 Select start: Search above or tap map" : "🔴 Select end: Search above or tap map"}
             </p>
 
-            <MapContainer
-                center={BENGALURU_CENTER}
-                zoom={12}
-                style={{ width: "100%", height: "320px", borderRadius: "14px" }}
-                zoomControl
-            >
-                <TileLayer
-                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                    attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-                />
+            <MapContainer center={BENGALURU_CENTER} zoom={12} style={{ width: "100%", height: "350px", borderRadius: "24px" }} zoomControl>
+                <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" attribution='&copy; OpenStreetMap' />
                 <MapCentre center={mapCenter} />
-                <MapClickHandler
-                    pinMode={pinMode}
-                    onOriginDrop={handleOriginDrop}
-                    onDestDrop={handleDestDrop}
-                />
+                <MapClickHandler pinMode={pinMode} onOriginDrop={handleOriginDrop} onDestDrop={handleDestDrop} setZoom={setZoom} />
 
-                {/* Transit Stops */}
-                {stops.map((s) => {
+                {showAllRoutes && routeLines.map(rl => (
+                    <RouteLine key={rl.id} rid={rl.id} coords={rl.coords} isDebug={true} />
+                ))}
+
+                {visibleStops.map((s) => {
+                    const isMetro = s.id.toString().startsWith("M-");
                     const isActive = activeIds.has(s.id);
                     return (
-                        <CircleMarker
-                            key={s.id}
-                            center={[s.latitude, s.longitude]}
-                            radius={isActive ? 5 : 3}
-                            pathOptions={{
-                                fillColor: s.id.toString().startsWith("M-") ? "var(--purple)" : "var(--teal)",
-                                color: "var(--bg-surface)",
-                                weight: 1,
-                                fillOpacity: isActive ? 0.9 : 0.3
-                            }}
-                        >
+                        <CircleMarker key={s.id} center={[s.latitude, s.longitude]} radius={isMetro ? 6 : 4} pathOptions={{ fillColor: isMetro ? "#7c3aed" : "#2D5F5D", color: "#ffffff", weight: 2, fillOpacity: isActive ? 1 : 0.6 }}>
                             <Popup>
-                                <strong>{s.name}</strong><br />
-                                {s.id.toString().startsWith("M-") ? "🚇 Metro Station" : "🚌 Bus Stop"}
-                                {!isActive && !s.id.toString().startsWith("M-") && <><br/><em>(Pin only - no route data)</em></>}
+                                <div style={{ fontFamily: 'Satoshi, sans-serif' }}>
+                                    <strong style={{ display: 'block', marginBottom: '4px' }}>{s.name}</strong>
+                                    <span style={{ fontSize: '0.8rem', color: '#666' }}>{isMetro ? "🚇 Metro Station" : "🚌 Bus Stop"}</span>
+                                </div>
                             </Popup>
                         </CircleMarker>
                     );
@@ -277,6 +323,14 @@ export default function DualMapPicker({ stops = [], activeIds = new Set(), onOri
                 {originPos && <Marker position={originPos} icon={greenIcon} />}
                 {destPos && <Marker position={destPos} icon={redIcon} />}
             </MapContainer>
+
+            <div className="map-legend">
+                <div className="legend-item"><span className="dot metro"></span> Metro</div>
+                <div className="legend-item"><span className="dot bus"></span> Bus (Zoom in)</div>
+                <button onClick={() => setShowAllRoutes(!showAllRoutes)} className="debug-toggle-btn" style={{ marginLeft: 'auto', fontSize: '0.7rem', padding: '4px 8px', borderRadius: '6px', background: showAllRoutes ? 'var(--primary)' : 'var(--bg)', color: showAllRoutes ? 'white' : 'var(--text-muted)', border: '1px solid var(--border)', cursor: 'pointer' }}>
+                    {loadingRoutes ? 'Loading...' : showAllRoutes ? 'Hide Routes' : 'Debug: Road-Follow Routes'}
+                </button>
+            </div>
         </div>
     );
 }

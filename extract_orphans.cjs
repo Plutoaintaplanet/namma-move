@@ -1,8 +1,10 @@
 require("dotenv").config({ path: "api/.env" });
-const { driver } = require("./api/db.cjs");
+const { getDriver } = require("./api/db.cjs");
 const fs = require("fs");
 
 async function run() {
+    const driver = getDriver();
+    if (!driver) throw new Error("Neo4j driver not available");
     const s = driver.session({ database: process.env.NEO4J_DATABASE || "neo4j" });
     try {
         console.log("Fetching isolated nodes...");

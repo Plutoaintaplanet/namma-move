@@ -1,6 +1,6 @@
-// api/routes/route.cjs — Optimized for Vercel with batch processing
+// api/routes/route.cjs — Robust Multi-modal Routing
 const express = require("express");
-const { driver } = require("../db.cjs");
+const { getSession } = require("../db.cjs");
 const router = express.Router();
 const DB = process.env.NEO4J_DATABASE || "neo4j";
 
@@ -14,24 +14,24 @@ function haversine(lat1, lon1, lat2, lon2) {
 }
 
 async function runRead(cypher, params = {}) {
-    const s = driver.session({ database: DB });
+    const session = getSession();
     try {
-        const r = await s.executeRead(tx => tx.run(cypher, params));
+        const r = await session.executeRead(tx => tx.run(cypher, params));
         return r.records;
-    } finally { await s.close(); }
+    } finally { await session.close(); }
 }
 
 async function nearbyStops(lat, lon) {
-    // Metro range 8km, Bus range 2.5km
+    // Increased range: Metro 10km, Bus 3.5km
     const cypher = `
         MATCH (s:Stop)
-        WHERE point.distance(s.pos, point({latitude: $lat, longitude: $lon})) < 8000
+        WHERE point.distance(s.pos, point({latitude: $lat, longitude: $lon})) < 10000
         WITH s, point.distance(s.pos, point({latitude: $lat, longitude: $lon})) AS dist
         ORDER BY dist
         WITH collect({id: s.id, name: s.name, lat: s.lat, lon: s.lon, type: s.type, dist: dist}) as allStops
         RETURN 
             [x IN allStops WHERE x.type = 'metro'][0..5] as metros,
-            [x IN allStops WHERE x.type = 'bus' AND x.dist < 2500][0..10] as buses
+            [x IN allStops WHERE x.type = 'bus' AND x.dist < 3500][0..15] as buses
     `;
     const recs = await runRead(cypher, { lat, lon });
     if (!recs.length) return { metros: [], buses: [] };
@@ -69,8 +69,7 @@ function processLegs(nodeList, segments) {
 
 router.get("/", async (req, res) => {
     const { fromLat, fromLon, toLat, toLon, time } = req.query;
-    if (!fromLat || !fromLon || !toLat || !toLon)
-        return res.status(400).json({ error: "Coordinates required" });
+    if (!fromLat || !fromLon || !toLat || !toLon) return res.status(400).json({ error: "Coords missing" });
 
     const fLat = parseFloat(fromLat), fLon = parseFloat(fromLon);
     const tLat = parseFloat(toLat), tLon = parseFloat(toLon);
@@ -79,92 +78,112 @@ router.get("/", async (req, res) => {
     try {
         const [oData, dData] = await Promise.all([nearbyStops(fLat, fLon), nearbyStops(tLat, tLon)]);
         
-        const oMetros = oData.metros.map(s => s.id);
-        const dMetros = dData.metros.map(s => s.id);
-        const oAll = [...oData.buses, ...oData.metros.slice(0, 2)].map(s => s.id);
-        const dAll = [...dData.buses, ...dData.metros.slice(0, 2)].map(s => s.id);
+        const oAllIds = [...oData.metros, ...oData.buses].map(s => s.id);
+        const dAllIds = [...dData.metros, ...dData.buses].map(s => s.id);
 
-        if (oAll.length === 0 || dAll.length === 0) {
-            return res.json({ bus: null, metro: null, combo: null, cab: { km: (haversine(fLat, fLon, tLat, tLon) / 1000).toFixed(1) } });
+        const distKm = haversine(fLat, fLon, tLat, tLon) / 1000;
+        const cabFare = Math.round(100 + distKm * 18);
+        const autoFare = Math.round(30 + distKm * 15);
+
+        if (oAllIds.length === 0 || dAllIds.length === 0) {
+            return res.json({ routes: [], cab: { km: distKm.toFixed(1), cabFare, autoFare } });
         }
 
-        const metroCypher = `
+        // Try to find more paths to identify different categories
+        const cypher = `
             MATCH (a:Stop), (b:Stop)
-            WHERE a.id IN $oMetros AND b.id IN $dMetros AND a.id <> b.id
-            MATCH path = (a)-[:CONNECTS*1..50]->(b)
-            WHERE all(r IN relationships(path) WHERE r.route_type = 1)
-            WITH path, a, b ORDER BY length(path) ASC
-            WITH a, b, head(collect(path)) as path
+            WHERE a.id IN $oAllIds AND b.id IN $dAllIds AND a.id <> b.id
+            MATCH path = shortestPath((a)-[:CONNECTS*1..60]->(b))
             RETURN a.id as oId, b.id as dId,
-                   [r IN relationships(path) | { route_id: r.route_id, route_name: r.route_name, route_type: r.route_type, travel_min: coalesce(r.travel_min, 2.5) }] AS segments,
+                   [r IN relationships(path) | { 
+                       route_id: r.routeId, 
+                       route_name: r.routeName, 
+                       route_type: r.routeType, 
+                       travel_min: coalesce(r.travelMin, 3.5) 
+                   }] AS segments,
                    [n IN nodes(path) | {id: n.id, name: n.name, lat: n.lat, lon: n.lon, type: n.type}] AS node_list,
-                   reduce(s = 0.0, r IN relationships(path) | s + coalesce(r.travel_min, 2.5)) as totalMin
+                   reduce(s = 0.0, r IN relationships(path) | s + coalesce(r.travelMin, 3.5)) as totalMin
+            LIMIT 30
         `;
 
-        const anyCypher = `
-            MATCH (a:Stop), (b:Stop)
-            WHERE a.id IN $oAll AND b.id IN $dAll AND a.id <> b.id
-            MATCH path = shortestPath((a)-[:CONNECTS*1..50]->(b))
-            RETURN a.id as oId, b.id as dId,
-                   [r IN relationships(path) | { route_id: r.route_id, route_name: r.route_name, route_type: r.route_type, travel_min: coalesce(r.travel_min, 3.0) }] AS segments,
-                   [n IN nodes(path) | {id: n.id, name: n.name, lat: n.lat, lon: n.lon, type: n.type}] AS node_list,
-                   reduce(s = 0.0, r IN relationships(path) | s + coalesce(r.travel_min, 3.0)) as totalMin
-        `;
+        const recs = await runRead(cypher, { oAllIds, dAllIds });
+        const results = [];
 
-        const [metroRecs, anyRecs] = await Promise.all([
-            (oMetros.length && dMetros.length) ? runRead(metroCypher, { oMetros, dMetros }) : [],
-            runRead(anyCypher, { oAll: oAll, dAll: dAll })
-        ]);
+        for (const row of recs) {
+            const oId = row.get("oId");
+            const dId = row.get("dId");
+            const segments = row.get("segments");
+            const nodeList = row.get("node_list");
+            const routeMin = row.get("totalMin");
 
-        let bestBus = null, bestMetro = null, bestCombo = null;
+            const oS = [...oData.metros, ...oData.buses].find(s => s.id === oId);
+            const dS = [...dData.metros, ...dData.buses].find(s => s.id === dId);
+            if (!oS || !dS) continue;
 
-        const processResults = (recs) => {
-            for (const row of recs) {
-                const oId = row.get("oId");
-                const dId = row.get("dId");
-                const segments = row.get("segments");
-                const nodeList = row.get("node_list");
-                const routeMin = row.get("totalMin");
+            const legs = processLegs(nodeList, segments);
+            const walkTime = walkMin(oS.dist) + walkMin(dS.dist);
+            const totalMins = walkTime + routeMin;
+            
+            const hasMetro = legs.some(l => l.mode === 'metro');
+            const hasBus = legs.some(l => l.mode === 'bus');
+            const cls = (hasMetro && hasBus) ? "combo" : hasMetro ? "metro" : "bus";
+            
+            const arrive = new Date(baseTime.getTime() + totalMins * 60000).toLocaleTimeString("en-IN", { hour: "2-digit", minute: "2-digit", hour12: true });
+            
+            let fare = 0;
+            legs.forEach(l => fare += (l.mode === 'metro' ? 25 : 15));
 
-                const oS = [...oData.metros, ...oData.buses].find(s => s.id === oId);
-                const dS = [...dData.metros, ...dData.buses].find(s => s.id === dId);
-                if (!oS || !dS) continue;
+            results.push({
+                legs, cls, totalMins: Math.round(totalMins),
+                walkingMins: Math.round(walkTime),
+                transitMins: Math.round(routeMin),
+                fare: Math.min(fare, 70),
+                depart: baseTime.toLocaleTimeString("en-IN", { hour: "2-digit", minute: "2-digit", hour12: true }),
+                arrive,
+                oStop: { ...oS, walkMin: walkMin(oS.dist) },
+                dStop: { ...dS, walkMin: walkMin(dS.dist) },
+                interchanges: legs.length - 1,
+                labels: []
+            });
+        }
 
-                const legs = processLegs(nodeList, segments);
-                if (!legs.length) continue;
-                
-                const types = legs.map(l => l.mode);
-                const cls = types.includes("metro") && types.includes("bus") ? "combo" : types.includes("metro") ? "metro" : "bus";
-                const totalMins = walkMin(oS.dist) + routeMin + walkMin(dS.dist);
-                
-                const arrive = new Date(baseTime.getTime() + totalMins * 60000).toLocaleTimeString("en-IN", { hour: "2-digit", minute: "2-digit", hour12: true });
-                const fare = cls === "metro" ? 45 : (nodeList.length <= 5 ? 10 : 20);
+        // Deduplicate and Label
+        const seen = new Set();
+        const deduped = results
+            .filter(r => {
+                const key = r.legs.map(l => l.route.id).join('-');
+                if (seen.has(key)) return false;
+                seen.add(key);
+                return true;
+            })
+            .sort((a, b) => a.totalMins - b.totalMins);
 
-                const entry = { 
-                    legs, cls, totalMins: Math.round(totalMins), 
-                    hops: nodeList.length - 1, fare, 
-                    depart: baseTime.toLocaleTimeString("en-IN", { hour: "2-digit", minute: "2-digit", hour12: true }), 
-                    arrive, 
-                    oStop: { ...oS, walkMin: walkMin(oS.dist) }, 
-                    dStop: { ...dS, walkMin: walkMin(dS.dist) } 
-                };
+        if (deduped.length > 0) {
+            // Label Fastest
+            deduped[0].labels.push("Fastest");
 
-                if (cls === "bus" && (!bestBus || totalMins < bestBus.totalMins)) bestBus = entry;
-                if (cls === "metro" && (!bestMetro || totalMins < bestMetro.totalMins)) bestMetro = entry;
-                if (cls === "combo" && (!bestCombo || totalMins < bestCombo.totalMins)) bestCombo = entry;
-            }
-        };
+            // Label Best Metro (if not already fastest)
+            const bestMetro = deduped.find(r => r.cls === 'metro');
+            if (bestMetro && !bestMetro.labels.includes("Fastest")) bestMetro.labels.push("Only Metro");
 
-        processResults(metroRecs);
-        processResults(anyRecs);
+            // Label Best Bus
+            const bestBus = deduped.find(r => r.cls === 'bus');
+            if (bestBus && !bestBus.labels.includes("Fastest")) bestBus.labels.push("Only BMTC");
+
+            // Label Least Effort (fewest interchanges)
+            const leastEffort = [...deduped].sort((a, b) => (a.interchanges + a.walkingMins) - (b.interchanges + b.walkingMins))[0];
+            if (leastEffort && !leastEffort.labels.includes("Fastest")) leastEffort.labels.push("Effort Efficient");
+        }
+
+        const finalRoutes = deduped.slice(0, 10);
 
         res.json({
-            bus: bestBus, metro: bestMetro, combo: bestCombo,
-            cab: { km: (haversine(fLat, fLon, tLat, tLon) / 1000).toFixed(1) }
+            routes: finalRoutes,
+            cab: { km: distKm.toFixed(1), cabFare, autoFare, bikeFare: Math.round(20 + distKm * 10) }
         });
 
     } catch (e) {
-        console.error(e);
+        console.error("Routing Error:", e);
         res.status(500).json({ error: e.message });
     }
 });

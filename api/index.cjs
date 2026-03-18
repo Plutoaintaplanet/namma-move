@@ -1,4 +1,8 @@
-require("dotenv").config();
+const path = require("path");
+const envPath = path.join(__dirname, ".env");
+require("dotenv").config({ path: envPath });
+console.log("Loading .env from:", envPath);
+console.log("NEO4J_URI present:", !!process.env.NEO4J_URI);
 const express = require("express");
 const cors = require("cors");
 const { ping } = require("./db.cjs");
@@ -11,6 +15,7 @@ const routeRouter = require("./routes/route.cjs");
 const stopsRouter = require("./routes/stops.cjs");
 const liveRouter = require("./routes/live.cjs");
 const newsRouter = require("./routes/news.cjs");
+const assistantRouter = require("./routes/assistant.cjs");
 
 app.use("/api/route", routeRouter);
 app.use("/route", routeRouter);
@@ -20,8 +25,15 @@ app.use("/api/live", liveRouter);
 app.use("/live", liveRouter);
 app.use("/api/news", newsRouter);
 app.use("/news", newsRouter);
+app.use("/api/assistant", assistantRouter);
+app.use("/assistant", assistantRouter);
 
 app.get(["/api/health", "/health"], async (_req, res) => {
+    console.log("Health check env debug:", { 
+        uri: !!process.env.NEO4J_URI, 
+        user: !!process.env.NEO4J_USER, 
+        pass: !!process.env.NEO4J_PASSWORD 
+    });
     try {
         await ping();
         res.json({ 

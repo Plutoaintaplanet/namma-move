@@ -82,50 +82,51 @@ export default function SchedulesPage() {
     }, [selectedStop]);
 
     return (
-        <div className="news-page">
-            <div className="news-header">
-                <h1 className="news-title">Transit Schedules</h1>
-                <div className="news-filters">
-                    <button 
-                        className={`news-filter-btn ${tab === "metro" ? "active" : ""}`}
-                        onClick={() => setTab("metro")}
-                    >🚇 Lines</button>
-                    <button 
-                        className={`news-filter-btn ${tab === "bus" ? "active" : ""}`}
-                        onClick={() => setTab("bus")}
-                    >🔍 Search Stops</button>
-                </div>
+        <div className="schedules-page-container">
+            <div className="page-header">
+                <h2>🕒 Transit Schedules</h2>
+                <p>Check timings for Namma Metro lines and BMTC bus stops.</p>
+            </div>
+
+            <div className="news-filters" style={{marginBottom: '2rem'}}>
+                <button 
+                    className={`news-filter-btn ${tab === "metro" ? "active" : ""}`}
+                    onClick={() => setTab("metro")}
+                >🚇 Metro Lines</button>
+                <button 
+                    className={`news-filter-btn ${tab === "bus" ? "active" : ""}`}
+                    onClick={() => setTab("bus")}
+                >🚌 Search Stops</button>
             </div>
 
             {tab === "metro" && (
-                <div className="jcards-col">
+                <div className="results-grid">
                     {METRO_LINES.map(line => (
-                        <div key={line.id} className="jcard" style={{ borderTopColor: line.color }}>
-                            <div className="jcard-summary">
-                                <div className="jcard-summary-left">
-                                    <span className="jcard-mode-icon">🚇</span>
-                                    <div>
-                                        <div className="jcard-label" style={{ color: line.color }}>{line.name}</div>
-                                        <div className="jcard-sub">{line.from} ↔ {line.to}</div>
-                                    </div>
+                        <div key={line.id} className="result-card" style={{ borderTop: `4px solid ${line.color}` }}>
+                            <div className="result-header">
+                                <span className="result-icon">🚇</span>
+                                <div className="result-meta">
+                                    <span className="result-title" style={{ color: line.color }}>{line.name}</span>
+                                    <span className="result-fare">{line.from} ↔ {line.to}</span>
                                 </div>
-                                <div className="jcard-summary-right">
-                                    <div className="jcard-time" style={{ fontSize: '1.1rem' }}>Every {line.freq} <span>min</span></div>
-                                    <div className="news-source-badge live" style={{marginTop: '4px'}}>Operational</div>
+                                <div className="result-time">
+                                    <span className="duration" style={{fontSize: '1rem'}}>Every {line.freq}m</span>
                                 </div>
                             </div>
-                            <div className="timeline" style={{padding: '12px 16px'}}>
-                                <div className="tl-label" style={{marginBottom: '8px'}}>Upcoming Departures (from termini)</div>
-                                <div style={{display: 'flex', gap: '10px', flexWrap: 'wrap'}}>
-                                    {getNextDepartures(now, line.freq, 4).map((d, i) => (
-                                        <div key={i} className="results-time-badge" style={{ color: line.color, borderColor: line.color }}>
-                                            {fmtTime(d)}
+                            <div className="result-detailed-timeline" style={{background: 'transparent'}}>
+                                <div className="timeline-item">
+                                    <span className="timeline-emoji">🕒</span>
+                                    <div className="timeline-content">
+                                        <strong>Upcoming Departures</strong>
+                                        <div style={{display: 'flex', gap: '8px', flexWrap: 'wrap', marginTop: '8px'}}>
+                                            {getNextDepartures(now, line.freq, 4).map((d, i) => (
+                                                <span key={i} className="auto-pill" style={{ borderColor: line.color }}>
+                                                    {fmtTime(d)}
+                                                </span>
+                                            ))}
                                         </div>
-                                    ))}
+                                    </div>
                                 </div>
-                                <p style={{fontSize: '0.7rem', color: 'var(--text-muted)', marginTop: '10px'}}>
-                                    * Trains run from 5:00 AM to 11:00 PM. Frequencies may vary based on terminal station.
-                                </p>
                             </div>
                         </div>
                     ))}
@@ -133,8 +134,8 @@ export default function SchedulesPage() {
             )}
 
             {tab === "bus" && (
-                <div className="jcards-col">
-                    <div className="search-panel" style={{background: 'var(--bg-surface)', border: '1px solid var(--border)', boxShadow: 'none'}}>
+                <div className="bus-schedules-section">
+                    <div className="search-card" style={{marginBottom: '2rem'}}>
                         <div className="dual-input-row">
                             <span className="pin-dot">🔍</span>
                             <div style={{ flex: 1, position: "relative" }}>
@@ -144,7 +145,6 @@ export default function SchedulesPage() {
                                     onChange={(e) => { setBusSearch(e.target.value); setSelectedStop(null); }}
                                     placeholder="Search for a stop (e.g. Majestic or Indiranagar)"
                                     className="map-search-input"
-                                    style={{ background: 'var(--bg)', color: 'var(--text)' }}
                                 />
                                 {filteredStops.length > 0 && !selectedStop && (
                                     <ul className="nominatim-results">
@@ -160,49 +160,41 @@ export default function SchedulesPage() {
                     </div>
 
                     {selectedStop && (
-                        <div className="results">
-                            <h2 className="results-title">Routes at {selectedStop.name}</h2>
+                        <div className="stop-results">
+                            <h3 style={{marginBottom: '1.5rem', fontWeight: 800}}>Routes at {selectedStop.name}</h3>
                             {stopSchedules.length === 0 ? (
-                                <p className="hint-msg">No active routes found for this stop in our database.</p>
+                                <p className="hint-msg">No active routes found for this stop.</p>
                             ) : (
-                                <div className="jcards-col">
+                                <div className="results-grid">
                                     {stopSchedules.map(route => (
-                                        <div key={route.id} className="jcard" style={{ borderTopColor: route.isMetro ? 'var(--purple)' : 'var(--teal)' }}>
-                                            <div className="jcard-summary">
-                                                <div className="jcard-summary-left">
-                                                    <div className={`tl-badge ${route.isMetro ? 'tl-badge-metro' : 'tl-badge-bus'}`} style={{fontSize: '1rem', padding: '4px 12px'}}>
-                                                        {route.isMetro ? '🚇' : ''} {route.short_name}
-                                                    </div>
-                                                    <div>
-                                                        <div className="jcard-label">{route.long_name || 'Regular Service'}</div>
-                                                        <div className="jcard-sub">Next in {Math.round((route.next[0] - now) / 60000)} mins</div>
-                                                    </div>
+                                        <div key={route.id} className="result-card">
+                                            <div className="result-header">
+                                                <span className="result-icon">{route.isMetro ? '🚇' : '🚌'}</span>
+                                                <div className="result-meta">
+                                                    <span className="result-title">{route.short_name}</span>
+                                                    <span className="result-fare">{route.long_name || 'Regular Service'}</span>
+                                                </div>
+                                                <div className="result-time">
+                                                    <span className="arrival">Next: {Math.round((route.next[0] - now) / 60000)} mins</span>
                                                 </div>
                                             </div>
-                                            <div className="timeline" style={{padding: '12px 16px'}}>
-                                                <div className="tl-label" style={{marginBottom: '8px', fontSize: '0.75rem'}}>Today's Schedule (Estimated)</div>
-                                                <div style={{display: 'flex', gap: '8px', flexWrap: 'wrap'}}>
-                                                    {route.next.map((d, i) => (
-                                                        <div key={i} className="results-time-badge" style={route.isMetro ? {borderColor: 'var(--purple)', color: 'var(--purple)'} : {}}>
-                                                            {fmtTime(d)}
+                                            <div className="result-detailed-timeline" style={{background: 'transparent'}}>
+                                                <div className="timeline-item">
+                                                    <span className="timeline-emoji">🕒</span>
+                                                    <div className="timeline-content">
+                                                        <strong>Estimates</strong>
+                                                        <div style={{display: 'flex', gap: '8px', flexWrap: 'wrap', marginTop: '8px'}}>
+                                                            {route.next.map((d, i) => (
+                                                                <span key={i} className="auto-pill">{fmtTime(d)}</span>
+                                                            ))}
                                                         </div>
-                                                    ))}
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                     ))}
                                 </div>
                             )}
-                        </div>
-                    )}
-
-                    {!selectedStop && !busSearch && (
-                        <div className="no-route" style={{marginTop: '20px'}}>
-                            <span>💡</span>
-                            <div>
-                                <strong>Find Timings</strong>
-                                <p>Enter a stop or station name above to see all buses and trains passing through.</p>
-                            </div>
                         </div>
                     )}
                 </div>
