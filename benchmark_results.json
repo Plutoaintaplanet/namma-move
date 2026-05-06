@@ -1,0 +1,2300 @@
+{
+  "meta": {
+    "timestamp": "2026-05-06T03:04:35.720Z",
+    "totalPairs": 99,
+    "threshold": 15,
+    "nammaApiUrl": "http://localhost:4000/api/route",
+    "gmapsEnabled": false
+  },
+  "stats": {
+    "coverage": "100.0",
+    "found": 99,
+    "notFound": 0,
+    "avgLatencyMs": "292",
+    "avgTimeMins": "25.2",
+    "avgOptions": "10.0",
+    "clsDist": {
+      "bus": 98,
+      "metro": 1
+    }
+  },
+  "results": [
+    {
+      "idx": 0,
+      "name": "MG Road → Hebbal",
+      "fLat": 12.975,
+      "fLon": 77.607,
+      "tLat": 13.035,
+      "tLon": 77.597,
+      "namma": {
+        "found": true,
+        "latency": 398,
+        "totalMins": 29,
+        "fare": 60,
+        "cls": "bus",
+        "legs": 4,
+        "routeCount": 10
+      },
+      "gmaps": {
+        "found": null
+      },
+      "comparison": {
+        "status": "not_tested"
+      }
+    },
+    {
+      "idx": 1,
+      "name": "Majestic → Yelahanka",
+      "fLat": 12.9777,
+      "fLon": 77.5713,
+      "tLat": 13.1006,
+      "tLon": 77.5946,
+      "namma": {
+        "found": true,
+        "latency": 375,
+        "totalMins": 16,
+        "fare": 45,
+        "cls": "bus",
+        "legs": 3,
+        "routeCount": 10
+      },
+      "gmaps": {
+        "found": null
+      },
+      "comparison": {
+        "status": "not_tested"
+      }
+    },
+    {
+      "idx": 2,
+      "name": "KR Market → RT Nagar",
+      "fLat": 12.9625,
+      "fLon": 77.5756,
+      "tLat": 13.0213,
+      "tLon": 77.5997,
+      "namma": {
+        "found": true,
+        "latency": 385,
+        "totalMins": 24,
+        "fare": 30,
+        "cls": "bus",
+        "legs": 2,
+        "routeCount": 10
+      },
+      "gmaps": {
+        "found": null
+      },
+      "comparison": {
+        "status": "not_tested"
+      }
+    },
+    {
+      "idx": 3,
+      "name": "Shivajinagar → Manyata Tech Park",
+      "fLat": 12.9855,
+      "fLon": 77.6003,
+      "tLat": 13.0476,
+      "tLon": 77.6209,
+      "namma": {
+        "found": true,
+        "latency": 324,
+        "totalMins": 25,
+        "fare": 30,
+        "cls": "bus",
+        "legs": 2,
+        "routeCount": 10
+      },
+      "gmaps": {
+        "found": null
+      },
+      "comparison": {
+        "status": "not_tested"
+      }
+    },
+    {
+      "idx": 4,
+      "name": "City Railway → Sahakar Nagar",
+      "fLat": 12.9774,
+      "fLon": 77.5713,
+      "tLat": 13.049,
+      "tLon": 77.5764,
+      "namma": {
+        "found": true,
+        "latency": 288,
+        "totalMins": 17,
+        "fare": 30,
+        "cls": "bus",
+        "legs": 2,
+        "routeCount": 10
+      },
+      "gmaps": {
+        "found": null
+      },
+      "comparison": {
+        "status": "not_tested"
+      }
+    },
+    {
+      "idx": 5,
+      "name": "MG Road → Banashankari",
+      "fLat": 12.975,
+      "fLon": 77.607,
+      "tLat": 12.9258,
+      "tLon": 77.5461,
+      "namma": {
+        "found": true,
+        "latency": 358,
+        "totalMins": 25,
+        "fare": 60,
+        "cls": "bus",
+        "legs": 4,
+        "routeCount": 10
+      },
+      "gmaps": {
+        "found": null
+      },
+      "comparison": {
+        "status": "not_tested"
+      }
+    },
+    {
+      "idx": 6,
+      "name": "Majestic → Electronic City",
+      "fLat": 12.9777,
+      "fLon": 77.5713,
+      "tLat": 12.8396,
+      "tLon": 77.6768,
+      "namma": {
+        "found": true,
+        "latency": 302,
+        "totalMins": 16,
+        "fare": 45,
+        "cls": "bus",
+        "legs": 3,
+        "routeCount": 10
+      },
+      "gmaps": {
+        "found": null
+      },
+      "comparison": {
+        "status": "not_tested"
+      }
+    },
+    {
+      "idx": 7,
+      "name": "Shivajinagar → Jayanagar",
+      "fLat": 12.9855,
+      "fLon": 77.6003,
+      "tLat": 12.9252,
+      "tLon": 77.5933,
+      "namma": {
+        "found": true,
+        "latency": 289,
+        "totalMins": 23,
+        "fare": 45,
+        "cls": "bus",
+        "legs": 3,
+        "routeCount": 10
+      },
+      "gmaps": {
+        "found": null
+      },
+      "comparison": {
+        "status": "not_tested"
+      }
+    },
+    {
+      "idx": 8,
+      "name": "KR Market → BTM Layout",
+      "fLat": 12.9625,
+      "fLon": 77.5756,
+      "tLat": 12.9166,
+      "tLon": 77.6101,
+      "namma": {
+        "found": true,
+        "latency": 317,
+        "totalMins": 20,
+        "fare": 60,
+        "cls": "bus",
+        "legs": 4,
+        "routeCount": 10
+      },
+      "gmaps": {
+        "found": null
+      },
+      "comparison": {
+        "status": "not_tested"
+      }
+    },
+    {
+      "idx": 9,
+      "name": "Majestic → Silk Board",
+      "fLat": 12.9777,
+      "fLon": 77.5713,
+      "tLat": 12.9176,
+      "tLon": 77.6228,
+      "namma": {
+        "found": true,
+        "latency": 301,
+        "totalMins": 16,
+        "fare": 45,
+        "cls": "bus",
+        "legs": 3,
+        "routeCount": 10
+      },
+      "gmaps": {
+        "found": null
+      },
+      "comparison": {
+        "status": "not_tested"
+      }
+    },
+    {
+      "idx": 10,
+      "name": "MG Road → Whitefield",
+      "fLat": 12.975,
+      "fLon": 77.607,
+      "tLat": 12.9698,
+      "tLon": 77.75,
+      "namma": {
+        "found": true,
+        "latency": 287,
+        "totalMins": 22,
+        "fare": 60,
+        "cls": "bus",
+        "legs": 4,
+        "routeCount": 10
+      },
+      "gmaps": {
+        "found": null
+      },
+      "comparison": {
+        "status": "not_tested"
+      }
+    },
+    {
+      "idx": 11,
+      "name": "Shivajinagar → Marathahalli",
+      "fLat": 12.9855,
+      "fLon": 77.6003,
+      "tLat": 12.9591,
+      "tLon": 77.7008,
+      "namma": {
+        "found": true,
+        "latency": 319,
+        "totalMins": 22,
+        "fare": 60,
+        "cls": "bus",
+        "legs": 4,
+        "routeCount": 10
+      },
+      "gmaps": {
+        "found": null
+      },
+      "comparison": {
+        "status": "not_tested"
+      }
+    },
+    {
+      "idx": 12,
+      "name": "KR Market → Indiranagar",
+      "fLat": 12.9625,
+      "fLon": 77.5756,
+      "tLat": 12.9784,
+      "tLon": 77.6408,
+      "namma": {
+        "found": true,
+        "latency": 290,
+        "totalMins": 18,
+        "fare": 60,
+        "cls": "bus",
+        "legs": 4,
+        "routeCount": 10
+      },
+      "gmaps": {
+        "found": null
+      },
+      "comparison": {
+        "status": "not_tested"
+      }
+    },
+    {
+      "idx": 13,
+      "name": "Majestic → Domlur",
+      "fLat": 12.9777,
+      "fLon": 77.5713,
+      "tLat": 12.9612,
+      "tLon": 77.6385,
+      "namma": {
+        "found": true,
+        "latency": 321,
+        "totalMins": 20,
+        "fare": 60,
+        "cls": "bus",
+        "legs": 4,
+        "routeCount": 10
+      },
+      "gmaps": {
+        "found": null
+      },
+      "comparison": {
+        "status": "not_tested"
+      }
+    },
+    {
+      "idx": 14,
+      "name": "City Market → HAL Airport Road",
+      "fLat": 12.9625,
+      "fLon": 77.5756,
+      "tLat": 12.9595,
+      "tLon": 77.6489,
+      "namma": {
+        "found": true,
+        "latency": 284,
+        "totalMins": 23,
+        "fare": 45,
+        "cls": "bus",
+        "legs": 3,
+        "routeCount": 10
+      },
+      "gmaps": {
+        "found": null
+      },
+      "comparison": {
+        "status": "not_tested"
+      }
+    },
+    {
+      "idx": 15,
+      "name": "MG Road → Rajajinagar",
+      "fLat": 12.975,
+      "fLon": 77.607,
+      "tLat": 12.9917,
+      "tLon": 77.557,
+      "namma": {
+        "found": true,
+        "latency": 285,
+        "totalMins": 22,
+        "fare": 70,
+        "cls": "bus",
+        "legs": 5,
+        "routeCount": 10
+      },
+      "gmaps": {
+        "found": null
+      },
+      "comparison": {
+        "status": "not_tested"
+      }
+    },
+    {
+      "idx": 16,
+      "name": "Majestic → Peenya",
+      "fLat": 12.9777,
+      "fLon": 77.5713,
+      "tLat": 13.0287,
+      "tLon": 77.5238,
+      "namma": {
+        "found": true,
+        "latency": 282,
+        "totalMins": 25,
+        "fare": 60,
+        "cls": "bus",
+        "legs": 4,
+        "routeCount": 10
+      },
+      "gmaps": {
+        "found": null
+      },
+      "comparison": {
+        "status": "not_tested"
+      }
+    },
+    {
+      "idx": 17,
+      "name": "KR Market → Yeshwanthpur",
+      "fLat": 12.9625,
+      "fLon": 77.5756,
+      "tLat": 13.0173,
+      "tLon": 77.5455,
+      "namma": {
+        "found": true,
+        "latency": 286,
+        "totalMins": 24,
+        "fare": 60,
+        "cls": "bus",
+        "legs": 4,
+        "routeCount": 10
+      },
+      "gmaps": {
+        "found": null
+      },
+      "comparison": {
+        "status": "not_tested"
+      }
+    },
+    {
+      "idx": 18,
+      "name": "Shivajinagar → Tumkur Road",
+      "fLat": 12.9855,
+      "fLon": 77.6003,
+      "tLat": 13.0173,
+      "tLon": 77.5374,
+      "namma": {
+        "found": true,
+        "latency": 301,
+        "totalMins": 25,
+        "fare": 45,
+        "cls": "bus",
+        "legs": 3,
+        "routeCount": 10
+      },
+      "gmaps": {
+        "found": null
+      },
+      "comparison": {
+        "status": "not_tested"
+      }
+    },
+    {
+      "idx": 19,
+      "name": "Electronic City → Hebbal",
+      "fLat": 12.8396,
+      "fLon": 77.6768,
+      "tLat": 13.035,
+      "tLon": 77.597,
+      "namma": {
+        "found": true,
+        "latency": 318,
+        "totalMins": 37,
+        "fare": 45,
+        "cls": "bus",
+        "legs": 3,
+        "routeCount": 10
+      },
+      "gmaps": {
+        "found": null
+      },
+      "comparison": {
+        "status": "not_tested"
+      }
+    },
+    {
+      "idx": 20,
+      "name": "Jayanagar → Yelahanka",
+      "fLat": 12.9252,
+      "fLon": 77.5933,
+      "tLat": 13.1006,
+      "tLon": 77.5946,
+      "namma": {
+        "found": true,
+        "latency": 294,
+        "totalMins": 22,
+        "fare": 70,
+        "cls": "bus",
+        "legs": 5,
+        "routeCount": 10
+      },
+      "gmaps": {
+        "found": null
+      },
+      "comparison": {
+        "status": "not_tested"
+      }
+    },
+    {
+      "idx": 21,
+      "name": "BTM → Manyata Tech Park",
+      "fLat": 12.9166,
+      "fLon": 77.6101,
+      "tLat": 13.0476,
+      "tLon": 77.6209,
+      "namma": {
+        "found": true,
+        "latency": 283,
+        "totalMins": 24,
+        "fare": 45,
+        "cls": "bus",
+        "legs": 3,
+        "routeCount": 10
+      },
+      "gmaps": {
+        "found": null
+      },
+      "comparison": {
+        "status": "not_tested"
+      }
+    },
+    {
+      "idx": 22,
+      "name": "Banashankari → RT Nagar",
+      "fLat": 12.9258,
+      "fLon": 77.5461,
+      "tLat": 13.0213,
+      "tLon": 77.5997,
+      "namma": {
+        "found": true,
+        "latency": 280,
+        "totalMins": 29,
+        "fare": 60,
+        "cls": "bus",
+        "legs": 4,
+        "routeCount": 10
+      },
+      "gmaps": {
+        "found": null
+      },
+      "comparison": {
+        "status": "not_tested"
+      }
+    },
+    {
+      "idx": 23,
+      "name": "Silk Board → Sahakar Nagar",
+      "fLat": 12.9176,
+      "fLon": 77.6228,
+      "tLat": 13.049,
+      "tLon": 77.5764,
+      "namma": {
+        "found": true,
+        "latency": 286,
+        "totalMins": 15,
+        "fare": 45,
+        "cls": "bus",
+        "legs": 3,
+        "routeCount": 10
+      },
+      "gmaps": {
+        "found": null
+      },
+      "comparison": {
+        "status": "not_tested"
+      }
+    },
+    {
+      "idx": 24,
+      "name": "Banashankari → Whitefield",
+      "fLat": 12.9258,
+      "fLon": 77.5461,
+      "tLat": 12.9698,
+      "tLon": 77.75,
+      "namma": {
+        "found": true,
+        "latency": 289,
+        "totalMins": 26,
+        "fare": 70,
+        "cls": "bus",
+        "legs": 5,
+        "routeCount": 10
+      },
+      "gmaps": {
+        "found": null
+      },
+      "comparison": {
+        "status": "not_tested"
+      }
+    },
+    {
+      "idx": 25,
+      "name": "Electronic City → Marathahalli",
+      "fLat": 12.8396,
+      "fLon": 77.6768,
+      "tLat": 12.9591,
+      "tLon": 77.7008,
+      "namma": {
+        "found": true,
+        "latency": 274,
+        "totalMins": 23,
+        "fare": 60,
+        "cls": "bus",
+        "legs": 4,
+        "routeCount": 10
+      },
+      "gmaps": {
+        "found": null
+      },
+      "comparison": {
+        "status": "not_tested"
+      }
+    },
+    {
+      "idx": 26,
+      "name": "BTM → Indiranagar",
+      "fLat": 12.9166,
+      "fLon": 77.6101,
+      "tLat": 12.9784,
+      "tLon": 77.6408,
+      "namma": {
+        "found": true,
+        "latency": 280,
+        "totalMins": 21,
+        "fare": 60,
+        "cls": "bus",
+        "legs": 4,
+        "routeCount": 10
+      },
+      "gmaps": {
+        "found": null
+      },
+      "comparison": {
+        "status": "not_tested"
+      }
+    },
+    {
+      "idx": 27,
+      "name": "Jayanagar → Koramangala",
+      "fLat": 12.9252,
+      "fLon": 77.5933,
+      "tLat": 12.9279,
+      "tLon": 77.6271,
+      "namma": {
+        "found": true,
+        "latency": 281,
+        "totalMins": 22,
+        "fare": 45,
+        "cls": "bus",
+        "legs": 3,
+        "routeCount": 10
+      },
+      "gmaps": {
+        "found": null
+      },
+      "comparison": {
+        "status": "not_tested"
+      }
+    },
+    {
+      "idx": 28,
+      "name": "Silk Board → Whitefield",
+      "fLat": 12.9176,
+      "fLon": 77.6228,
+      "tLat": 12.9698,
+      "tLon": 77.75,
+      "namma": {
+        "found": true,
+        "latency": 280,
+        "totalMins": 14,
+        "fare": 45,
+        "cls": "bus",
+        "legs": 3,
+        "routeCount": 10
+      },
+      "gmaps": {
+        "found": null
+      },
+      "comparison": {
+        "status": "not_tested"
+      }
+    },
+    {
+      "idx": 29,
+      "name": "Whitefield → Peenya",
+      "fLat": 12.9698,
+      "fLon": 77.75,
+      "tLat": 13.0287,
+      "tLon": 77.5238,
+      "namma": {
+        "found": true,
+        "latency": 287,
+        "totalMins": 36,
+        "fare": 70,
+        "cls": "bus",
+        "legs": 5,
+        "routeCount": 10
+      },
+      "gmaps": {
+        "found": null
+      },
+      "comparison": {
+        "status": "not_tested"
+      }
+    },
+    {
+      "idx": 30,
+      "name": "Marathahalli → Rajajinagar",
+      "fLat": 12.9591,
+      "fLon": 77.7008,
+      "tLat": 12.9917,
+      "tLon": 77.557,
+      "namma": {
+        "found": true,
+        "latency": 286,
+        "totalMins": 22,
+        "fare": 70,
+        "cls": "bus",
+        "legs": 5,
+        "routeCount": 10
+      },
+      "gmaps": {
+        "found": null
+      },
+      "comparison": {
+        "status": "not_tested"
+      }
+    },
+    {
+      "idx": 31,
+      "name": "Indiranagar → Yeshwanthpur",
+      "fLat": 12.9784,
+      "fLon": 77.6408,
+      "tLat": 13.0173,
+      "tLon": 77.5455,
+      "namma": {
+        "found": true,
+        "latency": 277,
+        "totalMins": 27,
+        "fare": 70,
+        "cls": "bus",
+        "legs": 5,
+        "routeCount": 10
+      },
+      "gmaps": {
+        "found": null
+      },
+      "comparison": {
+        "status": "not_tested"
+      }
+    },
+    {
+      "idx": 32,
+      "name": "Domlur → Peenya Industrial",
+      "fLat": 12.9612,
+      "fLon": 77.6385,
+      "tLat": 13.0287,
+      "tLon": 77.5238,
+      "namma": {
+        "found": true,
+        "latency": 284,
+        "totalMins": 29,
+        "fare": 70,
+        "cls": "bus",
+        "legs": 5,
+        "routeCount": 10
+      },
+      "gmaps": {
+        "found": null
+      },
+      "comparison": {
+        "status": "not_tested"
+      }
+    },
+    {
+      "idx": 33,
+      "name": "HAL → Rajajinagar",
+      "fLat": 12.9595,
+      "fLon": 77.6489,
+      "tLat": 12.9917,
+      "tLon": 77.557,
+      "namma": {
+        "found": true,
+        "latency": 283,
+        "totalMins": 28,
+        "fare": 60,
+        "cls": "bus",
+        "legs": 4,
+        "routeCount": 10
+      },
+      "gmaps": {
+        "found": null
+      },
+      "comparison": {
+        "status": "not_tested"
+      }
+    },
+    {
+      "idx": 34,
+      "name": "Baiyappanahalli → Mysore Road",
+      "fLat": 12.9845,
+      "fLon": 77.6657,
+      "tLat": 12.9575,
+      "tLon": 77.5284,
+      "namma": {
+        "found": true,
+        "latency": 279,
+        "totalMins": 33,
+        "fare": 70,
+        "cls": "bus",
+        "legs": 5,
+        "routeCount": 10
+      },
+      "gmaps": {
+        "found": null
+      },
+      "comparison": {
+        "status": "not_tested"
+      }
+    },
+    {
+      "idx": 35,
+      "name": "MG Road → Nagasandra",
+      "fLat": 12.975,
+      "fLon": 77.607,
+      "tLat": 13.0511,
+      "tLon": 77.5128,
+      "namma": {
+        "found": true,
+        "latency": 290,
+        "totalMins": 28,
+        "fare": 60,
+        "cls": "bus",
+        "legs": 4,
+        "routeCount": 10
+      },
+      "gmaps": {
+        "found": null
+      },
+      "comparison": {
+        "status": "not_tested"
+      }
+    },
+    {
+      "idx": 36,
+      "name": "Cubbon Park → Vajrahalli",
+      "fLat": 12.9763,
+      "fLon": 77.5929,
+      "tLat": 12.8315,
+      "tLon": 77.5458,
+      "namma": {
+        "found": true,
+        "latency": 290,
+        "totalMins": 45,
+        "fare": 70,
+        "cls": "bus",
+        "legs": 5,
+        "routeCount": 10
+      },
+      "gmaps": {
+        "found": null
+      },
+      "comparison": {
+        "status": "not_tested"
+      }
+    },
+    {
+      "idx": 37,
+      "name": "Trinity → Peenya",
+      "fLat": 12.9695,
+      "fLon": 77.6198,
+      "tLat": 13.0287,
+      "tLon": 77.5238,
+      "namma": {
+        "found": true,
+        "latency": 277,
+        "totalMins": 26,
+        "fare": 60,
+        "cls": "bus",
+        "legs": 4,
+        "routeCount": 10
+      },
+      "gmaps": {
+        "found": null
+      },
+      "comparison": {
+        "status": "not_tested"
+      }
+    },
+    {
+      "idx": 38,
+      "name": "Indiranagar → Dasarahalli",
+      "fLat": 12.9784,
+      "fLon": 77.6408,
+      "tLat": 13.028,
+      "tLon": 77.5135,
+      "namma": {
+        "found": true,
+        "latency": 289,
+        "totalMins": 24,
+        "fare": 70,
+        "cls": "bus",
+        "legs": 5,
+        "routeCount": 10
+      },
+      "gmaps": {
+        "found": null
+      },
+      "comparison": {
+        "status": "not_tested"
+      }
+    },
+    {
+      "idx": 39,
+      "name": "Yelahanka → Electronic City",
+      "fLat": 13.1006,
+      "fLon": 77.5946,
+      "tLat": 12.8396,
+      "tLon": 77.6768,
+      "namma": {
+        "found": true,
+        "latency": 295,
+        "totalMins": 22,
+        "fare": 70,
+        "cls": "bus",
+        "legs": 5,
+        "routeCount": 10
+      },
+      "gmaps": {
+        "found": null
+      },
+      "comparison": {
+        "status": "not_tested"
+      }
+    },
+    {
+      "idx": 40,
+      "name": "Tumkur Road → Sarjapur",
+      "fLat": 13.0173,
+      "fLon": 77.5374,
+      "tLat": 12.9102,
+      "tLon": 77.6963,
+      "namma": {
+        "found": true,
+        "latency": 295,
+        "totalMins": 32,
+        "fare": 70,
+        "cls": "bus",
+        "legs": 6,
+        "routeCount": 10
+      },
+      "gmaps": {
+        "found": null
+      },
+      "comparison": {
+        "status": "not_tested"
+      }
+    },
+    {
+      "idx": 41,
+      "name": "Peenya → Hosur Road",
+      "fLat": 13.0287,
+      "fLon": 77.5238,
+      "tLat": 12.9011,
+      "tLon": 77.6269,
+      "namma": {
+        "found": true,
+        "latency": 293,
+        "totalMins": 32,
+        "fare": 70,
+        "cls": "bus",
+        "legs": 6,
+        "routeCount": 10
+      },
+      "gmaps": {
+        "found": null
+      },
+      "comparison": {
+        "status": "not_tested"
+      }
+    },
+    {
+      "idx": 42,
+      "name": "Nagasandra → Koramangala",
+      "fLat": 13.0511,
+      "fLon": 77.5128,
+      "tLat": 12.9279,
+      "tLon": 77.6271,
+      "namma": {
+        "found": true,
+        "latency": 293,
+        "totalMins": 35,
+        "fare": 70,
+        "cls": "bus",
+        "legs": 6,
+        "routeCount": 10
+      },
+      "gmaps": {
+        "found": null
+      },
+      "comparison": {
+        "status": "not_tested"
+      }
+    },
+    {
+      "idx": 43,
+      "name": "Hebbal → BTM Layout",
+      "fLat": 13.035,
+      "fLon": 77.597,
+      "tLat": 12.9166,
+      "tLon": 77.6101,
+      "namma": {
+        "found": true,
+        "latency": 353,
+        "totalMins": 28,
+        "fare": 45,
+        "cls": "bus",
+        "legs": 3,
+        "routeCount": 10
+      },
+      "gmaps": {
+        "found": null
+      },
+      "comparison": {
+        "status": "not_tested"
+      }
+    },
+    {
+      "idx": 44,
+      "name": "Cubbon Park → MG Road",
+      "fLat": 12.9763,
+      "fLon": 77.5929,
+      "tLat": 12.975,
+      "tLon": 77.607,
+      "namma": {
+        "found": true,
+        "latency": 277,
+        "totalMins": 18,
+        "fare": 25,
+        "cls": "metro",
+        "legs": 1,
+        "routeCount": 10
+      },
+      "gmaps": {
+        "found": null
+      },
+      "comparison": {
+        "status": "not_tested"
+      }
+    },
+    {
+      "idx": 45,
+      "name": "Jayanagar → Lalbagh",
+      "fLat": 12.9252,
+      "fLon": 77.5933,
+      "tLat": 12.9507,
+      "tLon": 77.5848,
+      "namma": {
+        "found": true,
+        "latency": 328,
+        "totalMins": 22,
+        "fare": 60,
+        "cls": "bus",
+        "legs": 4,
+        "routeCount": 10
+      },
+      "gmaps": {
+        "found": null
+      },
+      "comparison": {
+        "status": "not_tested"
+      }
+    },
+    {
+      "idx": 46,
+      "name": "Koramangala → Indiranagar",
+      "fLat": 12.9279,
+      "fLon": 77.6271,
+      "tLat": 12.9784,
+      "tLon": 77.6408,
+      "namma": {
+        "found": true,
+        "latency": 326,
+        "totalMins": 24,
+        "fare": 60,
+        "cls": "bus",
+        "legs": 4,
+        "routeCount": 10
+      },
+      "gmaps": {
+        "found": null
+      },
+      "comparison": {
+        "status": "not_tested"
+      }
+    },
+    {
+      "idx": 47,
+      "name": "Marathahalli → Whitefield",
+      "fLat": 12.9591,
+      "fLon": 77.7008,
+      "tLat": 12.9698,
+      "tLon": 77.75,
+      "namma": {
+        "found": true,
+        "latency": 302,
+        "totalMins": 14,
+        "fare": 45,
+        "cls": "bus",
+        "legs": 3,
+        "routeCount": 10
+      },
+      "gmaps": {
+        "found": null
+      },
+      "comparison": {
+        "status": "not_tested"
+      }
+    },
+    {
+      "idx": 48,
+      "name": "Rajajinagar → Yeshwanthpur",
+      "fLat": 12.9917,
+      "fLon": 77.557,
+      "tLat": 13.0173,
+      "tLon": 77.5455,
+      "namma": {
+        "found": true,
+        "latency": 288,
+        "totalMins": 21,
+        "fare": 45,
+        "cls": "bus",
+        "legs": 3,
+        "routeCount": 10
+      },
+      "gmaps": {
+        "found": null
+      },
+      "comparison": {
+        "status": "not_tested"
+      }
+    },
+    {
+      "idx": 49,
+      "name": "Yelahanka → Electronic City",
+      "fLat": 13.1006,
+      "fLon": 77.5946,
+      "tLat": 12.8396,
+      "tLon": 77.6768,
+      "namma": {
+        "found": true,
+        "latency": 293,
+        "totalMins": 22,
+        "fare": 70,
+        "cls": "bus",
+        "legs": 5,
+        "routeCount": 10
+      },
+      "gmaps": {
+        "found": null
+      },
+      "comparison": {
+        "status": "not_tested"
+      }
+    },
+    {
+      "idx": 50,
+      "name": "Peenya → Whitefield",
+      "fLat": 13.0287,
+      "fLon": 77.5238,
+      "tLat": 12.9698,
+      "tLon": 77.75,
+      "namma": {
+        "found": true,
+        "latency": 294,
+        "totalMins": 27,
+        "fare": 70,
+        "cls": "bus",
+        "legs": 5,
+        "routeCount": 10
+      },
+      "gmaps": {
+        "found": null
+      },
+      "comparison": {
+        "status": "not_tested"
+      }
+    },
+    {
+      "idx": 51,
+      "name": "Banashankari → Hebbal",
+      "fLat": 12.9258,
+      "fLon": 77.5461,
+      "tLat": 13.035,
+      "tLon": 77.597,
+      "namma": {
+        "found": true,
+        "latency": 284,
+        "totalMins": 32,
+        "fare": 60,
+        "cls": "bus",
+        "legs": 4,
+        "routeCount": 10
+      },
+      "gmaps": {
+        "found": null
+      },
+      "comparison": {
+        "status": "not_tested"
+      }
+    },
+    {
+      "idx": 52,
+      "name": "Electronic City → Nagasandra",
+      "fLat": 12.8396,
+      "fLon": 77.6768,
+      "tLat": 13.0511,
+      "tLon": 77.5128,
+      "namma": {
+        "found": true,
+        "latency": 315,
+        "totalMins": 37,
+        "fare": 45,
+        "cls": "bus",
+        "legs": 3,
+        "routeCount": 10
+      },
+      "gmaps": {
+        "found": null
+      },
+      "comparison": {
+        "status": "not_tested"
+      }
+    },
+    {
+      "idx": 53,
+      "name": "Sarjapur → Yelahanka",
+      "fLat": 12.9102,
+      "fLon": 77.6963,
+      "tLat": 13.1006,
+      "tLon": 77.5946,
+      "namma": {
+        "found": true,
+        "latency": 279,
+        "totalMins": 21,
+        "fare": 60,
+        "cls": "bus",
+        "legs": 4,
+        "routeCount": 10
+      },
+      "gmaps": {
+        "found": null
+      },
+      "comparison": {
+        "status": "not_tested"
+      }
+    },
+    {
+      "idx": 54,
+      "name": "Devanahalli → MG Road",
+      "fLat": 13.223,
+      "fLon": 77.708,
+      "tLat": 12.975,
+      "tLon": 77.607,
+      "namma": {
+        "found": true,
+        "latency": 276,
+        "totalMins": 28,
+        "fare": 70,
+        "cls": "bus",
+        "legs": 5,
+        "routeCount": 10
+      },
+      "gmaps": {
+        "found": null
+      },
+      "comparison": {
+        "status": "not_tested"
+      }
+    },
+    {
+      "idx": 55,
+      "name": "Devanahalli → Whitefield",
+      "fLat": 13.223,
+      "fLon": 77.708,
+      "tLat": 12.9698,
+      "tLon": 77.75,
+      "namma": {
+        "found": true,
+        "latency": 276,
+        "totalMins": 28,
+        "fare": 70,
+        "cls": "bus",
+        "legs": 5,
+        "routeCount": 10
+      },
+      "gmaps": {
+        "found": null
+      },
+      "comparison": {
+        "status": "not_tested"
+      }
+    },
+    {
+      "idx": 56,
+      "name": "Yelahanka → Kempegowda Airport",
+      "fLat": 13.1006,
+      "fLon": 77.5946,
+      "tLat": 13.223,
+      "tLon": 77.708,
+      "namma": {
+        "found": true,
+        "latency": 281,
+        "totalMins": 24,
+        "fare": 60,
+        "cls": "bus",
+        "legs": 4,
+        "routeCount": 10
+      },
+      "gmaps": {
+        "found": null
+      },
+      "comparison": {
+        "status": "not_tested"
+      }
+    },
+    {
+      "idx": 57,
+      "name": "Hebbal → Devanahalli",
+      "fLat": 13.035,
+      "fLon": 77.597,
+      "tLat": 13.223,
+      "tLon": 77.708,
+      "namma": {
+        "found": true,
+        "latency": 285,
+        "totalMins": 35,
+        "fare": 60,
+        "cls": "bus",
+        "legs": 4,
+        "routeCount": 10
+      },
+      "gmaps": {
+        "found": null
+      },
+      "comparison": {
+        "status": "not_tested"
+      }
+    },
+    {
+      "idx": 58,
+      "name": "Manyata → Airport",
+      "fLat": 13.0476,
+      "fLon": 77.6209,
+      "tLat": 13.223,
+      "tLon": 77.708,
+      "namma": {
+        "found": true,
+        "latency": 280,
+        "totalMins": 32,
+        "fare": 60,
+        "cls": "bus",
+        "legs": 4,
+        "routeCount": 10
+      },
+      "gmaps": {
+        "found": null
+      },
+      "comparison": {
+        "status": "not_tested"
+      }
+    },
+    {
+      "idx": 59,
+      "name": "Whitefield → Outer Ring Road",
+      "fLat": 12.9698,
+      "fLon": 77.75,
+      "tLat": 12.9373,
+      "tLon": 77.6961,
+      "namma": {
+        "found": true,
+        "latency": 279,
+        "totalMins": 29,
+        "fare": 45,
+        "cls": "bus",
+        "legs": 3,
+        "routeCount": 10
+      },
+      "gmaps": {
+        "found": null
+      },
+      "comparison": {
+        "status": "not_tested"
+      }
+    },
+    {
+      "idx": 60,
+      "name": "Marathahalli → Bellandur",
+      "fLat": 12.9591,
+      "fLon": 77.7008,
+      "tLat": 12.9262,
+      "tLon": 77.6796,
+      "namma": {
+        "found": true,
+        "latency": 277,
+        "totalMins": 13,
+        "fare": 15,
+        "cls": "bus",
+        "legs": 1,
+        "routeCount": 10
+      },
+      "gmaps": {
+        "found": null
+      },
+      "comparison": {
+        "status": "not_tested"
+      }
+    },
+    {
+      "idx": 61,
+      "name": "Electronic City → Sarjapur",
+      "fLat": 12.8396,
+      "fLon": 77.6768,
+      "tLat": 12.9102,
+      "tLon": 77.6963,
+      "namma": {
+        "found": true,
+        "latency": 274,
+        "totalMins": 26,
+        "fare": 45,
+        "cls": "bus",
+        "legs": 3,
+        "routeCount": 10
+      },
+      "gmaps": {
+        "found": null
+      },
+      "comparison": {
+        "status": "not_tested"
+      }
+    },
+    {
+      "idx": 62,
+      "name": "Manyata → Whitefield",
+      "fLat": 13.0476,
+      "fLon": 77.6209,
+      "tLat": 12.9698,
+      "tLon": 77.75,
+      "namma": {
+        "found": true,
+        "latency": 286,
+        "totalMins": 30,
+        "fare": 70,
+        "cls": "bus",
+        "legs": 5,
+        "routeCount": 10
+      },
+      "gmaps": {
+        "found": null
+      },
+      "comparison": {
+        "status": "not_tested"
+      }
+    },
+    {
+      "idx": 63,
+      "name": "Outer Ring Road → Indiranagar",
+      "fLat": 12.9373,
+      "fLon": 77.6961,
+      "tLat": 12.9784,
+      "tLon": 77.6408,
+      "namma": {
+        "found": true,
+        "latency": 279,
+        "totalMins": 29,
+        "fare": 70,
+        "cls": "bus",
+        "legs": 5,
+        "routeCount": 10
+      },
+      "gmaps": {
+        "found": null
+      },
+      "comparison": {
+        "status": "not_tested"
+      }
+    },
+    {
+      "idx": 64,
+      "name": "Vijayanagar → MG Road",
+      "fLat": 12.9714,
+      "fLon": 77.5346,
+      "tLat": 12.975,
+      "tLon": 77.607,
+      "namma": {
+        "found": true,
+        "latency": 282,
+        "totalMins": 18,
+        "fare": 45,
+        "cls": "bus",
+        "legs": 3,
+        "routeCount": 10
+      },
+      "gmaps": {
+        "found": null
+      },
+      "comparison": {
+        "status": "not_tested"
+      }
+    },
+    {
+      "idx": 65,
+      "name": "JP Nagar → Whitefield",
+      "fLat": 12.9062,
+      "fLon": 77.5849,
+      "tLat": 12.9698,
+      "tLon": 77.75,
+      "namma": {
+        "found": true,
+        "latency": 281,
+        "totalMins": 30,
+        "fare": 70,
+        "cls": "bus",
+        "legs": 6,
+        "routeCount": 10
+      },
+      "gmaps": {
+        "found": null
+      },
+      "comparison": {
+        "status": "not_tested"
+      }
+    },
+    {
+      "idx": 66,
+      "name": "Malleshwaram → Koramangala",
+      "fLat": 13.0037,
+      "fLon": 77.5688,
+      "tLat": 12.9279,
+      "tLon": 77.6271,
+      "namma": {
+        "found": true,
+        "latency": 282,
+        "totalMins": 22,
+        "fare": 45,
+        "cls": "bus",
+        "legs": 3,
+        "routeCount": 10
+      },
+      "gmaps": {
+        "found": null
+      },
+      "comparison": {
+        "status": "not_tested"
+      }
+    },
+    {
+      "idx": 67,
+      "name": "Sahakara Nagar → Electronic City",
+      "fLat": 13.049,
+      "fLon": 77.5764,
+      "tLat": 12.8396,
+      "tLon": 77.6768,
+      "namma": {
+        "found": true,
+        "latency": 284,
+        "totalMins": 31,
+        "fare": 70,
+        "cls": "bus",
+        "legs": 5,
+        "routeCount": 10
+      },
+      "gmaps": {
+        "found": null
+      },
+      "comparison": {
+        "status": "not_tested"
+      }
+    },
+    {
+      "idx": 68,
+      "name": "Kengeri → Silk Board",
+      "fLat": 12.9084,
+      "fLon": 77.4831,
+      "tLat": 12.9176,
+      "tLon": 77.6228,
+      "namma": {
+        "found": true,
+        "latency": 284,
+        "totalMins": 24,
+        "fare": 60,
+        "cls": "bus",
+        "legs": 4,
+        "routeCount": 10
+      },
+      "gmaps": {
+        "found": null
+      },
+      "comparison": {
+        "status": "not_tested"
+      }
+    },
+    {
+      "idx": 69,
+      "name": "Victoria Hospital → Jayanagar",
+      "fLat": 12.9601,
+      "fLon": 77.5757,
+      "tLat": 12.9252,
+      "tLon": 77.5933,
+      "namma": {
+        "found": true,
+        "latency": 279,
+        "totalMins": 23,
+        "fare": 60,
+        "cls": "bus",
+        "legs": 4,
+        "routeCount": 10
+      },
+      "gmaps": {
+        "found": null
+      },
+      "comparison": {
+        "status": "not_tested"
+      }
+    },
+    {
+      "idx": 70,
+      "name": "Nimhans → Indiranagar",
+      "fLat": 12.9396,
+      "fLon": 77.5956,
+      "tLat": 12.9784,
+      "tLon": 77.6408,
+      "namma": {
+        "found": true,
+        "latency": 288,
+        "totalMins": 20,
+        "fare": 60,
+        "cls": "bus",
+        "legs": 4,
+        "routeCount": 10
+      },
+      "gmaps": {
+        "found": null
+      },
+      "comparison": {
+        "status": "not_tested"
+      }
+    },
+    {
+      "idx": 71,
+      "name": "IISc → MG Road",
+      "fLat": 13.0213,
+      "fLon": 77.5706,
+      "tLat": 12.975,
+      "tLon": 77.607,
+      "namma": {
+        "found": true,
+        "latency": 287,
+        "totalMins": 20,
+        "fare": 30,
+        "cls": "bus",
+        "legs": 2,
+        "routeCount": 10
+      },
+      "gmaps": {
+        "found": null
+      },
+      "comparison": {
+        "status": "not_tested"
+      }
+    },
+    {
+      "idx": 72,
+      "name": "NIMHANS → Electronic City",
+      "fLat": 12.9396,
+      "fLon": 77.5956,
+      "tLat": 12.8396,
+      "tLon": 77.6768,
+      "namma": {
+        "found": true,
+        "latency": 283,
+        "totalMins": 27,
+        "fare": 60,
+        "cls": "bus",
+        "legs": 4,
+        "routeCount": 10
+      },
+      "gmaps": {
+        "found": null
+      },
+      "comparison": {
+        "status": "not_tested"
+      }
+    },
+    {
+      "idx": 73,
+      "name": "Kidwai → Whitefield",
+      "fLat": 12.9447,
+      "fLon": 77.5969,
+      "tLat": 12.9698,
+      "tLon": 77.75,
+      "namma": {
+        "found": true,
+        "latency": 296,
+        "totalMins": 20,
+        "fare": 60,
+        "cls": "bus",
+        "legs": 4,
+        "routeCount": 10
+      },
+      "gmaps": {
+        "found": null
+      },
+      "comparison": {
+        "status": "not_tested"
+      }
+    },
+    {
+      "idx": 74,
+      "name": "Kengeri → Yelahanka",
+      "fLat": 12.9084,
+      "fLon": 77.4831,
+      "tLat": 13.1006,
+      "tLon": 77.5946,
+      "namma": {
+        "found": true,
+        "latency": 284,
+        "totalMins": 20,
+        "fare": 45,
+        "cls": "bus",
+        "legs": 3,
+        "routeCount": 10
+      },
+      "gmaps": {
+        "found": null
+      },
+      "comparison": {
+        "status": "not_tested"
+      }
+    },
+    {
+      "idx": 75,
+      "name": "Nagarbhavi → Marathahalli",
+      "fLat": 12.959,
+      "fLon": 77.5099,
+      "tLat": 12.9591,
+      "tLon": 77.7008,
+      "namma": {
+        "found": true,
+        "latency": 288,
+        "totalMins": 22,
+        "fare": 70,
+        "cls": "bus",
+        "legs": 5,
+        "routeCount": 10
+      },
+      "gmaps": {
+        "found": null
+      },
+      "comparison": {
+        "status": "not_tested"
+      }
+    },
+    {
+      "idx": 76,
+      "name": "Basaveshwara Nagar → Domlur",
+      "fLat": 12.988,
+      "fLon": 77.5415,
+      "tLat": 12.9612,
+      "tLon": 77.6385,
+      "namma": {
+        "found": true,
+        "latency": 281,
+        "totalMins": 26,
+        "fare": 60,
+        "cls": "bus",
+        "legs": 4,
+        "routeCount": 10
+      },
+      "gmaps": {
+        "found": null
+      },
+      "comparison": {
+        "status": "not_tested"
+      }
+    },
+    {
+      "idx": 77,
+      "name": "HSR Layout → Rajajinagar",
+      "fLat": 12.9116,
+      "fLon": 77.6392,
+      "tLat": 12.9917,
+      "tLon": 77.557,
+      "namma": {
+        "found": true,
+        "latency": 285,
+        "totalMins": 35,
+        "fare": 70,
+        "cls": "bus",
+        "legs": 6,
+        "routeCount": 10
+      },
+      "gmaps": {
+        "found": null
+      },
+      "comparison": {
+        "status": "not_tested"
+      }
+    },
+    {
+      "idx": 78,
+      "name": "Bommanahalli → Peenya",
+      "fLat": 12.9068,
+      "fLon": 77.6262,
+      "tLat": 13.0287,
+      "tLon": 77.5238,
+      "namma": {
+        "found": true,
+        "latency": 283,
+        "totalMins": 33,
+        "fare": 70,
+        "cls": "bus",
+        "legs": 5,
+        "routeCount": 10
+      },
+      "gmaps": {
+        "found": null
+      },
+      "comparison": {
+        "status": "not_tested"
+      }
+    },
+    {
+      "idx": 79,
+      "name": "Whitefield → Sarjapur",
+      "fLat": 12.9698,
+      "fLon": 77.75,
+      "tLat": 12.9102,
+      "tLon": 77.6963,
+      "namma": {
+        "found": true,
+        "latency": 278,
+        "totalMins": 33,
+        "fare": 70,
+        "cls": "bus",
+        "legs": 5,
+        "routeCount": 10
+      },
+      "gmaps": {
+        "found": null
+      },
+      "comparison": {
+        "status": "not_tested"
+      }
+    },
+    {
+      "idx": 80,
+      "name": "Yelahanka → Manyata",
+      "fLat": 13.1006,
+      "fLon": 77.5946,
+      "tLat": 13.0476,
+      "tLon": 77.6209,
+      "namma": {
+        "found": true,
+        "latency": 279,
+        "totalMins": 20,
+        "fare": 30,
+        "cls": "bus",
+        "legs": 2,
+        "routeCount": 10
+      },
+      "gmaps": {
+        "found": null
+      },
+      "comparison": {
+        "status": "not_tested"
+      }
+    },
+    {
+      "idx": 81,
+      "name": "Devanahalli → Hebbal",
+      "fLat": 13.223,
+      "fLon": 77.708,
+      "tLat": 13.035,
+      "tLon": 77.597,
+      "namma": {
+        "found": true,
+        "latency": 276,
+        "totalMins": 27,
+        "fare": 30,
+        "cls": "bus",
+        "legs": 2,
+        "routeCount": 10
+      },
+      "gmaps": {
+        "found": null
+      },
+      "comparison": {
+        "status": "not_tested"
+      }
+    },
+    {
+      "idx": 82,
+      "name": "Peenya → Nagasandra",
+      "fLat": 13.0287,
+      "fLon": 77.5238,
+      "tLat": 13.0511,
+      "tLon": 77.5128,
+      "namma": {
+        "found": true,
+        "latency": 284,
+        "totalMins": 21,
+        "fare": 15,
+        "cls": "bus",
+        "legs": 1,
+        "routeCount": 10
+      },
+      "gmaps": {
+        "found": null
+      },
+      "comparison": {
+        "status": "not_tested"
+      }
+    },
+    {
+      "idx": 83,
+      "name": "Sarjapur → Bellandur",
+      "fLat": 12.9102,
+      "fLon": 77.6963,
+      "tLat": 12.9262,
+      "tLon": 77.6796,
+      "namma": {
+        "found": true,
+        "latency": 281,
+        "totalMins": 20,
+        "fare": 30,
+        "cls": "bus",
+        "legs": 2,
+        "routeCount": 10
+      },
+      "gmaps": {
+        "found": null
+      },
+      "comparison": {
+        "status": "not_tested"
+      }
+    },
+    {
+      "idx": 84,
+      "name": "Baiyappanahalli → Electronic City",
+      "fLat": 12.9845,
+      "fLon": 77.6657,
+      "tLat": 12.8396,
+      "tLon": 77.6768,
+      "namma": {
+        "found": true,
+        "latency": 285,
+        "totalMins": 27,
+        "fare": 70,
+        "cls": "bus",
+        "legs": 5,
+        "routeCount": 10
+      },
+      "gmaps": {
+        "found": null
+      },
+      "comparison": {
+        "status": "not_tested"
+      }
+    },
+    {
+      "idx": 85,
+      "name": "Indiranagar → Manyata Tech Park",
+      "fLat": 12.9784,
+      "fLon": 77.6408,
+      "tLat": 13.0476,
+      "tLon": 77.6209,
+      "namma": {
+        "found": true,
+        "latency": 282,
+        "totalMins": 30,
+        "fare": 70,
+        "cls": "bus",
+        "legs": 5,
+        "routeCount": 10
+      },
+      "gmaps": {
+        "found": null
+      },
+      "comparison": {
+        "status": "not_tested"
+      }
+    },
+    {
+      "idx": 86,
+      "name": "Whitefield → Jayanagar",
+      "fLat": 12.9698,
+      "fLon": 77.75,
+      "tLat": 12.9252,
+      "tLon": 77.5933,
+      "namma": {
+        "found": true,
+        "latency": 282,
+        "totalMins": 34,
+        "fare": 70,
+        "cls": "bus",
+        "legs": 6,
+        "routeCount": 10
+      },
+      "gmaps": {
+        "found": null
+      },
+      "comparison": {
+        "status": "not_tested"
+      }
+    },
+    {
+      "idx": 87,
+      "name": "MG Road → Electronic City",
+      "fLat": 12.975,
+      "fLon": 77.607,
+      "tLat": 12.8396,
+      "tLon": 77.6768,
+      "namma": {
+        "found": true,
+        "latency": 283,
+        "totalMins": 22,
+        "fare": 70,
+        "cls": "bus",
+        "legs": 5,
+        "routeCount": 10
+      },
+      "gmaps": {
+        "found": null
+      },
+      "comparison": {
+        "status": "not_tested"
+      }
+    },
+    {
+      "idx": 88,
+      "name": "Marathahalli → BTM",
+      "fLat": 12.9591,
+      "fLon": 77.7008,
+      "tLat": 12.9166,
+      "tLon": 77.6101,
+      "namma": {
+        "found": true,
+        "latency": 285,
+        "totalMins": 14,
+        "fare": 30,
+        "cls": "bus",
+        "legs": 2,
+        "routeCount": 10
+      },
+      "gmaps": {
+        "found": null
+      },
+      "comparison": {
+        "status": "not_tested"
+      }
+    },
+    {
+      "idx": 89,
+      "name": "Koramangala → Peenya",
+      "fLat": 12.9279,
+      "fLon": 77.6271,
+      "tLat": 13.0287,
+      "tLon": 77.5238,
+      "namma": {
+        "found": true,
+        "latency": 284,
+        "totalMins": 38,
+        "fare": 70,
+        "cls": "bus",
+        "legs": 6,
+        "routeCount": 10
+      },
+      "gmaps": {
+        "found": null
+      },
+      "comparison": {
+        "status": "not_tested"
+      }
+    },
+    {
+      "idx": 90,
+      "name": "Hebbal → Whitefield",
+      "fLat": 13.035,
+      "fLon": 77.597,
+      "tLat": 12.9698,
+      "tLon": 77.75,
+      "namma": {
+        "found": true,
+        "latency": 284,
+        "totalMins": 25,
+        "fare": 45,
+        "cls": "bus",
+        "legs": 3,
+        "routeCount": 10
+      },
+      "gmaps": {
+        "found": null
+      },
+      "comparison": {
+        "status": "not_tested"
+      }
+    },
+    {
+      "idx": 91,
+      "name": "BTM → Manyata",
+      "fLat": 12.9166,
+      "fLon": 77.6101,
+      "tLat": 13.0476,
+      "tLon": 77.6209,
+      "namma": {
+        "found": true,
+        "latency": 284,
+        "totalMins": 24,
+        "fare": 45,
+        "cls": "bus",
+        "legs": 3,
+        "routeCount": 10
+      },
+      "gmaps": {
+        "found": null
+      },
+      "comparison": {
+        "status": "not_tested"
+      }
+    },
+    {
+      "idx": 92,
+      "name": "Jayanagar → Hebbal",
+      "fLat": 12.9252,
+      "fLon": 77.5933,
+      "tLat": 13.035,
+      "tLon": 77.597,
+      "namma": {
+        "found": true,
+        "latency": 283,
+        "totalMins": 29,
+        "fare": 60,
+        "cls": "bus",
+        "legs": 4,
+        "routeCount": 10
+      },
+      "gmaps": {
+        "found": null
+      },
+      "comparison": {
+        "status": "not_tested"
+      }
+    },
+    {
+      "idx": 93,
+      "name": "Rajajinagar → Bellandur",
+      "fLat": 12.9917,
+      "fLon": 77.557,
+      "tLat": 12.9262,
+      "tLon": 77.6796,
+      "namma": {
+        "found": true,
+        "latency": 281,
+        "totalMins": 34,
+        "fare": 70,
+        "cls": "bus",
+        "legs": 5,
+        "routeCount": 10
+      },
+      "gmaps": {
+        "found": null
+      },
+      "comparison": {
+        "status": "not_tested"
+      }
+    },
+    {
+      "idx": 94,
+      "name": "IISc → Whitefield",
+      "fLat": 13.0213,
+      "fLon": 77.5706,
+      "tLat": 12.9698,
+      "tLon": 77.75,
+      "namma": {
+        "found": true,
+        "latency": 285,
+        "totalMins": 24,
+        "fare": 45,
+        "cls": "bus",
+        "legs": 3,
+        "routeCount": 10
+      },
+      "gmaps": {
+        "found": null
+      },
+      "comparison": {
+        "status": "not_tested"
+      }
+    },
+    {
+      "idx": 95,
+      "name": "Vijayanagar → Electronic City",
+      "fLat": 12.9714,
+      "fLon": 77.5346,
+      "tLat": 12.8396,
+      "tLon": 77.6768,
+      "namma": {
+        "found": true,
+        "latency": 283,
+        "totalMins": 22,
+        "fare": 45,
+        "cls": "bus",
+        "legs": 3,
+        "routeCount": 10
+      },
+      "gmaps": {
+        "found": null
+      },
+      "comparison": {
+        "status": "not_tested"
+      }
+    },
+    {
+      "idx": 96,
+      "name": "Kengeri → Marathahalli",
+      "fLat": 12.9084,
+      "fLon": 77.4831,
+      "tLat": 12.9591,
+      "tLon": 77.7008,
+      "namma": {
+        "found": true,
+        "latency": 288,
+        "totalMins": 28,
+        "fare": 70,
+        "cls": "bus",
+        "legs": 5,
+        "routeCount": 10
+      },
+      "gmaps": {
+        "found": null
+      },
+      "comparison": {
+        "status": "not_tested"
+      }
+    },
+    {
+      "idx": 97,
+      "name": "JP Nagar → Yelahanka",
+      "fLat": 12.9062,
+      "fLon": 77.5849,
+      "tLat": 13.1006,
+      "tLon": 77.5946,
+      "namma": {
+        "found": true,
+        "latency": 283,
+        "totalMins": 27,
+        "fare": 70,
+        "cls": "bus",
+        "legs": 5,
+        "routeCount": 10
+      },
+      "gmaps": {
+        "found": null
+      },
+      "comparison": {
+        "status": "not_tested"
+      }
+    },
+    {
+      "idx": 98,
+      "name": "Malleshwaram → BTM",
+      "fLat": 13.0037,
+      "fLon": 77.5688,
+      "tLat": 12.9166,
+      "tLon": 77.6101,
+      "namma": {
+        "found": true,
+        "latency": 285,
+        "totalMins": 21,
+        "fare": 60,
+        "cls": "bus",
+        "legs": 4,
+        "routeCount": 10
+      },
+      "gmaps": {
+        "found": null
+      },
+      "comparison": {
+        "status": "not_tested"
+      }
+    }
+  ]
+}

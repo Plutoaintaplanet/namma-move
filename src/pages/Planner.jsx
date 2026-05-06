@@ -274,7 +274,7 @@ function RouteResult({ hit, title, icon, cabInfo, setActiveJourney, walletBalanc
                 </div>
             </div>
 
-            <RouteSummary hit={hit} />
+            {/* <RouteSummary hit={hit} /> */}
             
             <div className="result-detailed-timeline">
                 <div className="timeline-item">
@@ -320,13 +320,13 @@ function RouteResult({ hit, title, icon, cabInfo, setActiveJourney, walletBalanc
                 </button>
             </div>
 
-            <CommuteSocial 
+            {/* <CommuteSocial 
                 routeId={legs[0]?.route?.id} 
                 routeName={legs[0]?.route?.name} 
                 cabFare={cabInfo?.cabFare} 
                 transitFare={fare} 
                 onStatusUpdate={setCardStatus}
-            />
+            /> */}
         </div>
     );
 }

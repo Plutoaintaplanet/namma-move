@@ -99,15 +99,17 @@ async function seed() {
         }
 
         console.log(`Batch creating ${edgeBatch.length} edges...`);
-        // Neo4j handles up to ~10k efficiently in one UNWIND, let's chunk it
         const chunkSize = 5000;
         for (let i = 0; i < edgeBatch.length; i += chunkSize) {
             const chunk = edgeBatch.slice(i, i + chunkSize);
+            // Use CREATE not MERGE — graph is cleared above, so no duplicates possible.
+            // MERGE was silently losing route_type on conflicting edges.
             await session.run(
                 `UNWIND $batch AS e
                  MATCH (a:Stop {id: e.from}), (b:Stop {id: e.to})
-                 MERGE (a)-[r:CONNECTS {route_id: e.routeId}]->(b)
-                 SET r.route_name = e.routeName,
+                 CREATE (a)-[r:CONNECTS]->(b)
+                 SET r.route_id   = e.routeId,
+                     r.route_name = e.routeName,
                      r.route_type = e.routeType,
                      r.travel_min = e.travelMin,
                      r.seq        = e.seq`,

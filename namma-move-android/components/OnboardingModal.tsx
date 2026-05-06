@@ -26,16 +26,16 @@ const { width: SCREEN_WIDTH } = Dimensions.get('window');
 const STEPS = [
     {
         icon: 'map-marker-radius' as const,
-        color: '#703BDA',
-        bg: 'rgba(112,59,218,0.12)',
+        color: '#2D5F5D',
+        bg: 'rgba(45,95,93,0.12)',
         title: 'Plan Any Journey',
         desc: "Enter where you're headed and we'll instantly find the best Bus, Metro, or Cab combo \u2014 just for you.",
         tip: 'Tap "Where to?" to get started',
     },
     {
         icon: 'transit-connection-variant' as const,
-        color: '#00D2D3',
-        bg: 'rgba(0,210,211,0.12)',
+        color: '#f97316',
+        bg: 'rgba(249,115,22,0.12)',
         title: 'Multi-Modal Routing',
         desc: 'We combine Namma Metro (Green, Purple & Yellow lines), thousands of BMTC buses, and cab options into one seamless journey.',
         tip: '8,300+ real stops powered by live data',

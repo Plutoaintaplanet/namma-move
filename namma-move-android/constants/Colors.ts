@@ -1,35 +1,35 @@
-const tintColorLight = '#703BDA'; // Vibrant Purple
-const tintColorDark = '#00D2D3';  // Bright Cyan
+const tintColorLight = '#2D5F5D';
+const tintColorDark = '#00ff9d';
 
 export default {
   light: {
-    text: '#0f172a',
-    textMuted: '#64748b',
-    background: '#f8fafc',
+    text: '#062624',
+    textMuted: '#4A6361',
+    background: '#f0f4f3',
     surface: '#ffffff',
     panel: '#ffffff',
     tint: tintColorLight,
-    tabIconDefault: '#94a3b8',
+    tabIconDefault: '#4A6361',
     tabIconSelected: tintColorLight,
-    border: 'rgba(15, 23, 42, 0.08)',
-    teal: '#00D2D3',
-    tealDark: '#00B4B5',
-    accent: '#FF9A00',
-    purple: '#703BDA',
+    border: 'rgba(45, 95, 93, 0.1)',
+    teal: '#2D5F5D',
+    tealDark: '#062624',
+    accent: '#f97316',
+    purple: '#2D5F5D',
   },
   dark: {
-    text: '#f8fafc',
-    textMuted: '#94a3b8',
-    background: '#0B0F19', // Deep navy/black
-    surface: '#121A2F',
-    panel: '#1E293B',
+    text: '#e2efea',
+    textMuted: '#9ec8b9',
+    background: '#041413',
+    surface: '#0a1f1e',
+    panel: '#0a1f1e',
     tint: tintColorDark,
-    tabIconDefault: '#475569',
+    tabIconDefault: '#9ec8b9',
     tabIconSelected: tintColorDark,
-    border: 'rgba(255, 255, 255, 0.1)',
-    teal: '#00D2D3',
-    tealDark: '#00B4B5',
-    accent: '#FF9A00',
-    purple: '#8B5CF6',
+    border: 'rgba(158, 200, 185, 0.15)',
+    teal: '#00ff9d',
+    tealDark: '#2D5F5D',
+    accent: '#f97316',
+    purple: '#00ff9d',
   },
 };

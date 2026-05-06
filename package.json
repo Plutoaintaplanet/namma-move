@@ -9,7 +9,8 @@
     "lint": "eslint .",
     "preview": "node node_modules/vite/bin/vite.js preview",
     "api": "node api/index.cjs",
-    "full-dev": "concurrently \"npm run dev\" \"npm run api\""
+    "full-dev": "concurrently \"npm run dev\" \"npm run api\"",
+    "benchmark": "node scripts/benchmark_routes.cjs"
   },
   "dependencies": {
     "@react-google-maps/api": "^2.20.7",
