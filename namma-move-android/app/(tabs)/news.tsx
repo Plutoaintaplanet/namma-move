@@ -1,19 +1,32 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import { StyleSheet, ActivityIndicator, FlatList, RefreshControl, Linking, TouchableOpacity } from 'react-native';
-import Colors from '@/constants/Colors';
-import { Text, View } from '@/components/Themed';
-import { useColorScheme } from '@/components/useColorScheme';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import { StyleSheet, FlatList, Linking, TouchableOpacity, View } from 'react-native';
+import { 
+  Text, 
+  Surface, 
+  useTheme, 
+  ActivityIndicator, 
+  IconButton, 
+  Chip,
+  Divider
+} from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import Animated, { FadeInUp, Layout } from 'react-native-reanimated';
 
-const API_URL = 'https://nammamove-backend-api.vercel.app/api'; // Live Public Cloud API
+const API_URL = 'https://nammamove-backend-api.vercel.app/api';
+
+const CATEGORY_COLORS: any = {
+    BMTC: { bg: 'rgba(0, 168, 168, 0.1)', color: '#00A86B' },
+    Metro: { bg: 'rgba(124, 58, 237, 0.1)', color: '#7c3aed' },
+    Integration: { bg: 'rgba(249, 115, 22, 0.1)', color: '#f97316' },
+    Update: { bg: 'rgba(45, 95, 93, 0.1)', color: '#2D5F5D' },
+};
 
 export default function NewsScreen() {
-    const colorScheme = useColorScheme();
-    const theme = Colors[colorScheme ?? 'dark'];
-
+    const theme = useTheme();
     const [news, setNews] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
     const [refreshing, setRefreshing] = useState(false);
+    const [filter, setFilter] = useState('All');
 
     const fetchNews = async () => {
         try {
@@ -23,9 +36,8 @@ export default function NewsScreen() {
             setNews(data.items || []);
         } catch (error) {
             console.warn('News Fetch Error:', error);
-            // Fallback empty state
             setNews([
-                { id: 1, title: 'Offline Mode Active', summary: 'Cannot connect to backend server. Showing cached information.', date: new Date().toLocaleDateString(), type: 'alert' }
+                { id: 1, title: 'Offline Mode Active', summary: 'Showing cached or fallback information.', date: new Date().toLocaleDateString(), cat: 'Update', source: 'System' }
             ]);
         } finally {
             setLoading(false);
@@ -42,66 +54,111 @@ export default function NewsScreen() {
         fetchNews();
     }, []);
 
-    if (loading) {
+    const categories = useMemo(() => {
+        const base = ['All', 'BMTC', 'Metro', 'Integration', 'Update'];
+        const fromData = [...new Set(news.map(a => a.cat))];
+        return [...new Set([...base, ...fromData])].filter(c => c && c !== 'undefined');
+    }, [news]);
+
+    const visible = useMemo(() => 
+        filter === 'All' ? news : news.filter((a) => a.cat === filter),
+        [filter, news]
+    );
+
+    if (loading && news.length === 0) {
         return (
-            <View style={[styles.center, { backgroundColor: theme.background }]}>
-                <ActivityIndicator size="large" color={theme.teal} />
-                <Text style={{ color: theme.textMuted, marginTop: 12 }}>Fetching transit updates...</Text>
+            <View style={[styles.center, { backgroundColor: theme.colors.background }]}>
+                <ActivityIndicator size="large" color={theme.colors.primary} />
+                <Text variant="bodyMedium" style={{ marginTop: 16, color: theme.colors.onSurfaceVariant }}>Fetching transit updates...</Text>
             </View>
         );
     }
 
     return (
-        <View style={[styles.container, { backgroundColor: theme.background }]}>
+        <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
+            {/* Header */}
+            <View style={styles.header}>
+                <View>
+                    <Text variant="headlineSmall" style={{ fontWeight: '900' }}>Transit News</Text>
+                    <Text variant="bodySmall" style={{ color: theme.colors.onSurfaceVariant }}>Latest from BMTC and Namma Metro</Text>
+                </View>
+                <IconButton icon="refresh" onPress={onRefresh} loading={refreshing} />
+            </View>
+
+            {/* Filters */}
+            <View style={styles.filterContainer}>
+                <FlatList
+                    horizontal
+                    showsHorizontalScrollIndicator={false}
+                    data={categories}
+                    keyExtractor={item => item}
+                    contentContainerStyle={{ paddingHorizontal: 16, gap: 8 }}
+                    renderItem={({ item }) => (
+                        <Chip 
+                            selected={filter === item} 
+                            onPress={() => setFilter(item)}
+                            showSelectedCheck={false}
+                            mode="outlined"
+                            style={{ borderRadius: 99 }}
+                        >
+                            {item}
+                        </Chip>
+                    )}
+                />
+            </View>
+
             <FlatList
-                data={news}
+                data={visible}
                 keyExtractor={(item, idx) => item.url || String(idx)}
                 contentContainerStyle={styles.list}
-                renderItem={({ item }) => (
-                    <TouchableOpacity
-                        style={[styles.card, { backgroundColor: theme.surface, borderColor: theme.border }]}
-                        onPress={() => item.url ? Linking.openURL(item.url) : null}
-                        activeOpacity={0.8}
-                    >
-                        <View style={styles.cardHeader}>
-                            <View style={[styles.badge, { backgroundColor: item.cat === 'Metro' ? 'rgba(124,58,237,0.1)' : 'rgba(0,168,168,0.1)' }]}>
-                                <Text style={[styles.badgeText, { color: item.cat === 'Metro' ? theme.purple : theme.tealDark }]}>
-                                    {item.cat}
-                                </Text>
-                            </View>
-                            <Text style={[styles.date, { color: theme.textMuted }]}>{item.date}</Text>
-                        </View>
-                        <Text style={[styles.title, { color: theme.text }]}>{item.title}</Text>
-                        <View style={styles.cardFooter}>
-                            <Text style={[styles.source, { color: theme.textMuted }]}>{item.source}</Text>
-                            <MaterialCommunityIcons name="arrow-top-right" size={16} color={theme.tealDark} />
-                        </View>
-                    </TouchableOpacity>
-                )}
+                refreshing={refreshing}
+                onRefresh={onRefresh}
+                renderItem={({ item, index }) => {
+                    const catStyle = CATEGORY_COLORS[item.cat] || CATEGORY_COLORS.Update;
+                    return (
+                        <Animated.View entering={FadeInUp.delay(index * 50)} layout={Layout.springify()}>
+                            <TouchableOpacity
+                                onPress={() => item.url ? Linking.openURL(item.url) : null}
+                                activeOpacity={0.7}
+                            >
+                                <Surface style={styles.card} elevation={1}>
+                                    <View style={styles.cardHeader}>
+                                        <Surface style={[styles.badge, { backgroundColor: catStyle.bg }]} elevation={0}>
+                                            <Text variant="labelSmall" style={{ color: catStyle.color, fontWeight: 'bold' }}>{item.cat}</Text>
+                                        </Surface>
+                                        <Text variant="labelSmall" style={{ color: theme.colors.onSurfaceVariant }}>{item.date}</Text>
+                                    </View>
+                                    <Text variant="titleMedium" style={styles.title}>{item.title}</Text>
+                                    {item.summary && (
+                                        <Text variant="bodySmall" style={styles.summary} numberOfLines={2}>{item.summary}</Text>
+                                    )}
+                                    <View style={styles.cardFooter}>
+                                        <Text variant="labelSmall" style={{ color: theme.colors.onSurfaceVariant }}>📡 {item.source}</Text>
+                                        <MaterialCommunityIcons name="arrow-top-right" size={16} color={theme.colors.primary} />
+                                    </View>
+                                </Surface>
+                            </TouchableOpacity>
+                        </Animated.View>
+                    );
+                }}
             />
         </View>
     );
 }
 
 const styles = StyleSheet.create({
-    container: { flex: 1 },
+    container: { flex: 1, paddingTop: 60 },
     center: { flex: 1, alignItems: 'center', justifyContent: 'center' },
-    list: { padding: 16, gap: 14 },
+    header: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start', paddingHorizontal: 16, marginBottom: 16 },
+    filterContainer: { marginBottom: 16 },
+    list: { padding: 16, paddingTop: 0, gap: 16, paddingBottom: 100 },
     card: {
         borderRadius: 16,
         padding: 16,
-        borderWidth: 1,
-        elevation: 2,
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 4 },
-        shadowOpacity: 0.1,
-        shadowRadius: 12,
     },
-    cardHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 },
-    badge: { paddingHorizontal: 10, paddingVertical: 4, borderRadius: 99 },
-    badgeText: { fontSize: 11, fontWeight: '800', textTransform: 'uppercase' },
-    date: { fontSize: 11 },
-    title: { fontSize: 16, fontWeight: '700', lineHeight: 22, marginBottom: 16 },
+    cardHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 },
+    badge: { paddingHorizontal: 10, paddingVertical: 4, borderRadius: 8 },
+    title: { fontWeight: '700', lineHeight: 22, marginBottom: 8 },
+    summary: { color: 'rgba(0,0,0,0.6)', marginBottom: 12 },
     cardFooter: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
-    source: { fontSize: 12 },
 });

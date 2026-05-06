@@ -96,13 +96,13 @@ router.get("/", async (req, res) => {
             MATCH path = shortestPath((a)-[:CONNECTS*1..60]->(b))
             RETURN a.id as oId, b.id as dId,
                    [r IN relationships(path) | { 
-                       route_id: r.routeId, 
-                       route_name: r.routeName, 
-                       route_type: r.routeType, 
-                       travel_min: coalesce(r.travelMin, 3.5) 
+                       route_id: r.route_id, 
+                       route_name: r.route_name, 
+                       route_type: r.route_type, 
+                       travel_min: coalesce(r.travel_min, 3.5) 
                    }] AS segments,
                    [n IN nodes(path) | {id: n.id, name: n.name, lat: n.lat, lon: n.lon, type: n.type}] AS node_list,
-                   reduce(s = 0.0, r IN relationships(path) | s + coalesce(r.travelMin, 3.5)) as totalMin
+                   reduce(s = 0.0, r IN relationships(path) | s + coalesce(r.travel_min, 3.5)) as totalMin
             LIMIT 30
         `;
 

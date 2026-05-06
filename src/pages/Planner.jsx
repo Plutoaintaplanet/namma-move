@@ -23,7 +23,7 @@ export default function Planner({ setActiveJourney, walletBalance, setWalletBala
     const activeStopIds = useMemo(() => new Set(routeStopsJson.map(rs => rs.stop_id)), []);
 
     const getBaseUrl = () => {
-        const isProd = window.location.hostname !== "localhost";
+        const isProd = window.location.hostname !== "localhost" && window.location.hostname !== "127.0.0.1";
         return isProd ? "/api" : (import.meta.env.VITE_API_URL || "http://localhost:4000/api");
     };
 

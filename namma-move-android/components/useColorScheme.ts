@@ -1,1 +1,1 @@
-whyt did you get stuck on shells criptexport { useColorScheme } from 'react-native';
+export { useColorScheme } from 'react-native';

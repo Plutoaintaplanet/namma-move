@@ -1,11 +1,25 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
-    View, Text, StyleSheet, TouchableOpacity, Animated, Dimensions,
-    Modal, ScrollView, PanResponder,
+    View, StyleSheet, Modal, Dimensions,
 } from 'react-native';
+import { 
+  Text, 
+  Surface, 
+  Button, 
+  IconButton, 
+  useTheme,
+  Avatar
+} from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { useColorScheme } from '@/components/useColorScheme';
-import Colors from '@/constants/Colors';
+import Animated, { 
+  FadeIn, 
+  ScaleInCenter, 
+  useSharedValue, 
+  useAnimatedStyle, 
+  withSpring,
+  Layout,
+  FadeOut
+} from 'react-native-reanimated';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
@@ -32,7 +46,7 @@ const STEPS = [
         bg: 'rgba(34,197,94,0.12)',
         title: 'Your Location, Your Rules',
         desc: 'We\'ll pick up your GPS automatically. Tap the crosshair icon anytime to reset your starting point, or type any custom origin.',
-        tip: 'Tap ⊕ to set a custom start point',
+        tip: 'Tap the GPS icon to reset origin',
     },
 ];
 
@@ -42,50 +56,30 @@ interface Props {
 }
 
 export default function OnboardingModal({ visible, onDone }: Props) {
-    const colorScheme = useColorScheme();
-    const isDark = colorScheme === 'dark';
-    const theme = Colors[colorScheme ?? 'dark'];
-
+    const theme = useTheme();
     const [step, setStep] = useState(0);
-    const fadeAnim = useRef(new Animated.Value(0)).current;
-    const scaleAnim = useRef(new Animated.Value(0.88)).current;
-    const iconBounce = useRef(new Animated.Value(0)).current;
-    const slideAnim = useRef(new Animated.Value(0)).current;
+    
+    const iconScale = useSharedValue(0.8);
+    const contentTranslateX = useSharedValue(0);
 
-    // Entrance animation when the modal appears
     useEffect(() => {
         if (visible) {
             setStep(0);
-            Animated.parallel([
-                Animated.spring(fadeAnim, { toValue: 1, useNativeDriver: true, tension: 65, friction: 8 }),
-                Animated.spring(scaleAnim, { toValue: 1, useNativeDriver: true, tension: 65, friction: 8 }),
-            ]).start();
-            bounceIcon();
-        } else {
-            fadeAnim.setValue(0);
-            scaleAnim.setValue(0.88);
+            iconScale.value = withSpring(1, { damping: 12, stiffness: 90 });
         }
     }, [visible]);
 
-    // Bounce icon when step changes
-    const bounceIcon = () => {
-        iconBounce.setValue(0);
-        Animated.spring(iconBounce, {
-            toValue: 1,
-            useNativeDriver: true,
-            tension: 100,
-            friction: 5,
-        }).start();
-    };
+    const animatedIconStyle = useAnimatedStyle(() => ({
+        transform: [{ scale: iconScale.value }]
+    }));
 
     const goToStep = (newStep: number) => {
         const dir = newStep > step ? -1 : 1;
-        Animated.sequence([
-            Animated.timing(slideAnim, { toValue: 40 * dir, duration: 120, useNativeDriver: true }),
-            Animated.timing(slideAnim, { toValue: 0, duration: 160, useNativeDriver: true }),
-        ]).start();
+        contentTranslateX.value = dir * 50;
+        contentTranslateX.value = withSpring(0, { damping: 15, stiffness: 100 });
         setStep(newStep);
-        bounceIcon();
+        iconScale.value = 0.8;
+        iconScale.value = withSpring(1, { damping: 12, stiffness: 90 });
     };
 
     const handleNext = () => {
@@ -97,79 +91,74 @@ export default function OnboardingModal({ visible, onDone }: Props) {
         if (step > 0) goToStep(step - 1);
     };
 
-    const iconScale = iconBounce.interpolate({
-        inputRange: [0, 0.5, 1],
-        outputRange: [0.6, 1.15, 1],
-    });
-
     const current = STEPS[step];
 
     return (
-        <Modal transparent visible={visible} animationType="none" statusBarTranslucent>
+        <Modal transparent visible={visible} animationType="fade" statusBarTranslucent>
             <View style={styles.overlay}>
-                <Animated.View
-                    style={[
-                        styles.card,
-                        {
-                            backgroundColor: isDark ? '#1A1232' : '#FFFFFF',
-                            opacity: fadeAnim,
-                            transform: [{ scale: scaleAnim }],
-                        },
-                    ]}
-                >
+                <Surface style={styles.card} elevation={5}>
                     {/* Icon Area */}
-                    <Animated.View style={[styles.iconCircle, { backgroundColor: current.bg, transform: [{ scale: iconScale }, { translateX: slideAnim }] }]}>
-                        <MaterialCommunityIcons name={current.icon} size={52} color={current.color} />
+                    <Animated.View style={[styles.iconContainer, animatedIconStyle]}>
+                        <Avatar.Icon 
+                          size={100} 
+                          icon={current.icon} 
+                          style={{ backgroundColor: current.bg }} 
+                          color={current.color} 
+                        />
                     </Animated.View>
 
                     {/* Content */}
-                    <Animated.View style={[styles.content, { transform: [{ translateX: slideAnim }] }]}>
-                        <Text style={[styles.title, { color: theme.text }]}>{current.title}</Text>
-                        <Text style={[styles.desc, { color: theme.textMuted }]}>{current.desc}</Text>
+                    <Animated.View key={step} entering={FadeIn} exiting={FadeOut} style={styles.content}>
+                        <Text variant="headlineSmall" style={[styles.title, { color: theme.colors.onSurface }]}>
+                          {current.title}
+                        </Text>
+                        <Text variant="bodyMedium" style={[styles.desc, { color: theme.colors.onSurfaceVariant }]}>
+                          {current.desc}
+                        </Text>
 
-                        <View style={[styles.tipBox, { backgroundColor: isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.04)', borderColor: current.color + '33' }]}>
-                            <MaterialCommunityIcons name="lightbulb-on" size={14} color={current.color} />
-                            <Text style={[styles.tipText, { color: current.color }]}>{current.tip}</Text>
-                        </View>
+                        <Surface style={[styles.tipBox, { backgroundColor: theme.colors.surfaceVariant, borderColor: current.color + '44' }]} elevation={0}>
+                            <MaterialCommunityIcons name="lightbulb-on" size={16} color={current.color} />
+                            <Text variant="labelSmall" style={{ color: current.color, flex: 1, fontWeight: '700' }}>{current.tip}</Text>
+                        </Surface>
                     </Animated.View>
 
                     {/* Step Indicators */}
                     <View style={styles.indicators}>
                         {STEPS.map((_, i) => (
-                            <TouchableOpacity key={i} onPress={() => goToStep(i)}>
-                                <Animated.View style={[styles.dot, {
-                                    width: i === step ? 24 : 8,
-                                    backgroundColor: i === step ? current.color : (isDark ? 'rgba(255,255,255,0.2)' : 'rgba(0,0,0,0.15)'),
-                                }]} />
-                            </TouchableOpacity>
+                            <View key={i} style={[
+                              styles.dot, 
+                              { 
+                                width: i === step ? 24 : 8, 
+                                backgroundColor: i === step ? current.color : theme.colors.outlineVariant 
+                              }
+                            ]} />
                         ))}
                     </View>
 
                     {/* Buttons */}
                     <View style={styles.btnRow}>
                         {step > 0 ? (
-                            <TouchableOpacity style={[styles.backBtn, { borderColor: isDark ? 'rgba(255,255,255,0.12)' : 'rgba(0,0,0,0.12)' }]} onPress={handleBack}>
-                                <MaterialCommunityIcons name="chevron-left" size={22} color={theme.textMuted} />
-                            </TouchableOpacity>
+                            <IconButton 
+                              icon="chevron-left" 
+                              mode="outlined" 
+                              onPress={handleBack} 
+                              style={styles.backBtn}
+                            />
                         ) : (
-                            <TouchableOpacity onPress={onDone}>
-                                <Text style={[styles.skipText, { color: theme.textMuted }]}>Skip</Text>
-                            </TouchableOpacity>
+                            <Button onPress={onDone} labelStyle={{ color: theme.colors.onSurfaceVariant }}>Skip</Button>
                         )}
-                        <TouchableOpacity
-                            style={[styles.nextBtn, { backgroundColor: current.color }]}
+                        
+                        <Button
+                            mode="contained"
                             onPress={handleNext}
-                            activeOpacity={0.82}
+                            style={[styles.nextBtn, { backgroundColor: current.color }]}
+                            contentStyle={{ paddingHorizontal: 16, height: 48 }}
+                            icon={step < STEPS.length - 1 ? "chevron-right" : "check"}
                         >
-                            <Text style={styles.nextBtnText}>
-                                {step < STEPS.length - 1 ? 'Next' : "Let's Go 🚀"}
-                            </Text>
-                            {step < STEPS.length - 1 && (
-                                <MaterialCommunityIcons name="chevron-right" size={18} color="#fff" />
-                            )}
-                        </TouchableOpacity>
+                            {step < STEPS.length - 1 ? 'Next' : "Let's Go"}
+                        </Button>
                     </View>
-                </Animated.View>
+                </Surface>
             </View>
         </Modal>
     );
@@ -177,46 +166,32 @@ export default function OnboardingModal({ visible, onDone }: Props) {
 
 const styles = StyleSheet.create({
     overlay: {
-        flex: 1, backgroundColor: 'rgba(0,0,0,0.65)',
+        flex: 1, backgroundColor: 'rgba(0,0,0,0.6)',
         alignItems: 'center', justifyContent: 'center',
         paddingHorizontal: 24,
     },
     card: {
-        width: '100%', borderRadius: 28, padding: 28,
-        shadowColor: '#000', shadowOffset: { width: 0, height: 20 },
-        shadowOpacity: 0.25, shadowRadius: 30, elevation: 20,
+        width: '100%', borderRadius: 28, padding: 24,
         alignItems: 'center',
     },
-    iconCircle: {
-        width: 110, height: 110, borderRadius: 55,
-        alignItems: 'center', justifyContent: 'center',
-        marginBottom: 28,
-        borderWidth: 1.5, borderColor: 'transparent',
+    iconContainer: {
+        marginBottom: 24,
     },
     content: { alignItems: 'center', width: '100%' },
-    title: { fontSize: 24, fontWeight: '900', textAlign: 'center', letterSpacing: -0.5, marginBottom: 10 },
-    desc: { fontSize: 15, fontWeight: '500', textAlign: 'center', lineHeight: 22, marginBottom: 18 },
+    title: { fontWeight: '900', textAlign: 'center', letterSpacing: -0.5, marginBottom: 8 },
+    desc: { textAlign: 'center', lineHeight: 22, marginBottom: 20 },
     tipBox: {
         flexDirection: 'row', alignItems: 'center', gap: 8,
-        paddingHorizontal: 14, paddingVertical: 10, borderRadius: 12, borderWidth: 1,
+        paddingHorizontal: 16, paddingVertical: 12, borderRadius: 16, borderWidth: 1,
         width: '100%',
     },
-    tipText: { fontSize: 13, fontWeight: '700', flex: 1 },
     indicators: {
-        flexDirection: 'row', gap: 6, marginTop: 28, marginBottom: 24, alignItems: 'center',
+        flexDirection: 'row', gap: 6, marginVertical: 24, alignItems: 'center',
     },
     dot: { height: 8, borderRadius: 4 },
     btnRow: {
         flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', width: '100%',
     },
-    backBtn: {
-        width: 44, height: 44, borderRadius: 14, borderWidth: 1.5,
-        alignItems: 'center', justifyContent: 'center',
-    },
-    skipText: { fontSize: 14, fontWeight: '600' },
-    nextBtn: {
-        flexDirection: 'row', alignItems: 'center', gap: 4,
-        paddingHorizontal: 28, paddingVertical: 14, borderRadius: 16,
-    },
-    nextBtnText: { color: '#fff', fontSize: 16, fontWeight: '800' },
+    backBtn: { borderRadius: 12 },
+    nextBtn: { borderRadius: 16 },
 });
