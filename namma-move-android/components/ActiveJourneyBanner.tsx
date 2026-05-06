@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, TouchableOpacity, Linking, Image } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, Linking } from 'react-native';
 import { Text, Surface, useTheme, Button } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
@@ -97,7 +97,7 @@ export default function ActiveJourneyBanner() {
                     <View style={styles.liveBadgeRow}>
                         <View style={styles.liveDot} />
                         <Text variant="labelMedium" style={{ color: '#fff', fontWeight: 'bold', marginLeft: 6 }}>Live Journey</Text>
-                        <Image source={require('../assets/images/gps_indicator.png')} style={{ width: 16, height: 16, marginLeft: 8, borderRadius: 4 }} />
+                        <View style={{ width: 10, height: 10, borderRadius: 5, backgroundColor: '#22d3ee', marginLeft: 8, shadowColor: '#22d3ee', shadowOffset: { width: 0, height: 0 }, shadowOpacity: 1, shadowRadius: 4, elevation: 4 }} />
                         <Text variant="labelSmall" style={{ color: '#ccc', marginLeft: 4 }}>GPS Active</Text>
                     </View>
                     <TouchableOpacity onPress={() => setActiveJourney(null)} hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}>
