@@ -21,68 +21,92 @@ import Animated, {
   useSharedValue
 } from 'react-native-reanimated';
 
-export function CabCard({ cab }: { cab: any }) {
+export function CabCard({ rides, origin, dest }: { rides: any, origin: any, dest: any }) {
     const theme = useTheme();
 
-    const CabItem = ({ icon, label, time, fare, providers }: any) => (
-        <View style={styles.cabRow}>
-            <View style={styles.cabMode}>
-                <Avatar.Icon size={40} icon={icon} style={{ backgroundColor: theme.colors.surfaceVariant }} color={theme.colors.onSurfaceVariant} />
-                <View style={{ marginLeft: 12 }}>
-                    <Text variant="titleMedium">{label}</Text>
-                    <Text variant="labelSmall" style={{ color: theme.colors.onSurfaceVariant }}>{time} min • ₹{fare}</Text>
+    const CabItem = ({ icon, label, provider, color, data }: any) => {
+        if (!data) return null;
+
+        const handleBook = () => {
+            const oLat = origin?.lat, oLon = origin?.lon;
+            const dLat = dest?.lat, dLon = dest?.lon;
+            
+            let url = "";
+            switch (provider) {
+                case "Uber":
+                    url = `uber://?action=setPickup&pickup[latitude]=${oLat}&pickup[longitude]=${oLon}&dropoff[latitude]=${dLat}&dropoff[longitude]=${dLon}`;
+                    break;
+                case "Ola":
+                    url = `ola://book?pickup_lat=${oLat}&pickup_lng=${oLon}&drop_lat=${dLat}&drop_lng=${dLon}`;
+                    break;
+                case "Rapido":
+                    url = `rapido://booking?pickup_lat=${oLat}&pickup_lng=${oLon}&drop_lat=${dLat}&drop_lng=${dLon}`;
+                    break;
+                case "Namma Yatri":
+                    url = `nammayatri://ride?pickup_lat=${oLat}&pickup_lng=${oLon}&drop_lat=${dLat}&drop_lng=${dLon}`;
+                    break;
+            }
+
+            if (url) {
+                Linking.canOpenURL(url).then(supported => {
+                    if (supported) {
+                        Linking.openURL(url);
+                    } else {
+                        // Fallback to store or web
+                        Alert.alert("App not found", `${provider} app is not installed on your device.`);
+                    }
+                });
+            }
+        };
+
+        return (
+            <View style={styles.cabRow}>
+                <View style={styles.cabMode}>
+                    <Avatar.Icon size={40} icon={icon} style={{ backgroundColor: theme.colors.surfaceVariant }} color={theme.colors.onSurfaceVariant} />
+                    <View style={{ marginLeft: 12 }}>
+                        <Text variant="titleMedium">{provider}</Text>
+                        <Text variant="labelSmall" style={{ color: theme.colors.onSurfaceVariant }}>{label} • {data.eta}</Text>
+                    </View>
+                </View>
+                <View style={styles.btnGroup}>
+                    <Text variant="titleMedium" style={{ fontWeight: 'bold', marginRight: 12, alignSelf: 'center' }}>₹{data.fare}</Text>
+                    <Button 
+                        mode="contained" 
+                        compact 
+                        onPress={handleBook}
+                        style={[styles.rideBtn, { backgroundColor: color }]}
+                        labelStyle={{ color: '#fff', fontSize: 12 }}
+                    >
+                        Book
+                    </Button>
                 </View>
             </View>
-            <View style={styles.btnGroup}>
-                {providers.map((p: any) => (
-                    <Button 
-                        key={p.name}
-                        mode="outlined" 
-                        compact 
-                        onPress={() => Linking.openURL(p.url)}
-                        style={[styles.rideBtn, { borderColor: p.color }]}
-                        labelStyle={{ color: p.color, fontSize: 10 }}
-                    >
-                        {p.name}
-                    </Button>
-                ))}
-            </View>
-        </View>
-    );
+        );
+    };
+
+    if (!rides) return null;
 
     return (
         <Surface style={styles.card} elevation={1}>
             <View style={styles.cabRows}>
                 <CabItem 
-                    icon="rickshaw-electric" 
-                    label="Auto" 
-                    time={cab.autoMin} 
-                    fare={cab.autoFare} 
-                    providers={[
-                        { name: 'Ola', url: 'ola://', color: '#22c55e' },
-                        { name: 'Uber', url: 'uber://', color: '#000' }
-                    ]} 
+                    icon="car" label="Cab" provider="Uber"
+                    color="#000000" data={rides.uber} 
                 />
                 <Divider style={styles.divider} />
                 <CabItem 
-                    icon="car" 
-                    label="Cab" 
-                    time={cab.cabMin} 
-                    fare={cab.cabFare} 
-                    providers={[
-                        { name: 'Ola', url: 'ola://', color: '#22c55e' },
-                        { name: 'Uber', url: 'uber://', color: '#000' }
-                    ]} 
+                    icon="car" label="Cab" provider="Ola"
+                    color="#22c55e" data={rides.ola} 
                 />
                 <Divider style={styles.divider} />
                 <CabItem 
-                    icon="motorbike" 
-                    label="Bike" 
-                    time={cab.bikeMin} 
-                    fare={cab.bikeFare} 
-                    providers={[
-                        { name: 'Rapido', url: 'rapido://', color: '#f97316' }
-                    ]} 
+                    icon="motorbike" label="Bike" provider="Rapido"
+                    color="#f97316" data={rides.rapido} 
+                />
+                <Divider style={styles.divider} />
+                <CabItem 
+                    icon="rickshaw-electric" label="Auto" provider="Namma Yatri"
+                    color="#eab308" data={rides.nammayatri} 
                 />
             </View>
         </Surface>

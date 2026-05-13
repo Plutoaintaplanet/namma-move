@@ -180,12 +180,17 @@ function LeaveByPanel({ selectedStation }) {
   );
 }
 
-export default function MetroLiveMap() {
+export default function MetroLiveMap({ darkMode }) {
   const [trainPositions, setTrainPositions] = useState({});
   const [tick, setTick] = useState(0);
   const [selectedLine, setSelectedLine] = useState(null); // null = all
   const [selectedStation, setSelectedStation] = useState(null);
   const [now, setNow] = useState(new Date());
+
+  // Use theme-aware tile layer URL
+  const mapUrl = darkMode 
+    ? "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
+    : "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png";
 
   // Animate trains every second
   useEffect(() => {
@@ -316,7 +321,7 @@ export default function MetroLiveMap() {
           >
             <TileLayer
               attribution='&copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a>'
-              url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
+              url={mapUrl}
             />
             <FitBounds lines={visibleLines} />
 

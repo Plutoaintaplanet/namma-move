@@ -5,7 +5,7 @@ import CommuteSocial from "../components/CommuteSocial";
 import stopsJson from "../data/gtfs_stops.json";
 import routeStopsJson from "../data/gtfs_route_stops.json";
 
-export default function Planner({ setActiveJourney, walletBalance, setWalletBalance }) {
+export default function Planner({ setActiveJourney, walletBalance, setWalletBalance, darkMode }) {
     const [originLoc, setOriginLoc] = useState(null);
     const [destLoc, setDestLoc] = useState(null);
     const [loading, setLoading] = useState(false);
@@ -73,6 +73,7 @@ export default function Planner({ setActiveJourney, walletBalance, setWalletBala
                     onDestinationSelected={loc => { setDestLoc(loc); setSearched(false); }}
                     initialOrigin={originLoc}
                     initialDest={destLoc}
+                    darkMode={darkMode}
                 />
 
                 <div className="planner-time-row">
@@ -165,7 +166,9 @@ export default function Planner({ setActiveJourney, walletBalance, setWalletBala
                                         <strong>Auto (Meter)</strong>
                                         <span>₹{cabInfo.autoFare}</span>
                                     </div>
-                                    <a href="https://www.rapido.bike/" target="_blank" className="book-btn">Rapido</a>
+                                    <div className="book-group">
+                                        <a href={`nammayatri://ride?pickup_lat=${originLoc.lat}&pickup_lng=${originLoc.lon}&drop_lat=${destLoc.lat}&drop_lng=${destLoc.lon}`} className="book-btn">Namma Yatri</a>
+                                    </div>
                                 </div>
                                 <div className="fare-item highlight">
                                     <span className="fare-icon">🚕</span>
@@ -174,8 +177,8 @@ export default function Planner({ setActiveJourney, walletBalance, setWalletBala
                                         <span>₹{cabInfo.cabFare}</span>
                                     </div>
                                     <div className="book-group">
-                                        <a href="https://book.olacabs.com/" target="_blank">Ola</a>
-                                        <a href="https://m.uber.com/" target="_blank">Uber</a>
+                                        <a href={`https://book.olacabs.com/?serviceType=p2p&utm_source=namma_move&lat=${originLoc.lat}&lng=${originLoc.lon}&drop_lat=${destLoc.lat}&drop_lng=${destLoc.lon}`} target="_blank">Ola</a>
+                                        <a href={`https://m.uber.com/ul/?action=setPickup&pickup[latitude]=${originLoc.lat}&pickup[longitude]=${originLoc.lon}&dropoff[latitude]=${destLoc.lat}&dropoff[longitude]=${destLoc.lon}`} target="_blank">Uber</a>
                                     </div>
                                 </div>
                                 <div className="fare-item">
@@ -184,7 +187,7 @@ export default function Planner({ setActiveJourney, walletBalance, setWalletBala
                                         <strong>Bike Taxi</strong>
                                         <span>₹{cabInfo.bikeFare}</span>
                                     </div>
-                                    <a href="https://www.rapido.bike/" target="_blank" className="book-btn">Rapido</a>
+                                    <a href={`rapido://booking?pickup_lat=${originLoc.lat}&pickup_lng=${originLoc.lon}&drop_lat=${destLoc.lat}&drop_lng=${destLoc.lon}`} className="book-btn">Rapido</a>
                                 </div>
                             </div>
                             <p className="fare-disclaimer">* Fares are estimated based on Bengaluru standard rates. Surge may apply.</p>

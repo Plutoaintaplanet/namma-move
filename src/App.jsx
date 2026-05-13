@@ -37,10 +37,11 @@ export default function App() {
               setActiveJourney={setActiveJourney} 
               walletBalance={walletBalance} 
               setWalletBalance={setWalletBalance} 
+              darkMode={darkMode}
             />
           } />
           <Route path="/plan" element={<Navigate to="/" replace />} />
-          <Route path="/metro-live" element={<MetroLiveMap />} />
+          <Route path="/metro-live" element={<MetroLiveMap darkMode={darkMode} />} />
           <Route path="/wallet" element={
             <WalletPage balance={walletBalance} setBalance={setWalletBalance} />
           } />

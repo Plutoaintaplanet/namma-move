@@ -89,9 +89,9 @@ function buildDeepLink(scheme, origin, dest) {
 
   switch (scheme) {
     case "nammayatri":
-      return `https://nammayatri.in/link/ride?pickup=${oLat},${oLon}&drop=${dLat},${dLon}`;
+      return `nammayatri://ride?pickup_lat=${oLat}&pickup_lng=${oLon}&drop_lat=${dLat}&drop_lng=${dLon}`;
     case "rapido":
-      return `https://riders.rapido.bike/deeplink?pickup_lat=${oLat}&pickup_lng=${oLon}&drop_lat=${dLat}&drop_lng=${dLon}&pickup_address=${oLabel}&drop_address=${dLabel}`;
+      return `rapido://booking?pickup_lat=${oLat}&pickup_lng=${oLon}&drop_lat=${dLat}&drop_lng=${dLon}`;
     case "ola":
       return `https://book.olacabs.com/?serviceType=p2p&utm_source=namma_move&lat=${oLat}&lng=${oLon}&drop_lat=${dLat}&drop_lng=${dLon}`;
     case "uber":
@@ -104,7 +104,11 @@ function buildDeepLink(scheme, origin, dest) {
 function RideChip({ name, icon, fare, eta, type, origin, dest, scheme }) {
   const handleClick = () => {
     const url = buildDeepLink(scheme, origin, dest);
-    window.open(url, "_blank", "noopener");
+    if (url.startsWith("http")) {
+      window.open(url, "_blank", "noopener");
+    } else {
+      window.location.href = url;
+    }
   };
 
   return (
@@ -306,7 +310,7 @@ function RouteCard({ hit, setActiveJourney, walletBalance, setWalletBalance }) {
   );
 }
 
-export default function Landing({ activeJourney, setActiveJourney, walletBalance, setWalletBalance }) {
+export default function Landing({ activeJourney, setActiveJourney, walletBalance, setWalletBalance, darkMode }) {
   const [originLoc, setOriginLoc] = useState(null);
   const [destLoc, setDestLoc] = useState(null);
   const [originQuery, setOriginQuery] = useState("");
@@ -319,6 +323,11 @@ export default function Landing({ activeJourney, setActiveJourney, walletBalance
   const [flyTarget, setFlyTarget] = useState(null);
   const [trainPositions, setTrainPositions] = useState({});
   const [sheetOpen, setSheetOpen] = useState(false);
+
+  // Use theme-aware tile layer URL
+  const mapUrl = darkMode 
+    ? "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
+    : "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png";
 
   const { loading, searched, allRoutes, cabInfo, rides, error, search, reset } = useRouteSearch();
   const debounceRef = useRef({});
@@ -443,7 +452,7 @@ export default function Landing({ activeJourney, setActiveJourney, walletBalance
         <MapContainer center={BENGALURU} zoom={12} style={{ height: "100%", width: "100%" }} zoomControl={false}>
           <TileLayer
             attribution='&copy; <a href="https://www.openstreetmap.org/">OSM</a>'
-            url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
+            url={mapUrl}
           />
           <FlyTo center={flyTarget} />
           <MapClickHandler pinMode={pinMode} onOriginDrop={handleOriginDrop} onDestDrop={handleDestDrop} />

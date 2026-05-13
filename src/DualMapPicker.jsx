@@ -224,7 +224,7 @@ function RouteLine({ rid, coords, isDebug = false }) {
     );
 }
 
-export default function DualMapPicker({ stops = [], activeIds = new Set(), onOriginSelected, onDestinationSelected, initialOrigin }) {
+export default function DualMapPicker({ stops = [], activeIds = new Set(), onOriginSelected, onDestinationSelected, initialOrigin, darkMode }) {
     const [pinMode, setPinMode] = useState("destination");
     const [originPos, setOriginPos] = useState(null);
     const [destPos, setDestPos] = useState(null);
@@ -233,6 +233,11 @@ export default function DualMapPicker({ stops = [], activeIds = new Set(), onOri
     const [showAllRoutes, setShowAllRoutes] = useState(false);
     const [routeLines, setRouteLines] = useState([]);
     const [loadingRoutes, setLoadingRoutes] = useState(false);
+
+    // Use theme-aware tile layer URL
+    const mapUrl = darkMode 
+        ? "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
+        : "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png";
 
     useEffect(() => {
         if (!showAllRoutes) {
@@ -297,7 +302,7 @@ export default function DualMapPicker({ stops = [], activeIds = new Set(), onOri
             </p>
 
             <MapContainer center={BENGALURU_CENTER} zoom={12} style={{ width: "100%", height: "350px", borderRadius: "24px" }} zoomControl>
-                <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" attribution='&copy; OpenStreetMap' />
+                <TileLayer url={mapUrl} attribution='&copy; OpenStreetMap' />
                 <MapCentre center={mapCenter} />
                 <MapClickHandler pinMode={pinMode} onOriginDrop={handleOriginDrop} onDestDrop={handleDestDrop} setZoom={setZoom} />
 

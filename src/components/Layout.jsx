@@ -25,7 +25,6 @@ export default function Layout({ children, darkMode, setDarkMode, activeJourney,
 
     const navItems = [
         { path: '/', label: 'Explore', icon: '🔍' },
-        { path: '/metro-live', label: 'Metro', icon: '🚇' },
         { path: '/wallet', label: 'Wallet', icon: '💳' },
         { path: '/news', label: 'Updates', icon: '📰' }
     ];
@@ -36,10 +35,14 @@ export default function Layout({ children, darkMode, setDarkMode, activeJourney,
         <div className="app-shell" data-theme={darkMode ? 'dark' : 'light'}>
             <header className={`glass-nav ${isHome ? 'nav-over-map' : ''}`}>
                 <div className="nav-container">
-                    <Link to="/" className="brand">
-                        <img src="/logo.png" alt="Namma Move" className="logo" />
-                        <span className="brand-text">Namma Move</span>
-                    </Link>
+                    <div className="brand" style={{ cursor: 'pointer' }}>
+                        <img src="/logo.png" alt="Namma Move" className="logo" onClick={() => window.location.href = '/'} />
+                        <span className="brand-text">
+                            <span onClick={() => window.location.href = '/'}>Namma </span>
+                            <span onClick={() => window.location.href = '/metro-live'}>M</span>
+                            <span onClick={() => window.location.href = '/'}>ove</span>
+                        </span>
+                    </div>
 
                     <nav className="desktop-nav">
                         {navItems.map(item => (

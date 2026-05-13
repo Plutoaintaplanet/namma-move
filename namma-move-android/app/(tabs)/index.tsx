@@ -156,7 +156,7 @@ export default function PlannerScreen() {
     setSuggestLoading(true);
     try {
       const res = await fetch(
-        `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(text + ' Bangalore')}&format=json&limit=5&countrycodes=in`,
+        `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(text + ' Bangalore')}&format=json&limit=4&countrycodes=in`,
         { headers: { 'Accept-Language': 'en', 'User-Agent': 'NammaMove/1.0' } }
       );
       const data = await res.json();
@@ -236,6 +236,7 @@ export default function PlannerScreen() {
     var oIcon=L.divIcon({className:'',html:'<div style="background:${paperTheme.colors.primary};width:14px;height:14px;border-radius:50%;border:2px solid white;box-shadow:0 2px 8px rgba(0,0,0,0.2);"></div>',iconSize:[14,14],iconAnchor:[7,7]});
     var userMarker = L.marker([${region.latitude},${region.longitude}],{icon:oIcon}).addTo(map);
     var routeLayer = L.layerGroup().addTo(map);
+    var trainLayer = L.layerGroup().addTo(map);
     ${destCoords ? `
       var dIcon=L.divIcon({className:'',html:'<div style="background:${paperTheme.colors.secondary};width:16px;height:16px;border-radius:4px;border:2px solid white;box-shadow:0 2px 8px rgba(0,0,0,0.2);transform:rotate(45deg);"></div>',iconSize:[16,16],iconAnchor:[8,8]});
       L.marker([${destCoords.lat},${destCoords.lon}],{icon:dIcon}).addTo(map);
@@ -268,6 +269,38 @@ export default function PlannerScreen() {
       webviewRef.current.injectJavaScript(`if (typeof routeLayer !== 'undefined') { routeLayer.clearLayers(); } true;`);
     }
   }, [results]);
+
+  // Live trains polling — update existing markers instead of recreating them for smooth motion
+  useEffect(() => {
+    let intervalId: NodeJS.Timeout | null = null;
+    const fetchTrains = async () => {
+      try {
+        const res = await fetch(`${API_URL}/live?type=metro`);
+        const data = await res.json();
+        
+        if (webviewRef.current && data) {
+          let js = `if (typeof window.trainMarkers === 'undefined') window.trainMarkers = {}; if (typeof trainLayer === 'undefined') var trainLayer = L.layerGroup().addTo(map); var seen = {};`;
+          const colors: Record<string, string> = { 'M-PL': '#9B7BB4', 'M-GL': '#64AA78', 'M-YL': '#C8AA5A' };
+          
+          Object.keys(data).forEach(lineId => {
+            const trains = data[lineId] || [];
+            const color = colors[lineId] || '#9B7BB4';
+            
+            trains.forEach((t: any) => {
+              const id = t.id || `${lineId}_${t.lat}_${t.lon}`;
+              js += `\n(function(){ var id='${"${id}"}'; var lat=${"${t.lat}"}, lon=${"${t.lon}"}; seen[id]=true; if (window.trainMarkers && window.trainMarkers[id]) { window.trainMarkers[id].setLatLng([lat, lon]); } else { var iconHtml = '<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 28 28"><circle cx="14" cy="14" r="12" fill="${color}" fill-opacity="0.95" stroke="rgba(255,255,255,0.6)" stroke-width="1.5"/><text x="14" y="19" text-anchor="middle" font-size="12" fill="white">🚇</text></svg>'; var tIcon = L.divIcon({ html: iconHtml, className: "", iconSize: [28, 28], iconAnchor: [14, 14] }); window.trainMarkers[id] = L.marker([lat, lon], {icon: tIcon}).addTo(trainLayer); } })();`;
+            });
+          });
+          js += `\nfor (var k in window.trainMarkers){ if (!seen[k]) { try{ trainLayer.removeLayer(window.trainMarkers[k]); } catch(e){} delete window.trainMarkers[k]; } }\ntrue;`;
+          webviewRef.current.injectJavaScript(js);
+        }
+      } catch (e) {}
+    };
+
+    fetchTrains();
+    intervalId = setInterval(fetchTrains, 10000);
+    return () => { if (intervalId) clearInterval(intervalId); };
+  }, []);
 
   return (
     <View style={[styles.container, { backgroundColor: paperTheme.colors.background }]}>
@@ -406,17 +439,23 @@ export default function PlannerScreen() {
                     const dynamicTitle = route.labels?.length > 0 
                                          ? route.labels.join(" · ") 
                                          : `Option ${idx + 1}`;
-                    return <JourneyCard key={idx} data={route} title={dynamicTitle} />;
+                    return (
+                      <TouchableOpacity key={idx} onPress={() => { setSelectedRouteIndex(idx); }}>
+                        <View style={ idx === selectedRouteIndex ? { borderWidth: 2, borderColor: paperTheme.colors.primary, borderRadius: 12, padding: 8 } : { padding: 0 } }>
+                          <JourneyCard data={route} title={dynamicTitle} />
+                        </View>
+                      </TouchableOpacity>
+                    );
                   })}
                 </>
               )}
-              {results.cab && (
+              {results.rides && (
                 <>
                   <View style={[styles.sectionHeader, { marginTop: 16 }]}>
                     <MaterialCommunityIcons name="car-multiple" size={18} color={paperTheme.colors.tertiary} />
                     <Text variant="titleMedium" style={{ marginLeft: 8 }}>Cabs & Autos</Text>
                   </View>
-                  <CabCard cab={results.cab} />
+                  <CabCard rides={results.rides} origin={fromCoords} dest={destCoords} />
                 </>
               )}
             </Animated.View>
