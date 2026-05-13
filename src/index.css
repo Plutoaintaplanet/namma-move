@@ -1,5 +1,6 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
 @import "tailwindcss";
-@import url('https://api.fontshare.com/v2/css?f[]=satoshi@900,700,500,400,300&display=swap');
+
 
 :root {
   --primary: #2D5F5D;
@@ -30,11 +31,12 @@
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
 body {
-  font-family: 'Satoshi', sans-serif;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
   background: var(--bg);
   color: var(--text);
   overflow-x: hidden;
   transition: background 0.3s;
+  -webkit-font-smoothing: antialiased;
 }
 
 /* ── App Shell & Layout ────────────────────────────────────────────────── */
@@ -49,9 +51,19 @@ body {
   top: 0;
   z-index: 100;
   background: var(--glass);
-  backdrop-filter: blur(12px);
+  backdrop-filter: blur(16px);
   border-bottom: 1px solid var(--border);
-  padding: 1rem 0;
+  padding: 0.75rem 0;
+  transition: background 0.3s;
+}
+
+.glass-nav.nav-over-map {
+  position: fixed;
+  left: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(255,255,255,0.06);
 }
 
 .nav-container {
@@ -110,8 +122,21 @@ body {
   max-width: 1200px;
   margin: 0 auto;
   width: 100%;
-  padding: 2rem 1.5rem 6rem;
+  padding: 1.5rem 1.5rem 5rem;
 }
+
+.main-content.main-map {
+  max-width: 100%;
+  padding: 0;
+  margin: 0;
+  position: fixed;
+  inset: 0;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+  z-index: 1;
+}
+
 
 /* ── Landing Page ────────────────────────────────────────────────────────── */
 .hero-section {
@@ -1214,19 +1239,25 @@ body {
 
 /* -- Active Journey Overlay ------------------------------------------- */
 .active-journey-overlay {
-  background: var(--surface);
-  border: 2px solid var(--primary);
-  border-radius: 28px;
-  padding: 1.5rem;
-  margin-bottom: 2rem;
-  box-shadow: 0 20px 50px rgba(45, 95, 93, 0.2);
+  position: fixed;
+  top: 60px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 50;
+  width: min(520px, calc(100% - 24px));
+  background: var(--glass);
+  backdrop-filter: blur(24px);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 18px;
+  padding: 14px 16px;
+  box-shadow: 0 12px 48px rgba(0,0,0,0.45), 0 0 0 1px rgba(255,255,255,0.04);
 }
 
 .journey-status-bar {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 1.5rem;
+  margin-bottom: 10px;
 }
 
 .status-left { display: flex; align-items: center; gap: 0.75rem; }
@@ -1252,18 +1283,18 @@ body {
 .journey-summary-row {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 1rem;
-  padding: 1rem;
-  background: var(--bg);
-  border-radius: 20px;
-  margin-bottom: 1.5rem;
+  gap: 8px;
+  padding: 8px 10px;
+  background: rgba(255,255,255,0.03);
+  border-radius: 10px;
+  margin-bottom: 10px;
 }
 
 .summary-item { display: flex; flex-direction: column; gap: 4px; }
 .summary-item span { font-size: 0.7rem; color: var(--text-muted); font-weight: 700; text-transform: uppercase; }
 .summary-item strong { font-size: 0.95rem; color: var(--text); }
 
-.active-tickets-container { margin-bottom: 1.5rem; }
+.active-tickets-container { margin-bottom: 10px; }
 .ticket-scroll {
   display: flex;
   gap: 1rem;
@@ -1318,7 +1349,7 @@ body {
 .ticket-route-info strong { font-size: 0.9rem; }
 .ticket-route-info span { font-size: 0.7rem; color: var(--text-muted); }
 
-.journey-progress { margin-top: 1rem; }
+.journey-progress { margin-top: 8px; }
 .progress-track {
   height: 8px;
   background: var(--bg);
@@ -1624,5 +1655,1129 @@ body {
   display: flex;
   justify-content: center;
   gap: 0.5rem;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   METRO LIVE TRACKER PAGE
+   ═══════════════════════════════════════════════════════════════ */
+
+/* -- Page Shell ------------------------------------------------ */
+.metro-live-page {
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 120px);
+  min-height: 600px;
+  max-height: 100%;
+  overflow: hidden;
+}
+
+.metro-live-header {
+  padding: 1rem 1.5rem 0.75rem;
+  flex-shrink: 0;
+}
+
+.metro-live-title-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+}
+
+.metro-live-title {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 1.5rem;
+  font-weight: 900;
+  margin: 0 0 0.25rem;
+  background: linear-gradient(135deg, #9B59B6, #27AE60, #F39C12);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.metro-live-sub {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  font-weight: 600;
+  margin: 0;
+}
+
+.metro-clock {
+  font-size: 1.1rem;
+  font-weight: 900;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.05em;
+  color: var(--primary);
+  background: var(--primary-light);
+  padding: 0.4rem 0.8rem;
+  border-radius: 10px;
+}
+
+/* Pulsing live dot */
+.live-pulse-dot {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #10b981;
+  animation: livePulse 1.5s ease-in-out infinite;
+  flex-shrink: 0;
+}
+
+@keyframes livePulse {
+  0%, 100% { transform: scale(1); opacity: 1; box-shadow: 0 0 0 0 rgba(16,185,129,0.5); }
+  50% { transform: scale(1.1); opacity: 0.9; box-shadow: 0 0 0 6px rgba(16,185,129,0); }
+}
+
+/* -- Line Selector Pills --------------------------------------- */
+.metro-line-pills {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.metro-pill {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.35rem 0.9rem;
+  border-radius: 99px;
+  border: 1.5px solid var(--border);
+  background: var(--surface);
+  font-size: 0.8rem;
+  font-weight: 700;
+  cursor: pointer;
+  color: var(--text-muted);
+  transition: all 0.2s;
+  font-family: inherit;
+}
+
+.metro-pill.active,
+.metro-pill:hover {
+  border-color: var(--pill-color, var(--primary));
+  color: var(--pill-color, var(--primary));
+  background: color-mix(in srgb, var(--pill-color, var(--primary)) 10%, transparent);
+}
+
+.pill-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+/* -- Main Body Layout ------------------------------------------ */
+.metro-live-body {
+  display: flex;
+  flex: 1;
+  gap: 0;
+  overflow: hidden;
+}
+
+.metro-live-sidebar {
+  width: 280px;
+  min-width: 250px;
+  flex-shrink: 0;
+  overflow-y: auto;
+  padding: 1rem;
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  scrollbar-width: thin;
+}
+
+.metro-live-map-wrap {
+  flex: 1;
+  position: relative;
+  min-width: 0;
+}
+
+.metro-live-map-wrap .leaflet-container {
+  height: 100%;
+  width: 100%;
+  border-radius: 0;
+  border: none;
+}
+
+/* -- Sidebar Sections ------------------------------------------ */
+.sidebar-section {
+  background: var(--surface);
+  border-radius: 16px;
+  border: 1px solid var(--border);
+  padding: 1rem;
+}
+
+.sidebar-section-title {
+  font-size: 0.75rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+  margin: 0 0 0.75rem;
+}
+
+/* -- Countdown Chips ------------------------------------------- */
+.metro-countdown-chip {
+  border: 1.5px solid var(--border);
+  border-radius: 12px;
+  padding: 0.6rem 0.75rem;
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: var(--bg);
+}
+
+.metro-countdown-chip:last-child { margin-bottom: 0; }
+
+.countdown-line-name {
+  font-size: 0.75rem;
+  font-weight: 800;
+  flex: 1;
+}
+
+.countdown-time {
+  display: flex;
+  align-items: baseline;
+  gap: 0;
+  font-variant-numeric: tabular-nums;
+}
+
+.countdown-num {
+  font-size: 1.1rem;
+  font-weight: 900;
+}
+
+.countdown-unit {
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: var(--text-muted);
+}
+
+.countdown-label {
+  font-size: 0.6rem;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+.now-badge {
+  font-size: 0.75rem;
+  font-weight: 800;
+  color: #10b981;
+  animation: livePulse 1s infinite;
+}
+
+/* -- Active Trains Row ----------------------------------------- */
+.active-trains-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.4rem 0;
+  font-size: 0.85rem;
+  font-weight: 600;
+  border-bottom: 1px solid var(--border);
+}
+
+.active-trains-row:last-child { border-bottom: none; }
+
+.atrain-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.atrain-count {
+  margin-left: auto;
+  font-weight: 800;
+}
+
+/* -- Simulation Badge ------------------------------------------ */
+.simulation-badge {
+  display: flex;
+  gap: 0.4rem;
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  font-weight: 600;
+  background: var(--bg);
+  border-radius: 10px;
+  padding: 0.6rem 0.75rem;
+  border: 1px solid var(--border);
+  line-height: 1.4;
+  align-items: flex-start;
+}
+
+/* -- Leave-By Panel -------------------------------------------- */
+.leave-by-panel {
+  border: 2px solid var(--border);
+  border-radius: 14px;
+  padding: 0.85rem;
+  background: var(--bg);
+  transition: border-color 0.3s;
+}
+
+.leave-by-panel.empty {
+  text-align: center;
+  padding: 1.25rem;
+  color: var(--text-muted);
+}
+
+.leave-by-icon {
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.leave-by-panel.empty p {
+  font-size: 0.8rem;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.leave-by-header {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-bottom: 0.75rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.leave-by-station {
+  font-size: 0.85rem;
+  font-weight: 800;
+}
+
+.leave-by-line {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+.leave-by-walk-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+}
+
+.walk-stepper {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.walk-stepper button {
+  width: 24px;
+  height: 24px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 900;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  color: var(--text);
+  transition: all 0.15s;
+  font-family: inherit;
+}
+
+.walk-stepper button:hover {
+  background: var(--primary);
+  color: white;
+  border-color: var(--primary);
+}
+
+.walk-stepper span {
+  font-size: 0.8rem;
+  font-weight: 800;
+  min-width: 50px;
+  text-align: center;
+}
+
+.leave-by-result {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: var(--surface);
+  border-radius: 10px;
+  padding: 0.6rem;
+}
+
+.leave-by-result.late {
+  background: #fef2f2;
+  border: 1px solid rgba(220, 38, 38, 0.2);
+  color: #dc2626;
+  gap: 0.75rem;
+  align-items: flex-start;
+}
+
+.leave-by-result.late strong { display: block; margin-bottom: 2px; font-size: 0.85rem; }
+.leave-by-result.late p { font-size: 0.78rem; margin: 0; color: #b91c1c; }
+.late-icon { font-size: 1.25rem; flex-shrink: 0; }
+
+.leave-by-time-block {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.lbt-label {
+  font-size: 0.62rem;
+  color: var(--text-muted);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.lbt-time {
+  font-size: 1rem;
+  font-weight: 900;
+  color: var(--primary);
+  font-variant-numeric: tabular-nums;
+}
+
+.leave-by-arrow {
+  font-size: 1.1rem;
+  color: var(--text-muted);
+  flex-shrink: 0;
+}
+
+.leave-by-note {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  margin: 0.5rem 0 0;
+  text-align: center;
+  font-weight: 600;
+}
+
+/* -- Train marker icon ----------------------------------------- */
+.train-marker-icon {
+  background: none !important;
+  border: none !important;
+}
+
+/* -- Popup styling --------------------------------------------- */
+.metro-popup .leaflet-popup-content-wrapper {
+  border-radius: 14px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+  background: var(--surface, #fff);
+  border: 1px solid rgba(255,255,255,0.1);
+}
+
+.metro-popup-inner {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 140px;
+}
+
+.metro-popup-inner strong {
+  font-size: 0.9rem;
+  font-weight: 800;
+}
+
+.popup-line {
+  font-size: 0.75rem;
+  color: #666;
+}
+
+.popup-eta {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #10b981;
+}
+
+.popup-leave-btn {
+  margin-top: 4px;
+  background: var(--primary, #2D5F5D);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 5px 10px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+/* -- Service Closed Overlay ------------------------------------ */
+.service-closed-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 999;
+  background: rgba(0,0,0,0.7);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  gap: 0.5rem;
+  font-size: 1.2rem;
+  font-weight: 800;
+}
+
+.service-closed-overlay p {
+  font-size: 0.85rem;
+  font-weight: 400;
+  opacity: 0.8;
+  margin: 0;
+}
+
+/* -- Schedules Page Countdown ---------------------------------- */
+.sched-countdown-wrap {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.5rem 0;
+}
+
+.sched-countdown-inner {
+  display: flex;
+  align-items: baseline;
+  gap: 2px;
+  border: 2px solid;
+  border-radius: 10px;
+  padding: 0.3rem 0.75rem;
+  background: var(--bg);
+  font-variant-numeric: tabular-nums;
+}
+
+.sched-cd-num {
+  font-size: 1.4rem;
+  font-weight: 900;
+}
+
+.sched-cd-sep {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  font-weight: 700;
+}
+
+.sched-cd-label {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+.sched-departing {
+  font-size: 0.85rem;
+  font-weight: 800;
+  animation: livePulse 0.8s infinite;
+}
+
+/* -- Responsive ------------------------------------------------ */
+@media (max-width: 768px) {
+  .metro-live-page {
+    height: auto;
+    overflow: visible;
+  }
+
+  .metro-live-body {
+    flex-direction: column;
+  }
+
+  .metro-live-sidebar {
+    width: 100%;
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+    flex-direction: row;
+    flex-wrap: wrap;
+    padding: 0.75rem;
+  }
+
+  .sidebar-section {
+    flex: 1;
+    min-width: 200px;
+  }
+
+  .metro-live-map-wrap {
+    height: 380px;
+    width: 100%;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   NEW MAP-FIRST HOME PAGE
+   ═══════════════════════════════════════════════════════════════ */
+
+.hm-page {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.hm-map-wrap {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.hm-map-wrap .leaflet-container {
+  height: 100% !important;
+  width: 100% !important;
+}
+
+/* -- Ride-hailing floating bar -------------------------------- */
+.hm-rides-bar {
+  position: absolute;
+  bottom: 16px;
+  left: 12px;
+  z-index: 9;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: 200px;
+}
+
+.hm-rides-label {
+  font-size: 0.7rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.6);
+  padding-left: 4px;
+  margin-bottom: 2px;
+}
+
+.hm-ride-chip {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 14px;
+  background: var(--glass);
+  backdrop-filter: blur(20px);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.35);
+  cursor: pointer;
+  font-family: inherit;
+  color: rgba(255,255,255,0.9);
+  transition: all 0.2s;
+}
+
+.hm-ride-chip:hover {
+  border-color: rgba(255,255,255,0.2);
+  background: rgba(255,255,255,0.12);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 28px rgba(0,0,0,0.5);
+}
+
+.hm-ride-icon {
+  font-size: 1.4rem;
+  flex-shrink: 0;
+}
+
+.hm-ride-info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  flex: 1;
+  min-width: 0;
+}
+
+.hm-ride-name {
+  font-size: 0.8rem;
+  font-weight: 800;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.hm-ride-type {
+  font-size: 0.65rem;
+  color: rgba(255,255,255,0.5);
+  font-weight: 600;
+  margin-top: 1px;
+}
+
+.hm-ride-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  flex-shrink: 0;
+}
+
+.hm-ride-fare {
+  font-size: 0.9rem;
+  font-weight: 800;
+  color: rgba(255,255,255,0.95);
+}
+
+.hm-ride-eta {
+  font-size: 0.65rem;
+  color: rgba(255,255,255,0.5);
+  font-weight: 600;
+  margin-top: 1px;
+}
+
+/* -- Floating search card ------------------------------------- */
+.hm-search-card {
+  position: absolute;
+  top: 64px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  width: min(420px, calc(100% - 24px));
+  background: var(--glass);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 16px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+}
+
+.hm-search-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 4px;
+  position: relative;
+}
+
+.hm-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.hm-search-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--text, #fff);
+  font-size: 0.85rem;
+  font-weight: 500;
+  font-family: inherit;
+  padding: 10px 0;
+}
+
+.hm-search-input::placeholder {
+  color: rgba(255,255,255,0.5) !important;
+  opacity: 1 !important;
+}
+
+.hm-gps-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  border: 1px solid rgba(255,255,255,0.1);
+  background: transparent;
+  color: rgba(255,255,255,0.6);
+  cursor: pointer;
+  transition: all 0.15s;
+  flex-shrink: 0;
+}
+
+.hm-gps-btn:hover {
+  background: rgba(255,255,255,0.1);
+  color: #4ade80;
+}
+
+.hm-search-divider {
+  height: 1px;
+  background: rgba(255,255,255,0.08);
+  margin: 0 32px;
+}
+
+.hm-results {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: 20;
+  list-style: none;
+  background: var(--surface, #0a1f1e);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  margin-top: 4px;
+  max-height: 200px;
+  overflow-y: auto;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+}
+
+.hm-results li {
+  padding: 10px 12px;
+  font-size: 0.8rem;
+  color: var(--text);
+  cursor: pointer;
+  border-bottom: 1px solid var(--border);
+  transition: background 0.1s;
+}
+
+.hm-results li:last-child { border-bottom: none; }
+.hm-results li:hover { background: rgba(255,255,255,0.05); }
+
+/* -- Mini countdown strip ------------------------------------- */
+.hm-cd-strip {
+  display: flex;
+  gap: 6px;
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid rgba(255,255,255,0.06);
+}
+
+.hm-mini-cd {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 8px;
+  border-radius: 8px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.06);
+  font-variant-numeric: tabular-nums;
+}
+
+.hm-cd-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.hm-cd-name {
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: rgba(255,255,255,0.5);
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.hm-cd-time {
+  font-size: 0.75rem;
+  font-weight: 800;
+  color: rgba(255,255,255,0.85);
+}
+
+/* -- Floating route panel (replaces full-width bottom sheet) --- */
+.hm-bottom-sheet {
+  position: absolute;
+  bottom: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  width: min(460px, calc(100% - 24px));
+  background: var(--glass);
+  backdrop-filter: blur(24px);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 18px;
+  max-height: 50vh;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  box-shadow: 0 12px 48px rgba(0,0,0,0.45), 0 0 0 1px rgba(255,255,255,0.04);
+}
+
+.hm-sheet-handle {
+  display: flex;
+  justify-content: center;
+  padding: 8px 0 4px;
+  cursor: pointer;
+}
+
+.hm-handle-bar {
+  width: 32px;
+  height: 3px;
+  border-radius: 3px;
+  background: rgba(255,255,255,0.18);
+}
+
+.hm-sheet-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 1.5rem;
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.hm-loader {
+  width: 24px;
+  height: 24px;
+  border: 2.5px solid rgba(255,255,255,0.1);
+  border-top-color: var(--primary-vibrant);
+  border-radius: 50%;
+  animation: hmSpin 0.7s linear infinite;
+}
+
+@keyframes hmSpin {
+  to { transform: rotate(360deg); }
+}
+
+.hm-sheet-error {
+  padding: 1.25rem;
+  text-align: center;
+  color: #f87171;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.hm-sheet-content {
+  padding: 0 14px 14px;
+}
+
+.hm-sheet-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 0 8px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--text-muted);
+}
+
+.hm-cab-hint {
+  font-size: 0.65rem;
+  color: rgba(255,255,255,0.4);
+  background: rgba(255,255,255,0.05);
+  padding: 2px 7px;
+  border-radius: 5px;
+}
+
+.hm-route-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+/* -- Route card ----------------------------------------------- */
+.hm-route-card {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 12px;
+  padding: 10px 12px;
+  transition: border-color 0.2s, background 0.2s;
+}
+
+.hm-route-card:hover {
+  border-color: rgba(255,255,255,0.15);
+  background: rgba(255,255,255,0.06);
+}
+
+.hm-route-card.metro {
+  border-left: 3px solid rgba(156, 120, 180, 0.4);
+}
+
+.hm-rc-labels {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 4px;
+}
+
+.hm-rc-label {
+  font-size: 0.55rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 1px 6px;
+  border-radius: 4px;
+  background: rgba(45, 95, 93, 0.2);
+  color: var(--primary-vibrant);
+}
+
+.hm-rc-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.hm-rc-mode-strip {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  flex-wrap: wrap;
+}
+
+.hm-rc-walk {
+  font-size: 0.65rem;
+  color: rgba(255,255,255,0.4);
+  font-weight: 600;
+}
+
+.hm-rc-mode {
+  font-size: 0.65rem;
+  font-weight: 700;
+  padding: 1px 6px;
+  border-radius: 5px;
+  background: rgba(255,255,255,0.06);
+  color: rgba(255,255,255,0.75);
+}
+
+.hm-rc-mode.metro {
+  background: rgba(156, 120, 180, 0.12);
+  color: #c4a5e0;
+}
+
+.hm-rc-mode.bus {
+  background: rgba(100, 170, 120, 0.1);
+  color: #8fd4a0;
+}
+
+.hm-rc-summary {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0;
+  flex-shrink: 0;
+}
+
+.hm-rc-total {
+  font-size: 0.85rem;
+  font-weight: 800;
+  line-height: 1.1;
+}
+
+.hm-rc-fare {
+  font-size: 0.65rem;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+/* -- Leave-by chip -------------------------------------------- */
+.hm-rc-leaveby {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-top: 6px;
+  padding: 4px 8px;
+  border-radius: 6px;
+  background: rgba(156, 120, 180, 0.06);
+  border: 1px solid rgba(156, 120, 180, 0.12);
+  font-size: 0.65rem;
+  font-weight: 600;
+  color: #c4a5e0;
+}
+
+.hm-rc-leaveby svg {
+  flex-shrink: 0;
+  stroke: #c4a5e0;
+  width: 12px;
+  height: 12px;
+}
+
+/* -- Expandable details --------------------------------------- */
+.hm-rc-details {
+  margin-top: 4px;
+}
+
+.hm-rc-details summary {
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 3px 0;
+  user-select: none;
+}
+
+.hm-rc-timeline {
+  padding: 4px 0 0 6px;
+  border-left: 2px solid rgba(255,255,255,0.06);
+  margin-left: 3px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.hm-tl-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+  font-size: 0.68rem;
+  font-weight: 500;
+  color: rgba(255,255,255,0.65);
+  position: relative;
+}
+
+.hm-tl-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  margin-top: 3px;
+  flex-shrink: 0;
+  margin-left: -8px;
+}
+
+.hm-tl-dot.walk { background: rgba(255,255,255,0.25); }
+.hm-tl-dot.bus { background: rgba(100, 170, 120, 0.6); }
+.hm-tl-dot.metro { background: rgba(156, 120, 180, 0.6); }
+
+.hm-tl-item strong {
+  font-weight: 700;
+  color: rgba(255,255,255,0.85);
+}
+
+/* -- Go button ------------------------------------------------ */
+.hm-rc-go {
+  width: 100%;
+  margin-top: 6px;
+  padding: 7px;
+  border: none;
+  border-radius: 8px;
+  background: var(--primary);
+  color: white;
+  font-size: 0.72rem;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: inherit;
+  transition: all 0.15s;
+}
+
+.hm-rc-go:hover {
+  filter: brightness(1.15);
+  transform: translateY(-1px);
+}
+
+/* -- Responsive ----------------------------------------------- */
+@media (max-width: 768px) {
+  .hm-search-card {
+    width: calc(100% - 16px);
+    top: 56px;
+    border-radius: 14px;
+    padding: 10px;
+  }
+
+  .hm-bottom-sheet {
+    width: calc(100% - 16px);
+    bottom: 12px;
+    max-height: 45vh;
+  }
+
+  .hm-rides-bar {
+    bottom: auto;
+    top: 56px;
+    left: 8px;
+    width: 170px;
+  }
+
+  .hm-cd-strip {
+    gap: 4px;
+  }
+
+  .hm-mini-cd {
+    padding: 4px 6px;
+  }
 }
 

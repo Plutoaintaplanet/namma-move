@@ -1,11 +1,10 @@
 import { useState, useEffect } from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Layout from "./components/Layout";
 import Landing from "./pages/Landing";
-import Planner from "./pages/Planner";
-import NewsPage from "./NewsPage";
+import MetroLiveMap from "./pages/MetroLiveMap";
 import SchedulesPage from "./SchedulesPage";
-import FavoritesPage from "./pages/FavoritesPage";
+import NewsPage from "./NewsPage";
 import WalletPage from "./pages/WalletPage";
 import { Preloader } from "./components/ui/preloader";
 
@@ -32,23 +31,21 @@ export default function App() {
         setActiveJourney={setActiveJourney}
       >
         <Routes>
-          <Route path="/" element={<Landing />} />
-          <Route path="/plan" element={
-            <Planner 
+          <Route path="/" element={
+            <Landing 
+              activeJourney={activeJourney}
               setActiveJourney={setActiveJourney} 
               walletBalance={walletBalance} 
               setWalletBalance={setWalletBalance} 
             />
           } />
+          <Route path="/plan" element={<Navigate to="/" replace />} />
+          <Route path="/metro-live" element={<MetroLiveMap />} />
           <Route path="/wallet" element={
-            <WalletPage 
-              balance={walletBalance} 
-              setBalance={setWalletBalance} 
-            />
+            <WalletPage balance={walletBalance} setBalance={setWalletBalance} />
           } />
-          <Route path="/news" element={<NewsPage darkMode={darkMode} />} />
           <Route path="/schedules" element={<SchedulesPage />} />
-          <Route path="/favorites" element={<FavoritesPage />} />
+          <Route path="/news" element={<NewsPage darkMode={darkMode} />} />
         </Routes>
       </Layout>
     </BrowserRouter>

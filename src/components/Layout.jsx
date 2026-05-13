@@ -19,21 +19,22 @@ export default function Layout({ children, darkMode, setDarkMode, activeJourney,
             }
         };
         checkHealth();
-        const interval = setInterval(checkHealth, 30000); // Check every 30s
+        const interval = setInterval(checkHealth, 30000);
         return () => clearInterval(interval);
     }, []);
 
     const navItems = [
-        { path: '/', label: 'Home', icon: '🏠' },
-        { path: '/plan', label: 'Plan', icon: '🗺️' },
+        { path: '/', label: 'Explore', icon: '🔍' },
+        { path: '/metro-live', label: 'Metro', icon: '🚇' },
         { path: '/wallet', label: 'Wallet', icon: '💳' },
-        { path: '/schedules', label: 'Schedules', icon: '🕒' },
-        { path: '/news', label: 'News', icon: '📰' }
+        { path: '/news', label: 'Updates', icon: '📰' }
     ];
+
+    const isHome = location.pathname === '/' || location.pathname === '/plan';
 
     return (
         <div className="app-shell" data-theme={darkMode ? 'dark' : 'light'}>
-            <header className="glass-nav">
+            <header className={`glass-nav ${isHome ? 'nav-over-map' : ''}`}>
                 <div className="nav-container">
                     <Link to="/" className="brand">
                         <img src="/logo.png" alt="Namma Move" className="logo" />
@@ -45,7 +46,7 @@ export default function Layout({ children, darkMode, setDarkMode, activeJourney,
                             <Link 
                                 key={item.path} 
                                 to={item.path} 
-                                className={`nav-link ${location.pathname === item.path ? 'active' : ''}`}
+                                className={`nav-link ${location.pathname === item.path || (item.path === '/' && location.pathname === '/plan') ? 'active' : ''}`}
                             >
                                 {item.label}
                             </Link>
@@ -64,15 +65,16 @@ export default function Layout({ children, darkMode, setDarkMode, activeJourney,
                 </div>
             </header>
 
-            <main className="main-content">
+            <main className={`main-content ${isHome ? 'main-map' : ''}`}>
                 {activeJourney && <ActiveJourney journey={activeJourney} onEnd={setActiveJourney} />}
                 <AnimatePresence mode="wait">
                     <motion.div
                         key={location.pathname}
-                        initial={{ opacity: 0, y: 10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: -10 }}
-                        transition={{ duration: 0.2 }}
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: 0.15 }}
+                        style={isHome ? { height: '100%' } : {}}
                     >
                         {children}
                     </motion.div>
@@ -84,7 +86,7 @@ export default function Layout({ children, darkMode, setDarkMode, activeJourney,
                     <Link 
                         key={item.path} 
                         to={item.path} 
-                        className={`tab-item ${location.pathname === item.path ? 'active' : ''}`}
+                        className={`tab-item ${location.pathname === item.path || (item.path === '/' && location.pathname === '/plan') ? 'active' : ''}`}
                     >
                         <span className="tab-icon">{item.icon}</span>
                         <span className="tab-label">{item.label}</span>

@@ -306,30 +306,40 @@ router.get("/", async (req, res) => {
                 seen.add(key);
                 return true;
             })
-            .sort((a, b) => a.totalMins - b.totalMins);
+            // Boost metro & combo routes: subtract 8min from their sort score
+            // People prefer metro over BMTC, so give it priority
+            .sort((a, b) => {
+                const aScore = a.totalMins - (a.cls === 'metro' ? 8 : a.cls === 'combo' ? 5 : 0);
+                const bScore = b.totalMins - (b.cls === 'metro' ? 8 : b.cls === 'combo' ? 5 : 0);
+                return aScore - bScore;
+            });
 
         // Label routes
         if (deduped.length > 0) {
-            deduped[0].labels.push("Fastest");
+            deduped[0].labels.push("Recommended");
 
             const bestMetro = deduped.find(r => r.cls === 'metro');
-            if (bestMetro && !bestMetro.labels.includes("Fastest")) bestMetro.labels.push("Only Metro");
+            if (bestMetro && !bestMetro.labels.includes("Recommended")) bestMetro.labels.push("Metro");
 
             const bestCombo = deduped.find(r => r.cls === 'combo');
-            if (bestCombo && !bestCombo.labels.includes("Fastest")) bestCombo.labels.push("Bus + Metro");
+            if (bestCombo && !bestCombo.labels.includes("Recommended")) bestCombo.labels.push("Bus + Metro");
 
             const bestBus = deduped.find(r => r.cls === 'bus');
-            if (bestBus && !bestBus.labels.includes("Fastest")) bestBus.labels.push("Only BMTC");
-
-            const leastEffort = [...deduped].sort((a, b) =>
-                (a.interchanges + a.walkingMins) - (b.interchanges + b.walkingMins))[0];
-            if (leastEffort && !leastEffort.labels.includes("Fastest"))
-                leastEffort.labels.push("Effort Efficient");
+            if (bestBus && !bestBus.labels.includes("Recommended")) bestBus.labels.push("BMTC");
         }
 
+        // Ride-hailing deep link info
+        const rides = {
+            uber:       { name: "Uber",         fare: Math.round(110 + distKm * 20), eta: "3-6 min" },
+            ola:        { name: "Ola",         fare: cabFare, eta: "4-7 min" },
+            rapido:     { name: "Rapido",      fare: Math.round(20 + distKm * 10), eta: "2-4 min" },
+            nammayatri: { name: "Namma Yatri", fare: autoFare, eta: "3-5 min" },
+        };
+
         res.json({
-            routes: deduped.slice(0, 10),
-            cab:    { km: distKm.toFixed(1), cabFare, autoFare, bikeFare: Math.round(20 + distKm * 10) }
+            routes: deduped.slice(0, 4),
+            cab:    { km: distKm.toFixed(1), cabFare, autoFare, bikeFare: Math.round(20 + distKm * 10) },
+            rides
         });
 
     } catch (e) {

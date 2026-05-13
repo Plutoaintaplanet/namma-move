@@ -1,0 +1,815 @@
+{
+  "generated": "2026-05-13T06:15:40.962Z",
+  "summary": {
+    "total": 134,
+    "passed": 134,
+    "failed": 0,
+    "passRate": "100.0%"
+  },
+  "tests": [
+    {
+      "testId": 1,
+      "description": "Purple Line peak freq at 8:00",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "testId": 2,
+      "description": "Purple Line peak freq at 9:00",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "testId": 3,
+      "description": "Purple Line off-peak freq at 6:00",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "testId": 4,
+      "description": "Purple Line off-peak freq at 7:00",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "testId": 5,
+      "description": "Green Line peak freq at 8:00",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "testId": 6,
+      "description": "Green Line peak freq at 9:00",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "testId": 7,
+      "description": "Green Line off-peak freq at 6:00",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "testId": 8,
+      "description": "Green Line off-peak freq at 7:00",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "testId": 9,
+      "description": "Yellow Line peak freq at 8:00",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "testId": 10,
+      "description": "Yellow Line peak freq at 9:00",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "testId": 11,
+      "description": "Yellow Line off-peak freq at 6:00",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "testId": 12,
+      "description": "Yellow Line off-peak freq at 7:00",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "testId": 5,
+      "description": "Service starts at 05:00 (no trains before)",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "testId": 6,
+      "description": "Service active at 05:00",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "testId": 7,
+      "description": "Service ends at 23:00",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "testId": 8,
+      "description": "Service active at 22:59",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "testId": 17,
+      "description": "Purple Line has reasonable train count at noon",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "testId": 18,
+      "description": "Purple Line has forward trains at noon",
+      "status": "PASS",
+      "detail": "4 forward"
+    },
+    {
+      "testId": 19,
+      "description": "Purple Line has reverse trains at noon",
+      "status": "PASS",
+      "detail": "5 reverse"
+    },
+    {
+      "testId": 20,
+      "description": "Green Line has reasonable train count at noon",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "testId": 21,
+      "description": "Green Line has forward trains at noon",
+      "status": "PASS",
+      "detail": "5 forward"
+    },
+    {
+      "testId": 22,
+      "description": "Green Line has reverse trains at noon",
+      "status": "PASS",
+      "detail": "6 reverse"
+    },
+    {
+      "testId": 23,
+      "description": "Yellow Line has reasonable train count at noon",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "testId": 24,
+      "description": "Yellow Line has forward trains at noon",
+      "status": "PASS",
+      "detail": "3 forward"
+    },
+    {
+      "testId": 25,
+      "description": "Yellow Line has reverse trains at noon",
+      "status": "PASS",
+      "detail": "2 reverse"
+    },
+    {
+      "testId": 21,
+      "description": "Purple Line train 0 fromIdx valid",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "testId": 22,
+      "description": "Purple Line train 0 progress in [0,1]",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "testId": 23,
+      "description": "Purple Line train 0 direction valid",
+      "status": "PASS",
+      "detail": "reverse"
+    },
+    {
+      "testId": 24,
+      "description": "Purple Line train 1 fromIdx valid",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "testId": 25,
+      "description": "Purple Line train 1 progress in [0,1]",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "testId": 26,
+      "description": "Purple Line train 1 direction valid",
+      "status": "PASS",
+      "detail": "reverse"
+    },
+    {
+      "testId": 27,
+      "description": "Purple Line train 0 fromIdx valid",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "testId": 28,
+      "description": "Purple Line train 0 progress in [0,1]",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "testId": 29,
+      "description": "Purple Line train 0 direction valid",
+      "status": "PASS",
+      "detail": "reverse"
+    },
+    {
+      "testId": 30,
+      "description": "Purple Line train 1 fromIdx valid",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "testId": 31,
+      "description": "Purple Line train 1 progress in [0,1]",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "testId": 32,
+      "description": "Purple Line train 1 direction valid",
+      "status": "PASS",
+      "detail": "reverse"
+    },
+    {
+      "testId": 33,
+      "description": "Green Line train 0 fromIdx valid",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "testId": 34,
+      "description": "Green Line train 0 progress in [0,1]",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "testId": 35,
+      "description": "Green Line train 0 direction valid",
+      "status": "PASS",
+      "detail": "forward"
+    },
+    {
+      "testId": 36,
+      "description": "Green Line train 1 fromIdx valid",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "testId": 37,
+      "description": "Green Line train 1 progress in [0,1]",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "testId": 38,
+      "description": "Green Line train 1 direction valid",
+      "status": "PASS",
+      "detail": "reverse"
+    },
+    {
+      "testId": 39,
+      "description": "Green Line train 0 fromIdx valid",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "testId": 40,
+      "description": "Green Line train 0 progress in [0,1]",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "testId": 41,
+      "description": "Green Line train 0 direction valid",
+      "status": "PASS",
+      "detail": "reverse"
+    },
+    {
+      "testId": 42,
+      "description": "Green Line train 1 fromIdx valid",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "testId": 43,
+      "description": "Green Line train 1 progress in [0,1]",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "testId": 44,
+      "description": "Green Line train 1 direction valid",
+      "status": "PASS",
+      "detail": "forward"
+    },
+    {
+      "testId": 45,
+      "description": "Yellow Line train 0 fromIdx valid",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "testId": 46,
+      "description": "Yellow Line train 0 progress in [0,1]",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "testId": 47,
+      "description": "Yellow Line train 0 direction valid",
+      "status": "PASS",
+      "detail": "reverse"
+    },
+    {
+      "testId": 48,
+      "description": "Yellow Line train 1 fromIdx valid",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "testId": 49,
+      "description": "Yellow Line train 1 progress in [0,1]",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "testId": 50,
+      "description": "Yellow Line train 1 direction valid",
+      "status": "PASS",
+      "detail": "forward"
+    },
+    {
+      "testId": 51,
+      "description": "Yellow Line train 0 fromIdx valid",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "testId": 52,
+      "description": "Yellow Line train 0 progress in [0,1]",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "testId": 53,
+      "description": "Yellow Line train 0 direction valid",
+      "status": "PASS",
+      "detail": "forward"
+    },
+    {
+      "testId": 54,
+      "description": "Yellow Line train 1 fromIdx valid",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "testId": 55,
+      "description": "Yellow Line train 1 progress in [0,1]",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "testId": 56,
+      "description": "Yellow Line train 1 direction valid",
+      "status": "PASS",
+      "detail": "forward"
+    },
+    {
+      "testId": 62,
+      "description": "LB: minsUntilNext > 0 — Purple peak, walk 5",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "testId": 63,
+      "description": "LB: leaveInSec is finite — Purple peak, walk 5",
+      "status": "PASS",
+      "detail": "60s"
+    },
+    {
+      "testId": 64,
+      "description": "LB: canMakeIt is boolean — Purple peak, walk 5",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "testId": 65,
+      "description": "LB: can make train if walk < freq — Purple peak, walk 5",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "testId": 66,
+      "description": "LB: minsUntilNext > 0 — Purple peak, walk 3, mid-cycle",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "testId": 67,
+      "description": "LB: leaveInSec is finite — Purple peak, walk 3, mid-cycle",
+      "status": "PASS",
+      "detail": "0s"
+    },
+    {
+      "testId": 68,
+      "description": "LB: canMakeIt is boolean — Purple peak, walk 3, mid-cycle",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "testId": 69,
+      "description": "LB: can make train if walk < freq — Purple peak, walk 3, mid-cycle",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "testId": 70,
+      "description": "LB: minsUntilNext > 0 — Green off-peak, walk 8",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "testId": 71,
+      "description": "LB: leaveInSec is finite — Green off-peak, walk 8",
+      "status": "PASS",
+      "detail": "240s"
+    },
+    {
+      "testId": 72,
+      "description": "LB: canMakeIt is boolean — Green off-peak, walk 8",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "testId": 73,
+      "description": "LB: minsUntilNext > 0 — Yellow peak, walk 6",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "testId": 74,
+      "description": "LB: leaveInSec is finite — Yellow peak, walk 6",
+      "status": "PASS",
+      "detail": "240s"
+    },
+    {
+      "testId": 75,
+      "description": "LB: canMakeIt is boolean — Yellow peak, walk 6",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "testId": 76,
+      "description": "LB: can make train if walk < freq — Yellow peak, walk 6",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "testId": 77,
+      "description": "LB: minsUntilNext > 0 — Late service, walk 3",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "testId": 78,
+      "description": "LB: leaveInSec is finite — Late service, walk 3",
+      "status": "PASS",
+      "detail": "420s"
+    },
+    {
+      "testId": 79,
+      "description": "LB: canMakeIt is boolean — Late service, walk 3",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "testId": 80,
+      "description": "LB: can make train if walk < freq — Late service, walk 3",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "testId": 81,
+      "description": "LB: minsUntilNext > 0 — Walk longer than gap — miss train",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "testId": 82,
+      "description": "LB: leaveInSec is finite — Walk longer than gap — miss train",
+      "status": "PASS",
+      "detail": "-780s"
+    },
+    {
+      "testId": 83,
+      "description": "LB: canMakeIt is boolean — Walk longer than gap — miss train",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "testId": 84,
+      "description": "LB: minsUntilNext > 0 — Just before peak ends",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "testId": 85,
+      "description": "LB: leaveInSec is finite — Just before peak ends",
+      "status": "PASS",
+      "detail": "180s"
+    },
+    {
+      "testId": 86,
+      "description": "LB: canMakeIt is boolean — Just before peak ends",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "testId": 87,
+      "description": "LB: can make train if walk < freq — Just before peak ends",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "testId": 88,
+      "description": "LB: minsUntilNext > 0 — Off-peak, very short walk",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "testId": 89,
+      "description": "LB: leaveInSec is finite — Off-peak, very short walk",
+      "status": "PASS",
+      "detail": "540s"
+    },
+    {
+      "testId": 90,
+      "description": "LB: canMakeIt is boolean — Off-peak, very short walk",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "testId": 91,
+      "description": "LB: can make train if walk < freq — Off-peak, very short walk",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "testId": 92,
+      "description": "LB: minsUntilNext > 0 — Evening peak, walk 10",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "testId": 93,
+      "description": "LB: leaveInSec is finite — Evening peak, walk 10",
+      "status": "PASS",
+      "detail": "-120s"
+    },
+    {
+      "testId": 94,
+      "description": "LB: canMakeIt is boolean — Evening peak, walk 10",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "testId": 95,
+      "description": "LB: minsUntilNext > 0 — Early morning, walk 4",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "testId": 96,
+      "description": "LB: leaveInSec is finite — Early morning, walk 4",
+      "status": "PASS",
+      "detail": "660s"
+    },
+    {
+      "testId": 97,
+      "description": "LB: canMakeIt is boolean — Early morning, walk 4",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "testId": 98,
+      "description": "LB: can make train if walk < freq — Early morning, walk 4",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "testId": 61,
+      "description": "Purple Line has ≥5 stations",
+      "status": "PASS",
+      "detail": "19 stations"
+    },
+    {
+      "testId": 62,
+      "description": "Purple Line has no duplicate station names",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "testId": 63,
+      "description": "Purple Line terminus A defined",
+      "status": "PASS",
+      "detail": "Baiyappanahalli"
+    },
+    {
+      "testId": 64,
+      "description": "Purple Line terminus B defined",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "testId": 65,
+      "description": "Purple Line peak freq < off-peak freq",
+      "status": "PASS",
+      "detail": "6 vs 10"
+    },
+    {
+      "testId": 66,
+      "description": "Green Line has ≥5 stations",
+      "status": "PASS",
+      "detail": "28 stations"
+    },
+    {
+      "testId": 67,
+      "description": "Green Line has no duplicate station names",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "testId": 68,
+      "description": "Green Line terminus A defined",
+      "status": "PASS",
+      "detail": "Nagasandra"
+    },
+    {
+      "testId": 69,
+      "description": "Green Line terminus B defined",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "testId": 70,
+      "description": "Green Line peak freq < off-peak freq",
+      "status": "PASS",
+      "detail": "8 vs 12"
+    },
+    {
+      "testId": 71,
+      "description": "Yellow Line has ≥5 stations",
+      "status": "PASS",
+      "detail": "17 stations"
+    },
+    {
+      "testId": 72,
+      "description": "Yellow Line has no duplicate station names",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "testId": 73,
+      "description": "Yellow Line terminus A defined",
+      "status": "PASS",
+      "detail": "RV Road"
+    },
+    {
+      "testId": 74,
+      "description": "Yellow Line terminus B defined",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "testId": 75,
+      "description": "Yellow Line peak freq < off-peak freq",
+      "status": "PASS",
+      "detail": "10 vs 15"
+    },
+    {
+      "testId": 114,
+      "description": "All lines produce trains at 7:00",
+      "status": "PASS",
+      "detail": "25 total trains"
+    },
+    {
+      "testId": 115,
+      "description": "Purple Line train count sane at 7:00",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "testId": 116,
+      "description": "Green Line train count sane at 7:00",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "testId": 117,
+      "description": "Yellow Line train count sane at 7:00",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "testId": 118,
+      "description": "All lines produce trains at 12:00",
+      "status": "PASS",
+      "detail": "25 total trains"
+    },
+    {
+      "testId": 119,
+      "description": "Purple Line train count sane at 12:00",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "testId": 120,
+      "description": "Green Line train count sane at 12:00",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "testId": 121,
+      "description": "Yellow Line train count sane at 12:00",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "testId": 122,
+      "description": "All lines produce trains at 18:00",
+      "status": "PASS",
+      "detail": "38 total trains"
+    },
+    {
+      "testId": 123,
+      "description": "Purple Line train count sane at 18:00",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "testId": 124,
+      "description": "Green Line train count sane at 18:00",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "testId": 125,
+      "description": "Yellow Line train count sane at 18:00",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "testId": 126,
+      "description": "Purple Line has more/equal trains at peak vs off-peak",
+      "status": "PASS",
+      "detail": "peak: 14, off: 9"
+    },
+    {
+      "testId": 127,
+      "description": "Green Line has more/equal trains at peak vs off-peak",
+      "status": "PASS",
+      "detail": "peak: 16, off: 11"
+    },
+    {
+      "testId": 128,
+      "description": "Yellow Line has more/equal trains at peak vs off-peak",
+      "status": "PASS",
+      "detail": "peak: 8, off: 5"
+    },
+    {
+      "testId": 129,
+      "description": "No trains at midnight",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "testId": 130,
+      "description": "No trains at 4:59 AM",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "testId": 131,
+      "description": "Trains at exactly 5:00 AM",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "testId": 132,
+      "description": "Trains at 22:58",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "testId": 133,
+      "description": "No trains at 23:01",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "testId": 134,
+      "description": "Walk=0 leave-by is always makeable at peak",
+      "status": "PASS",
+      "detail": "360s to spare"
+    }
+  ]
+}
