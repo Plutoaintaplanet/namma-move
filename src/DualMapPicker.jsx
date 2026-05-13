@@ -332,8 +332,31 @@ export default function DualMapPicker({ stops = [], activeIds = new Set(), onOri
             <div className="map-legend">
                 <div className="legend-item"><span className="dot metro"></span> Metro</div>
                 <div className="legend-item"><span className="dot bus"></span> Bus (Zoom in)</div>
-                <button onClick={() => setShowAllRoutes(!showAllRoutes)} className="debug-toggle-btn" style={{ marginLeft: 'auto', fontSize: '0.7rem', padding: '4px 8px', borderRadius: '6px', background: showAllRoutes ? 'var(--primary)' : 'var(--bg)', color: showAllRoutes ? 'white' : 'var(--text-muted)', border: '1px solid var(--border)', cursor: 'pointer' }}>
-                    {loadingRoutes ? 'Loading...' : showAllRoutes ? 'Hide Routes' : 'Debug: Road-Follow Routes'}
+                <button 
+                    onClick={() => setShowAllRoutes(!showAllRoutes)} 
+                    className="map-layer-btn"
+                    style={{ 
+                        marginLeft: 'auto', 
+                        fontSize: '0.75rem', 
+                        padding: '6px 12px', 
+                        borderRadius: '99px', 
+                        background: showAllRoutes ? 'var(--primary)' : 'var(--surface)', 
+                        color: showAllRoutes ? 'white' : 'var(--primary)', 
+                        border: '1.5px solid var(--primary)', 
+                        cursor: 'pointer',
+                        fontWeight: 700,
+                        display: 'flex',
+                        align-items: 'center',
+                        gap: '6px',
+                        transition: 'all 0.2s'
+                    }}
+                >
+                    {loadingRoutes ? '⌛ Loading...' : (
+                        <>
+                            <span>🚌</span>
+                            {showAllRoutes ? 'Hide Bus Routes' : 'Show Bus Routes'}
+                        </>
+                    )}
                 </button>
             </div>
         </div>

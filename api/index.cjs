@@ -15,7 +15,6 @@ const routeRouter = require("./routes/route.cjs");
 const stopsRouter = require("./routes/stops.cjs");
 const liveRouter = require("./routes/live.cjs");
 const newsRouter = require("./routes/news.cjs");
-const assistantRouter = require("./routes/assistant.cjs");
 
 app.use("/api/route", routeRouter);
 app.use("/route", routeRouter);
@@ -25,8 +24,6 @@ app.use("/api/live", liveRouter);
 app.use("/live", liveRouter);
 app.use("/api/news", newsRouter);
 app.use("/news", newsRouter);
-app.use("/api/assistant", assistantRouter);
-app.use("/assistant", assistantRouter);
 
 app.get(["/api/health", "/health"], async (_req, res) => {
     console.log("Health check env debug:", { 

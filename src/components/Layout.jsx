@@ -1,7 +1,6 @@
 import { Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useState, useEffect } from 'react';
-import AIAssistant from './AIAssistant';
 import ActiveJourney from './ActiveJourney';
 
 export default function Layout({ children, darkMode, setDarkMode, activeJourney, setActiveJourney }) {
@@ -96,8 +95,6 @@ export default function Layout({ children, darkMode, setDarkMode, activeJourney,
                     </Link>
                 ))}
             </nav>
-
-            <AIAssistant />
         </div>
     );
 }

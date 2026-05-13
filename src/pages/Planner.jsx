@@ -255,11 +255,6 @@ function RouteResult({ hit, title, icon, cabInfo, setActiveJourney, walletBalanc
                         <span key={li} className={`status-badge ${(l || "").toLowerCase().replace(/\s+/g, "-")}`}>{l}</span>
                     ))}
                 </div>
-                {cardStatus.analyzing ? (
-                    <span className="status-badge ai">🤖 AI Analyzing...</span>
-                ) : cardStatus.aiAnalysis && (
-                    <span className="status-badge ai">🤖 {cardStatus.aiAnalysis}</span>
-                )}
                 {cardStatus.hasStarted && (
                     <span className="status-badge savings">✅ Saved ₹{cardStatus.savings} & 1.2kg CO2</span>
                 )}

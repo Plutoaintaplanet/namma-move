@@ -3,6 +3,8 @@ import { MapContainer, TileLayer, Polyline, CircleMarker, Marker, Popup, useMap 
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import { METRO_LINES, getTrainPositions, getCurrentFreq } from "../data/metro_lines";
+import stopsJson from "../data/gtfs_stops.json";
+import routeStopsJson from "../data/gtfs_route_stops.json";
 
 // Fix leaflet default icon issue with bundlers
 delete L.Icon.Default.prototype._getIconUrl;
@@ -186,11 +188,44 @@ export default function MetroLiveMap({ darkMode }) {
   const [selectedLine, setSelectedLine] = useState(null); // null = all
   const [selectedStation, setSelectedStation] = useState(null);
   const [now, setNow] = useState(new Date());
+  const [showBusRoutes, setShowBusRoutes] = useState(false);
+  const [busRouteLines, setBusRouteLines] = useState([]);
+  const [loadingBusRoutes, setLoadingBusRoutes] = useState(false);
 
   // Use theme-aware tile layer URL
   const mapUrl = darkMode 
     ? "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
     : "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png";
+
+  // Bus route loader
+  useEffect(() => {
+    if (!showBusRoutes) {
+      setBusRouteLines([]);
+      return;
+    }
+    setLoadingBusRoutes(true);
+    const timer = setTimeout(() => {
+      const grouped = {};
+      routeStopsJson.forEach(rs => {
+        if (!grouped[rs.route_id]) grouped[rs.route_id] = [];
+        grouped[rs.route_id].push(rs.stop_id);
+      });
+      const stopMap = {};
+      stopsJson.forEach(s => { stopMap[s.id] = [s.latitude, s.longitude]; });
+      
+      const lines = Object.keys(grouped)
+        .filter(rid => !rid.toString().startsWith("M-"))
+        .slice(0, 100) 
+        .map(rid => {
+          const coords = grouped[rid].map(sid => stopMap[sid]).filter(Boolean);
+          return { id: rid, coords };
+        }).filter(r => r.coords.length > 1);
+      
+      setBusRouteLines(lines);
+      setLoadingBusRoutes(false);
+    }, 100);
+    return () => clearTimeout(timer);
+  }, [showBusRoutes]);
 
   // Animate trains every second
   useEffect(() => {
@@ -232,9 +267,9 @@ export default function MetroLiveMap({ darkMode }) {
           <div>
             <h2 className="metro-live-title">
               <span className="live-pulse-dot" />
-              Metro Live Tracker
+              Transit Live Tracker
             </h2>
-            <p className="metro-live-sub">Real-time animated positions · Bengaluru Namma Metro</p>
+            <p className="metro-live-sub">Real-time animated positions · Bengaluru Transit Network</p>
           </div>
           <div className="metro-clock">{timeStr}</div>
         </div>
@@ -244,7 +279,7 @@ export default function MetroLiveMap({ darkMode }) {
           <button
             className={`metro-pill ${!selectedLine ? "active" : ""}`}
             onClick={() => setSelectedLine(null)}
-          >All Lines</button>
+          >All Metro</button>
           {METRO_LINES.map(line => (
             <button
               key={line.id}
@@ -256,6 +291,14 @@ export default function MetroLiveMap({ darkMode }) {
               {line.name}
             </button>
           ))}
+          <button
+            className={`metro-pill ${showBusRoutes ? "active" : ""}`}
+            style={{ "--pill-color": "#00A86B", marginLeft: 'auto' }}
+            onClick={() => setShowBusRoutes(!showBusRoutes)}
+          >
+            <span className="pill-dot" style={{ background: "#00A86B" }} />
+            {loadingBusRoutes ? "Loading Bus..." : "Show Bus Routes"}
+          </button>
         </div>
       </div>
 
@@ -300,7 +343,7 @@ export default function MetroLiveMap({ darkMode }) {
 
           <div className="simulation-badge">
             <span>ℹ️</span>
-            <span>Positions are schedule-simulated based on official BMRCL timetables.</span>
+            <span>Metro positions are schedule-simulated. Bus routes are static overlays.</span>
           </div>
         </div>
 
@@ -309,8 +352,8 @@ export default function MetroLiveMap({ darkMode }) {
           {!isServiceHours && (
             <div className="service-closed-overlay">
               <span>🌙</span>
-              <strong>Metro service is closed</strong>
-              <p>Service runs 05:00 AM – 11:00 PM daily.</p>
+              <strong>Transit service is limited</strong>
+              <p>Metro runs 05:00 AM – 11:00 PM daily.</p>
             </div>
           )}
           <MapContainer
@@ -324,6 +367,15 @@ export default function MetroLiveMap({ darkMode }) {
               url={mapUrl}
             />
             <FitBounds lines={visibleLines} />
+
+            {/* Bus routes toggleable layer */}
+            {showBusRoutes && busRouteLines.map(rl => (
+              <Polyline
+                key={`bus-line-${rl.id}`}
+                positions={rl.coords}
+                pathOptions={{ color: "#00A86B", weight: 2, opacity: 0.35 }}
+              />
+            ))}
 
             {visibleLines.map(line => (
               <Polyline

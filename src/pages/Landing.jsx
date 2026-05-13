@@ -323,6 +323,9 @@ export default function Landing({ activeJourney, setActiveJourney, walletBalance
   const [flyTarget, setFlyTarget] = useState(null);
   const [trainPositions, setTrainPositions] = useState({});
   const [sheetOpen, setSheetOpen] = useState(false);
+  const [showBusRoutes, setShowBusRoutes] = useState(false);
+  const [busRouteLines, setBusRouteLines] = useState([]);
+  const [loadingBusRoutes, setLoadingBusRoutes] = useState(false);
 
   // Use theme-aware tile layer URL
   const mapUrl = darkMode 
@@ -331,6 +334,36 @@ export default function Landing({ activeJourney, setActiveJourney, walletBalance
 
   const { loading, searched, allRoutes, cabInfo, rides, error, search, reset } = useRouteSearch();
   const debounceRef = useRef({});
+
+  // Bus route loader
+  useEffect(() => {
+    if (!showBusRoutes) {
+      setBusRouteLines([]);
+      return;
+    }
+    setLoadingBusRoutes(true);
+    const timer = setTimeout(() => {
+      const grouped = {};
+      routeStopsJson.forEach(rs => {
+        if (!grouped[rs.route_id]) grouped[rs.route_id] = [];
+        grouped[rs.route_id].push(rs.stop_id);
+      });
+      const stopMap = {};
+      stopsJson.forEach(s => { stopMap[s.id] = [s.latitude, s.longitude]; });
+      
+      const lines = Object.keys(grouped)
+        .filter(rid => !rid.toString().startsWith("M-"))
+        .slice(0, 100) // Limit for performance
+        .map(rid => {
+          const coords = grouped[rid].map(sid => stopMap[sid]).filter(Boolean);
+          return { id: rid, coords };
+        }).filter(r => r.coords.length > 1);
+      
+      setBusRouteLines(lines);
+      setLoadingBusRoutes(false);
+    }, 100);
+    return () => clearTimeout(timer);
+  }, [showBusRoutes]);
 
   // Train animation
   useEffect(() => {
@@ -457,6 +490,15 @@ export default function Landing({ activeJourney, setActiveJourney, walletBalance
           <FlyTo center={flyTarget} />
           <MapClickHandler pinMode={pinMode} onOriginDrop={handleOriginDrop} onDestDrop={handleDestDrop} />
 
+          {/* Bus routes toggleable layer */}
+          {showBusRoutes && busRouteLines.map(rl => (
+            <Polyline
+              key={`bus-line-${rl.id}`}
+              positions={rl.coords}
+              pathOptions={{ color: "#00A86B", weight: 2, opacity: 0.4 }}
+            />
+          ))}
+
           {/* If there's an active journey, show its route instead of all metro lines */}
           {activeJourney ? (
             activeJourney.route.legs.map((leg, idx) => (
@@ -514,6 +556,18 @@ export default function Landing({ activeJourney, setActiveJourney, walletBalance
           {originPos && <Marker position={originPos} icon={greenIcon} />}
           {destPos && <Marker position={destPos} icon={redIcon} />}
         </MapContainer>
+
+        {/* Floating Map Controls */}
+        <div className="hm-map-controls">
+          <button 
+            className={`hm-map-btn ${showBusRoutes ? 'active' : ''}`}
+            onClick={() => setShowBusRoutes(!showBusRoutes)}
+            title={showBusRoutes ? "Hide Bus Routes" : "Show Bus Routes"}
+          >
+            {loadingBusRoutes ? '⌛' : '🚌'}
+            <span className="hm-map-btn-label">{showBusRoutes ? "Hide Bus" : "Show Bus"}</span>
+          </button>
+        </div>
       </div>
 
       {/* Ride-hailing floating bar */}
