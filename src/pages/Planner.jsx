@@ -225,7 +225,7 @@ function RouteSummary({ hit }) {
 function RouteResult({ hit, title, icon, cabInfo, setActiveJourney, walletBalance, setWalletBalance }) {
     if (!hit || !hit.legs || !hit.oStop || !hit.dStop) return null;
     const { legs, oStop, dStop, totalMins, fare, arrive, labels = [] } = hit;
-    const [cardStatus, setCardStatus] = useState({ aiAnalysis: "", analyzing: false, hasStarted: false, savings: 0 });
+    const [cardStatus, setCardStatus] = useState({ hasStarted: false, savings: 0 });
 
     const startJourney = () => {
         if (walletBalance < fare) {

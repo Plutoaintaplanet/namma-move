@@ -4,26 +4,21 @@ import { supabase } from '../supabaseClient';
 export default function CommuteSocial({ routeId, routeName, cabFare, transitFare, routeDetails, onStatusUpdate }) {
     const [reports, setReports] = useState({ onTime: 0, delayed: 0, crowded: 0 });
     const [hasStarted, setHasStarted] = useState(false);
-    const [aiAnalysis, setAiAnalysis] = useState("");
-    const [analyzing, setAiAnalyzing] = useState(false);
 
     useEffect(() => {
         if (!routeId) return;
         fetchReports();
-        getAiAnalysis();
     }, [routeId]);
 
     // Send status up to parent for top-of-card display
     useEffect(() => {
         if (onStatusUpdate) {
             onStatusUpdate({
-                aiAnalysis,
-                analyzing,
                 hasStarted,
                 savings: Math.round(cabFare - transitFare)
             });
         }
-    }, [aiAnalysis, analyzing, hasStarted, cabFare, transitFare]);
+    }, [hasStarted, cabFare, transitFare]);
 
     async function fetchReports() {
         const { data } = await supabase
@@ -38,23 +33,6 @@ export default function CommuteSocial({ routeId, routeName, cabFare, transitFare
                 return acc;
             }, { onTime: 0, delayed: 0, crowded: 0 });
             setReports(counts);
-        }
-    }
-
-    async function getAiAnalysis() {
-        setAiAnalyzing(true);
-        try {
-            const res = await fetch('/api/assistant/analyze-route', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ routeName, routeDetails, reports })
-            });
-            const data = await res.json();
-            setAiAnalysis(data.analysis);
-        } catch (e) {
-            setAiAnalysis("Reliable route based on historical data.");
-        } finally {
-            setAiAnalyzing(false);
         }
     }
 
